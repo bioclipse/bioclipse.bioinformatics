@@ -21,10 +21,8 @@ public class BiojavaAASequence extends BiojavaSequence
 
     public BiojavaAASequence(RichSequence richSequence) {
         super(richSequence);
-        // TODO Auto-generated constructor stub
     }
 
     public BiojavaAASequence() {
-        // TODO Auto-generated constructor stub
     }
 }

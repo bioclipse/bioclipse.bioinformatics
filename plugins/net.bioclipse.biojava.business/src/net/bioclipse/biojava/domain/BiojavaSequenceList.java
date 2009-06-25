@@ -26,7 +26,6 @@ public class BiojavaSequenceList extends RecordableList<BiojavaSequence> {
     }
     
     public String getName() {
-        // TODO Auto-generated method stub
         return null;
     }
 }

@@ -297,20 +297,17 @@ public class BiojavaManager implements IBiojavaManager {
 
 
     public void saveSequence(BiojavaSequence seq) {
-        // TODO Auto-generated method stub
         logger.warn("BioJavaManager.saveSequence() FIXME");
     }
 
 
     public void saveSequence(BiojavaSequence seq, String path) {
-        // TODO Auto-generated method stub
         logger.warn("BioJavaManager.saveSequence() FIXME");
     }
 
 
     public void saveSequence(BiojavaSequence seq, String path,
             SequenceFormat format) {
-        // TODO Auto-generated method stub
         logger.warn("BioJavaManager.saveSequence() FIXME");
     }
 

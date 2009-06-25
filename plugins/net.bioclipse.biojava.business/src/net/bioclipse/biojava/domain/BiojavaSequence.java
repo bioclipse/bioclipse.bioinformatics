@@ -41,7 +41,6 @@ public class BiojavaSequence extends BioObject implements ISequence {
     }
     
     public BiojavaSequence() {
-        // TODO Auto-generated constructor stub
     }
 
     @Recorded
@@ -89,7 +88,6 @@ public class BiojavaSequence extends BioObject implements ISequence {
     }
 
     public Object getAdapter(Class adapter) {
-        // TODO Auto-generated method stub
         return super.getAdapter(adapter);
     }
 }
