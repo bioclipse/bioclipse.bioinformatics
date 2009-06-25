@@ -14,27 +14,27 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
+    private static final Pattern NEWLINE
+      = Pattern.compile( "[\\n\\r]", Pattern.DOTALL );
+
     /**
-     * Used to remove the first line (until linebreak) in a string, e.g. to remove header
-     * line in a FASTA string
+     * Used to remove the first line (until line break) in a string, e.g. to
+     * remove header line in a FASTA string
      * @param content
      * @return
      */
-    public static String removeUntilFirstNewline(String content){
+    public static String removeUntilFirstNewline(String content) {
 
-        Pattern EVERYTHING_AFTER_FIRST_NEWLINE
-          = Pattern.compile( "[^\\n\\r]*[\\n\\r]+(.*)$", Pattern.DOTALL );
+        Matcher matcher = NEWLINE.matcher(content);
+        if ( matcher.find() )
+            return content.substring(matcher.end());
 
-            Matcher matcher = EVERYTHING_AFTER_FIRST_NEWLINE.matcher(content);
-            if ( matcher.find() ) {
-                String ret = matcher.group(1);
-                return ret;
-            }
-            else {
-//                System.out.println("The text consists of only one line.");
-                return content;
-            }
+        // masak 2009-06-25: I've only refactored this method to be shorter
+        // and more efficient, but it seems a bit doubtful to me that we
+        // want to return the string unaffected if we cannot find a newline.
+        // Seems more reasonable to return an empty string, or to throw
+        // an exception.
+        // I'll leave it as it is, but might submit a bug ticket about it.
+        return content;
     }
-    
-    
 }
