@@ -12,18 +12,17 @@
  ******************************************************************************/
 package net.bioclipse.biojava.domain;
 
+import net.bioclipse.core.domain.IProtein;
+
 import org.biojavax.bio.seq.RichSequence;
 
-import net.bioclipse.core.domain.IDNASequence;
+public class BiojavaProtein extends BiojavaSequence 
+                            implements IProtein {
 
-public class BiojavaDNASequence extends BiojavaSequence 
-                                implements IDNASequence {
-
-    public BiojavaDNASequence(RichSequence richSequence) {
+    public BiojavaProtein(RichSequence richSequence) {
         super(richSequence);
     }
 
-    public BiojavaDNASequence() {
-        super();
+    public BiojavaProtein() {
     }
 }

@@ -14,16 +14,16 @@ package net.bioclipse.biojava.domain;
 
 import org.biojavax.bio.seq.RichSequence;
 
-import net.bioclipse.core.domain.IRNASequence;
+import net.bioclipse.core.domain.IDNA;
 
-public class BiojavaRNASequence extends BiojavaSequence 
-                                implements IRNASequence {
+public class BiojavaDNA extends BiojavaSequence 
+                        implements IDNA {
 
-    public BiojavaRNASequence(RichSequence richSequence) {
+    public BiojavaDNA(RichSequence richSequence) {
         super(richSequence);
     }
 
-    public BiojavaRNASequence() {
-        
+    public BiojavaDNA() {
+        super();
     }
 }

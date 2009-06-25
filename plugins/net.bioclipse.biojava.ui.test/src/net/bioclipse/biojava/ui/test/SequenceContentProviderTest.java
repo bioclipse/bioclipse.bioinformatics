@@ -18,8 +18,8 @@ import net.bioclipse.biojava.business.BiojavaManager;
 import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.biojava.domain.BiojavaSequence;
 import net.bioclipse.biojava.ui.views.SequenceContentProvider;
-import net.bioclipse.core.domain.IAASequence;
-import net.bioclipse.core.domain.IDNASequence;
+import net.bioclipse.core.domain.IProtein;
+import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.ISequence;
 
 import org.eclipse.core.internal.resources.File;
@@ -100,7 +100,7 @@ public class SequenceContentProviderTest {
         Object[] obj=provider.getChildren(gbkFile);
         assertNotNull(obj);
         assertEquals(1, obj.length);
-        assertTrue(obj[0] instanceof IDNASequence);
+        assertTrue(obj[0] instanceof IDNA);
 //        IDNASequence seq=(IDNASequence)obj[0];
 
         //New file to test
@@ -120,8 +120,8 @@ public class SequenceContentProviderTest {
         obj=provider.getChildren(fastaFile);
         assertNotNull(obj);
         assertEquals(2, obj.length);
-        assertTrue(obj[0] instanceof IAASequence);
-        assertTrue(obj[1] instanceof IAASequence);
+        assertTrue(obj[0] instanceof IProtein);
+        assertTrue(obj[1] instanceof IProtein);
 
         int a=0;
 

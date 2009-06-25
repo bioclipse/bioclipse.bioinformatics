@@ -24,9 +24,9 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 
-import net.bioclipse.biojava.domain.BiojavaAASequence;
-import net.bioclipse.biojava.domain.BiojavaDNASequence;
-import net.bioclipse.biojava.domain.BiojavaRNASequence;
+import net.bioclipse.biojava.domain.BiojavaProtein;
+import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.biojava.domain.BiojavaSequence;
 import net.bioclipse.biojava.domain.BiojavaSequenceList;
 import net.bioclipse.core.business.BioclipseException;
@@ -208,13 +208,13 @@ public class BiojavaManager implements IBiojavaManager {
                 RichSequence rseq = seqit.nextRichSequence();
                 if (rseq != null) {
                     if (rseq.getAlphabet().getName().equals("DNA")) {
-                        sequenceCollection.add(new BiojavaDNASequence(rseq));
+                        sequenceCollection.add(new BiojavaDNA(rseq));
                     }
                     else if (rseq.getAlphabet().getName().equals("RNA")) {
-                        sequenceCollection.add(new BiojavaRNASequence(rseq));
+                        sequenceCollection.add(new BiojavaRNA(rseq));
                     }
                     else if (rseq.getAlphabet().getName().equals("PROTEIN-TERM")) {
-                        sequenceCollection.add(new BiojavaAASequence(rseq));
+                        sequenceCollection.add(new BiojavaProtein(rseq));
                     }
                 }
             }
@@ -283,13 +283,13 @@ public class BiojavaManager implements IBiojavaManager {
         }
 
         if (rseq.getAlphabet().getName().equals("DNA")) {
-            return new BiojavaDNASequence(rseq);
+            return new BiojavaDNA(rseq);
         }
         else if (rseq.getAlphabet().getName().equals("RNA")) {
-            return new BiojavaRNASequence(rseq);
+            return new BiojavaRNA(rseq);
         }
         else if (rseq.getAlphabet().getName().equals("PROTEIN-TERM")) {
-            return new BiojavaAASequence(rseq);
+            return new BiojavaProtein(rseq);
         }
 
         return new BiojavaSequence(rseq);
@@ -316,7 +316,7 @@ public class BiojavaManager implements IBiojavaManager {
      * Convert a BiojavaDNASequence into a BiojavaRNASequence. Biological meaning: Transcription
      * @throws IllegalArgumentException
      */
-    public BiojavaRNASequence DNAtoRNA(BiojavaDNASequence sequence) {
+    public BiojavaRNA DNAtoRNA(BiojavaDNA sequence) {
         RichSequence seq=sequence.getRichSequence();
         RichSequence rseq=null;
 
@@ -328,7 +328,7 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e.getMessage());
         }
 
-        return new BiojavaRNASequence(rseq);
+        return new BiojavaRNA(rseq);
     }
 
 
@@ -336,7 +336,7 @@ public class BiojavaManager implements IBiojavaManager {
      * Convert a BiojavaRNASequence into a BiojavaDNASequence. Biological meaning: Reverse-transcription
      * @throws IllegalArgumentException
      */
-    public BiojavaDNASequence RNAtoDNA(BiojavaRNASequence sequence) {
+    public BiojavaDNA RNAtoDNA(BiojavaRNA sequence) {
         RichSequence seq = sequence.getRichSequence();
         RichSequence rseq = null;
 
@@ -350,14 +350,14 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e.getMessage());
         }
 
-        return new BiojavaDNASequence(rseq);
+        return new BiojavaDNA(rseq);
     }
 
     /**
      * Convert a BiojavaRNASequence into a BiojavaAASequence. Biological meaning: Translation.
      * @throws IllegalArgumentException
      */
-    public BiojavaAASequence RNAtoProtein(BiojavaRNASequence sequence) {
+    public BiojavaProtein RNAtoProtein(BiojavaRNA sequence) {
         RichSequence seq=sequence.getRichSequence();
         RichSequence rseq=null;
 
@@ -368,7 +368,7 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e.getMessage());
         }
 
-        return new BiojavaAASequence(rseq);
+        return new BiojavaProtein(rseq);
     }
 
 
@@ -376,7 +376,7 @@ public class BiojavaManager implements IBiojavaManager {
      * Convert a BiojavaDNASequence into a BiojavaAASequence. Trancription + translation
      * @throws IllegalArgumentException
      */
-    public BiojavaAASequence DNAToProtein(BiojavaDNASequence sequence) {
+    public BiojavaProtein DNAToProtein(BiojavaDNA sequence) {
         RichSequence seq = sequence.getRichSequence();
         RichSequence rseq = null;
 
@@ -389,7 +389,7 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e.getMessage());
         }
 
-        return new BiojavaAASequence(rseq);
+        return new BiojavaProtein(rseq);
     }
 
 

@@ -13,8 +13,8 @@ package net.bioclipse.biojava.ui.actions;
 
 import java.io.IOException;
 
-import net.bioclipse.biojava.domain.BiojavaDNASequence;
-import net.bioclipse.core.domain.IDNASequence;
+import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.ISequence;
 
 public class TranslateDNAToProteinAction extends TranslateAction{
@@ -22,21 +22,21 @@ public class TranslateDNAToProteinAction extends TranslateAction{
     @Override
     public ISequence convert(ISequence sequence) throws IOException {
         //Verify input is IDNASequence
-        if (!(sequence instanceof IDNASequence)){
+        if (!(sequence instanceof IDNA)){
             showMessage("Input is not a DNA sequence.");
             return null;
         }
 
-        IDNASequence dnaSequence = (IDNASequence) sequence;
-        BiojavaDNASequence bjDNASeq=null;
+        IDNA dnaSequence = (IDNA) sequence;
+        BiojavaDNA bjDNASeq=null;
 
         //If not a BioJavaSequence, construct one from PlainString
-        if (dnaSequence instanceof BiojavaDNASequence) {
-            bjDNASeq = (BiojavaDNASequence) dnaSequence;
+        if (dnaSequence instanceof BiojavaDNA) {
+            bjDNASeq = (BiojavaDNA) dnaSequence;
         }else {
             ISequence crSeq=getBiojava().createSequence(dnaSequence.getPlainSequence());
-            if (crSeq instanceof BiojavaDNASequence) {
-                bjDNASeq = (BiojavaDNASequence) crSeq;
+            if (crSeq instanceof BiojavaDNA) {
+                bjDNASeq = (BiojavaDNA) crSeq;
             }else {
                 throw new IllegalArgumentException();
             }

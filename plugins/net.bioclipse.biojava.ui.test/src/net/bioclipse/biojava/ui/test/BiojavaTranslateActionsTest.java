@@ -21,8 +21,8 @@ import net.bioclipse.biojava.ui.actions.TranslateDNAToProteinAction;
 import net.bioclipse.biojava.ui.actions.TranslateDNAToRNAAction;
 import net.bioclipse.biojava.ui.actions.TranslateRNAToDNAAction;
 import net.bioclipse.biojava.ui.actions.TranslateRNAToProteinAction;
-import net.bioclipse.core.domain.IDNASequence;
-import net.bioclipse.core.domain.IRNASequence;
+import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.domain.IRNA;
 import net.bioclipse.core.domain.ISequence;
 
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -60,7 +60,7 @@ public class BiojavaTranslateActionsTest {
     @Test
     public void testTranslateDNAToRNAAction() {
         BiojavaSequence seq=biojava.createSequence("CTCCTCGCGAAACGATACGAT");
-        assertTrue(seq instanceof IDNASequence);
+        assertTrue(seq instanceof IDNA);
 
         TranslateAction action=new TranslateDNAToRNAAction();
         action.setSelection(new StructuredSelection(seq));
@@ -79,7 +79,7 @@ public class BiojavaTranslateActionsTest {
     @Test
     public void testTranslateDNAToProteinAction() {
         BiojavaSequence seq=biojava.createSequence("CTCCTCGCGAAACGATACGAT");
-        assertTrue(seq instanceof IDNASequence);
+        assertTrue(seq instanceof IDNA);
 
         TranslateAction action=new TranslateDNAToProteinAction();
         action.setSelection(new StructuredSelection(seq));
@@ -100,7 +100,7 @@ public class BiojavaTranslateActionsTest {
         fail("Not implemented as read RNA is not supported");
 
         BiojavaSequence seq=biojava.createSequence("CUCCUCGCGAAACGAUACGAU");
-        assertTrue(seq instanceof IRNASequence);
+        assertTrue(seq instanceof IRNA);
 
         TranslateAction action=new TranslateRNAToDNAAction();
         action.setSelection(new StructuredSelection(seq));
@@ -121,7 +121,7 @@ public class BiojavaTranslateActionsTest {
         fail("Not implemented as read RNA is not supported");
 
         BiojavaSequence seq=biojava.createSequence("CUCCUCGCGAAACGAUACGAU");
-        assertTrue(seq instanceof IRNASequence);
+        assertTrue(seq instanceof IRNA);
 
         TranslateAction action=new TranslateRNAToProteinAction();
         action.setSelection(new StructuredSelection(seq));

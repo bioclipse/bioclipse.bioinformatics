@@ -16,9 +16,9 @@ package net.bioclipse.biojava.business;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.bioclipse.biojava.domain.BiojavaAASequence;
-import net.bioclipse.biojava.domain.BiojavaDNASequence;
-import net.bioclipse.biojava.domain.BiojavaRNASequence;
+import net.bioclipse.biojava.domain.BiojavaProtein;
+import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.biojava.domain.BiojavaSequence;
 import net.bioclipse.biojava.domain.BiojavaSequenceList;
 import net.bioclipse.core.PublishedClass;
@@ -186,7 +186,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="BiojavaDNASequence sequence",
                      methodSummary="Converts a DNA sequence into RNA (transcription).")
-    public BiojavaRNASequence DNAtoRNA( BiojavaDNASequence sequence );
+    public BiojavaRNA DNAtoRNA( BiojavaDNA sequence );
 
     /**
      * Converts a BiojavaDNASequence into a BiojavaAASequence.
@@ -197,7 +197,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="BiojavaDNASequence sequence",
                      methodSummary="Converts a BiojavaDNASequence into a BiojavaAASequence.")
-    public BiojavaAASequence DNAToProtein(BiojavaDNASequence sequence);
+    public BiojavaProtein DNAToProtein(BiojavaDNA sequence);
 
     /**
      * Converts a RNA sequence into DNA (reverse transcription).
@@ -208,7 +208,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="BiojavaRNASequence rnaSeq",
                      methodSummary="Converts a RNA sequence into DNA (reverse transcription).")
-    public BiojavaDNASequence RNAtoDNA(BiojavaRNASequence rnaSeq);
+    public BiojavaDNA RNAtoDNA(BiojavaRNA rnaSeq);
 
     /**
      * Converts a BiojavaRNASequence into a BiojavaAASequence.
@@ -219,7 +219,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="BiojavaRNASequence sequence",
                      methodSummary="Convert a BiojavaRNASequence into a BiojavaAASequence.")
-    public BiojavaAASequence RNAtoProtein(BiojavaRNASequence sequence);
+    public BiojavaProtein RNAtoProtein(BiojavaRNA sequence);
 
 
 }

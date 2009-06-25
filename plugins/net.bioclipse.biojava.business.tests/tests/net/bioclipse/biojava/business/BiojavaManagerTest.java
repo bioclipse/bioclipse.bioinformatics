@@ -20,9 +20,9 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import net.bioclipse.biojava.domain.BiojavaAASequence;
-import net.bioclipse.biojava.domain.BiojavaDNASequence;
-import net.bioclipse.biojava.domain.BiojavaRNASequence;
+import net.bioclipse.biojava.domain.BiojavaProtein;
+import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.biojava.domain.BiojavaSequence;
 import net.bioclipse.biojava.domain.BiojavaSequenceList;
 import net.bioclipse.core.business.BioclipseException;
@@ -234,12 +234,12 @@ public class BiojavaManagerTest {
 
         assertNotNull(seq);
 
-        assertTrue(seq instanceof BiojavaDNASequence);
-        BiojavaDNASequence dnaSeq = (BiojavaDNASequence) seq;
+        assertTrue(seq instanceof BiojavaDNA);
+        BiojavaDNA dnaSeq = (BiojavaDNA) seq;
 
         try {
             assertEquals( "GATTACA", seq.getPlainSequence().trim().toUpperCase() );
-            BiojavaRNASequence rnaSeq;
+            BiojavaRNA rnaSeq;
             rnaSeq = biojava.DNAtoRNA(dnaSeq);
             assertEquals( "GAUUACA", rnaSeq.getPlainSequence().trim().toUpperCase() );
         } catch (IOException e) {
@@ -258,12 +258,12 @@ public class BiojavaManagerTest {
 
         assertNotNull(seq);
 
-        assertTrue(seq instanceof BiojavaDNASequence);
-        BiojavaDNASequence dnaSeq = (BiojavaDNASequence) seq;
+        assertTrue(seq instanceof BiojavaDNA);
+        BiojavaDNA dnaSeq = (BiojavaDNA) seq;
 
         try {
 
-            BiojavaAASequence rnaSeq = biojava.DNAToProtein(dnaSeq);
+            BiojavaProtein rnaSeq = biojava.DNAToProtein(dnaSeq);
             assertEquals( "LLAKRYD", rnaSeq.getPlainSequence().trim().toUpperCase() );
 
         } catch (IOException e) {

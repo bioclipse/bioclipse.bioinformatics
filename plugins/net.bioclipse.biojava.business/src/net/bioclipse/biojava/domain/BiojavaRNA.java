@@ -12,17 +12,18 @@
  ******************************************************************************/
 package net.bioclipse.biojava.domain;
 
-import net.bioclipse.core.domain.IAASequence;
-
 import org.biojavax.bio.seq.RichSequence;
 
-public class BiojavaAASequence extends BiojavaSequence 
-                                implements IAASequence {
+import net.bioclipse.core.domain.IRNA;
 
-    public BiojavaAASequence(RichSequence richSequence) {
+public class BiojavaRNA extends BiojavaSequence 
+                                implements IRNA {
+
+    public BiojavaRNA(RichSequence richSequence) {
         super(richSequence);
     }
 
-    public BiojavaAASequence() {
+    public BiojavaRNA() {
+        
     }
 }
