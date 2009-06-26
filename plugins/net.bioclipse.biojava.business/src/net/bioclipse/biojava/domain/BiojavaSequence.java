@@ -87,6 +87,7 @@ public class BiojavaSequence extends BioObject implements ISequence {
                                     : "";
     }
 
+    @SuppressWarnings("unchecked")
     public Object getAdapter(Class adapter) {
         return super.getAdapter(adapter);
     }
