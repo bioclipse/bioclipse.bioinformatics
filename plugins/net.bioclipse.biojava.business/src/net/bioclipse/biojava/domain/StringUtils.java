@@ -29,12 +29,8 @@ public class StringUtils {
         if ( matcher.find() )
             return content.substring(matcher.end());
 
-        // masak 2009-06-25: I've only refactored this method to be shorter
-        // and more efficient, but it seems a bit doubtful to me that we
-        // want to return the string unaffected if we cannot find a newline.
-        // Seems more reasonable to return an empty string, or to throw
-        // an exception.
-        // I'll leave it as it is, but might submit a bug ticket about it.
-        return content;
+        throw new IllegalArgumentException(
+            "The string does not appear to be FASTA"
+        );
     }
 }
