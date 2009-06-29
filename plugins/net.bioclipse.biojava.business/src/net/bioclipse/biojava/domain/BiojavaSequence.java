@@ -44,27 +44,28 @@ public class BiojavaSequence extends BioObject implements ISequence {
     }
 
     @Recorded
-    public String getPlainSequence() throws IOException {
-        String fastaString=toFasta();
-        String plainString=StringUtils.removeUntilFirstNewline(fastaString);
-        return plainString;
+    public String getPlainSequence() {
+        return StringUtils.removeUntilFirstNewline(toFasta());
     }
 
     /**
      * Convert RichSequence to FASTA and return as String
      * @throws IOException 
      */
-    public String toFasta() throws IOException {
+    public String toFasta() {
 
-        ByteArrayOutputStream os=new ByteArrayOutputStream();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         Namespace ns = RichObjectFactory.getDefaultNamespace();   
-        RichSequence.IOTools.writeFasta(os,richSequence,ns);
-        os.close();
+        try {
+            RichSequence.IOTools.writeFasta(os,richSequence,ns);
+            // XXX: Check if we really need the following line.
+            os.close();
+        } catch (IOException e) {
+            throw new IllegalStateException("Illegal BiojavaSequence", e);
+        }
 
-        byte[] byteStream = os.toByteArray();
-
-        return new String(byteStream);
+        return os.toByteArray().toString();
     }
 
     /**
