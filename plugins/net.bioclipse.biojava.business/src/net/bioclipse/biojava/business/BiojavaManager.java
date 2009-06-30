@@ -15,6 +15,7 @@ package net.bioclipse.biojava.business;
 
 import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.domain.IRNA;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.seq.DNATools;
@@ -66,6 +67,9 @@ public class BiojavaManager implements IBiojavaManager {
 
     }
 
+    public IRNA RNAfromString(String rnaString) {
+        return null;
+    }
 
     public String getManagerName() {
         return "biojava";

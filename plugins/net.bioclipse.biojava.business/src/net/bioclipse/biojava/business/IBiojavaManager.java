@@ -15,6 +15,7 @@ package net.bioclipse.biojava.business;
 
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.domain.IRNA;
 import net.bioclipse.managers.business.IBioclipseManager;
 
 /**
@@ -39,9 +40,18 @@ public interface IBiojavaManager extends IBioclipseManager {
     /**
      * Returns a new <code>BiojavaDNA</code> sequence from the given
      * <code>String</code>.
-     * 
+     *
      * @param dnaString A DNA sequence to be converted.
      * @return A new <code>BiojavaDNA</code>.
      */
     public IDNA DNAfromString(String dnaString);
+
+    /**
+     * Returns a new <code>BiojavaRNA</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param rnaString An RNA sequence to be converted.
+     * @return A new <code>BiojavaRNA</code>.
+     */
+    public IRNA RNAfromString(String rnaString);
 }
