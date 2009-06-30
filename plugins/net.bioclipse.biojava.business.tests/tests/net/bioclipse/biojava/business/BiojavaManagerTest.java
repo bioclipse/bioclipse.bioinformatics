@@ -13,8 +13,10 @@ package net.bioclipse.biojava.business;
 
 import static org.junit.Assert.assertEquals;
 import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 
 import org.apache.log4j.Logger;
@@ -44,5 +46,16 @@ public class BiojavaManagerTest {
         IRNA seq = biojava.RNAfromString(rnaString);
         assertEquals(BiojavaRNA.class, seq.getClass());
         assertEquals(rnaString.toLowerCase(), seq.getPlainSequence());
+    }
+
+    @Test
+    public void createProtein() {
+        String proteinString // the hemoglobin beta chain, incidentally2
+            = "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFE"
+              + "SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPE"
+              + "NFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH";
+        IProtein seq = biojava.ProteinFromString(proteinString);
+        assertEquals(BiojavaProtein.class, seq.getClass());
+        assertEquals(proteinString.toLowerCase(), seq.getPlainSequence());
     }
 }

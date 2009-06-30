@@ -16,6 +16,7 @@ package net.bioclipse.biojava.business;
 import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 
 import org.apache.log4j.Logger;
@@ -79,6 +80,10 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
+    public IProtein ProteinFromString(String proteinString) {
+        return null;
+    }
+    
     public String getManagerName() {
         return "biojava";
     }
