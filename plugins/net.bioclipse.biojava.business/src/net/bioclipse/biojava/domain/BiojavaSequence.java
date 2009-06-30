@@ -19,6 +19,7 @@ import net.bioclipse.core.Recorded;
 import net.bioclipse.core.domain.BioObject;
 import net.bioclipse.core.domain.ISequence;
 
+import org.biojava.bio.seq.Sequence;
 import org.biojavax.Namespace;
 import org.biojavax.RichObjectFactory;
 import org.biojavax.bio.seq.RichSequence;
@@ -29,15 +30,15 @@ import org.biojavax.bio.seq.RichSequence;
  */
 public class BiojavaSequence extends BioObject implements ISequence {
 
-    private RichSequence richSequence;
+    private Sequence sequence;
 
     /**
      * Create a BiojavaSequence from a RichSequence
      * @param richSequence
      */
-    public BiojavaSequence(RichSequence richSequence) {
+    public BiojavaSequence(Sequence sequence) {
         super();
-        this.richSequence = richSequence;
+        this.sequence = sequence;
     }
     
     public BiojavaSequence() {
@@ -45,7 +46,7 @@ public class BiojavaSequence extends BioObject implements ISequence {
 
     @Recorded
     public String getPlainSequence() {
-        return StringUtils.removeUntilFirstNewline(toFasta());
+        return sequence.seqString();
     }
 
     /**
@@ -58,7 +59,7 @@ public class BiojavaSequence extends BioObject implements ISequence {
 
         Namespace ns = RichObjectFactory.getDefaultNamespace();   
         try {
-            RichSequence.IOTools.writeFasta(os,richSequence,ns);
+            RichSequence.IOTools.writeFasta(os,sequence,ns);
             // XXX: Check if we really need the following line.
             os.close();
         } catch (IOException e) {
@@ -72,20 +73,16 @@ public class BiojavaSequence extends BioObject implements ISequence {
      * Returns the RichSequence
      */
     public Object getParsedResource() {
-        return richSequence;
-    }
-
-    public RichSequence getRichSequence() {
-        return richSequence;
+        return sequence;
     }
 
     public void setRichSequence(RichSequence richSequence) {
-        this.richSequence = richSequence;
+        this.sequence = richSequence;
     }
 
     public String getName() {
-        return richSequence != null ? richSequence.getName()
-                                    : "";
+        return sequence != null ? sequence.getName()
+                                : "";
     }
 
     @SuppressWarnings("unchecked")

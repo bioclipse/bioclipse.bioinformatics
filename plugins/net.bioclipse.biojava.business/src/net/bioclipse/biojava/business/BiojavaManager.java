@@ -13,9 +13,12 @@
 
 package net.bioclipse.biojava.business;
 
+import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.core.domain.IDNA;
 
 import org.apache.log4j.Logger;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.IllegalSymbolException;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
  * @author ola
@@ -52,7 +55,15 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IDNA DNAfromString(String dnaString) {
-        return null;
+        try {
+            return new BiojavaDNA(DNATools.createDNASequence(
+                    dnaString,
+                    "seq" + System.currentTimeMillis()
+            ));
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
+
     }
 
 

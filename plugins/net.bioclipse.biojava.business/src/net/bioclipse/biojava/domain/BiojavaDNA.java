@@ -12,15 +12,15 @@
  ******************************************************************************/
 package net.bioclipse.biojava.domain;
 
-import org.biojavax.bio.seq.RichSequence;
+import org.biojava.bio.seq.Sequence;
 
 import net.bioclipse.core.domain.IDNA;
 
 public class BiojavaDNA extends BiojavaSequence 
                         implements IDNA {
 
-    public BiojavaDNA(RichSequence richSequence) {
-        super(richSequence);
+    public BiojavaDNA(Sequence seq) {
+        super(seq);
     }
 
     public BiojavaDNA() {

@@ -6,8 +6,7 @@
  * www.eclipse.org—epl-v10.html <http://www.eclipse.org/legal/epl-v10.html>
  *
  * Contributors:
- *     Jonathan Alvarsson
- *     Ola Spjuth
+ *     Carl Masak
  *
  ******************************************************************************/
 package net.bioclipse.biojava.business;
@@ -27,13 +26,13 @@ public class BiojavaManagerTest {
 
     private Logger logger = Logger.getLogger(BiojavaManagerTest.class);
 
-    private IBiojavaManager biojava;
+    private IBiojavaManager biojava = new BiojavaManager();
 
     @Test
     public void createDNA() {
         String dnaString = "CGTAGTCGTAGT";
         IDNA seq = biojava.DNAfromString(dnaString);
         assertEquals(BiojavaDNA.class, seq.getClass());
-        assertEquals(dnaString, seq.getPlainSequence());
+        assertEquals(dnaString.toLowerCase(), seq.getPlainSequence());
     }
 }
