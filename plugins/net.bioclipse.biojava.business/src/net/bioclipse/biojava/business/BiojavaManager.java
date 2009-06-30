@@ -14,11 +14,13 @@
 package net.bioclipse.biojava.business;
 
 import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IRNA;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.seq.RNATools;
 import org.biojava.bio.symbol.IllegalSymbolException;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
@@ -64,11 +66,17 @@ public class BiojavaManager implements IBiojavaManager {
         } catch (IllegalSymbolException e) {
             throw new IllegalArgumentException(e);
         }
-
     }
 
     public IRNA RNAfromString(String rnaString) {
-        return null;
+        try {
+            return new BiojavaRNA(RNATools.createRNASequence(
+                    rnaString,
+                    "seq" + System.currentTimeMillis()
+            ));
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public String getManagerName() {

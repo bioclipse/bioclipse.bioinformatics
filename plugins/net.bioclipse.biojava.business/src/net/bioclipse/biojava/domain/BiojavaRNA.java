@@ -12,15 +12,15 @@
  ******************************************************************************/
 package net.bioclipse.biojava.domain;
 
-import org.biojavax.bio.seq.RichSequence;
+import org.biojava.bio.seq.Sequence;
 
 import net.bioclipse.core.domain.IRNA;
 
 public class BiojavaRNA extends BiojavaSequence 
                                 implements IRNA {
 
-    public BiojavaRNA(RichSequence richSequence) {
-        super(richSequence);
+    public BiojavaRNA(Sequence seq) {
+        super(seq);
     }
 
     public BiojavaRNA() {
