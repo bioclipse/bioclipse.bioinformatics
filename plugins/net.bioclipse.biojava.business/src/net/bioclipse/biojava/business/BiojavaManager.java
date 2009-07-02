@@ -15,12 +15,14 @@ package net.bioclipse.biojava.business;
 
 import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.biojava.domain.BiojavaRNA;
+import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
 import org.biojava.bio.symbol.IllegalSymbolException;
 /**
@@ -81,7 +83,14 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IProtein ProteinFromString(String proteinString) {
-        return null;
+        try {
+            return new BiojavaProtein(ProteinTools.createProteinSequence(
+                    proteinString,
+                    "seq" + System.currentTimeMillis()
+            ));
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
     
     public String getManagerName() {

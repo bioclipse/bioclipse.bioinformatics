@@ -14,13 +14,13 @@ package net.bioclipse.biojava.domain;
 
 import net.bioclipse.core.domain.IProtein;
 
-import org.biojavax.bio.seq.RichSequence;
+import org.biojava.bio.seq.Sequence;
 
 public class BiojavaProtein extends BiojavaSequence 
                             implements IProtein {
 
-    public BiojavaProtein(RichSequence richSequence) {
-        super(richSequence);
+    public BiojavaProtein(Sequence sequence) {
+        super(sequence);
     }
 
     public BiojavaProtein() {
