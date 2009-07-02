@@ -50,12 +50,12 @@ public class BiojavaManagerTest {
 
     @Test
     public void createProtein() {
-        String proteinString // the hemoglobin beta chain, incidentally2
+        String proteinString // the hemoglobin beta2 chain, incidentally
             = "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFE"
               + "SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPE"
               + "NFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH";
         IProtein seq = biojava.ProteinFromString(proteinString);
         assertEquals(BiojavaProtein.class, seq.getClass());
-        assertEquals(proteinString.toLowerCase(), seq.getPlainSequence());
+        assertEquals(proteinString, seq.getPlainSequence());
     }
 }
