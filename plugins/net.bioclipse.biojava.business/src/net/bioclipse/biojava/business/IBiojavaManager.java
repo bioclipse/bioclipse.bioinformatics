@@ -14,6 +14,7 @@
 package net.bioclipse.biojava.business;
 
 import net.bioclipse.core.PublishedClass;
+import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
@@ -45,6 +46,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dnaString A DNA sequence to be converted.
      * @return A new <code>BiojavaDNA</code>.
      */
+    @PublishedMethod(methodSummary="Returns a new BiojavaDNA sequence from "
+                                   + "the given String.")
     public IDNA DNAfromString(String dnaString);
 
     /**
@@ -54,6 +57,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rnaString An RNA sequence to be converted.
      * @return A new <code>BiojavaRNA</code>.
      */
+    @PublishedMethod(methodSummary="Returns a new BiojavaRNA sequence from "
+                                   + "the given String.")
     public IRNA RNAfromString(String rnaString);
 
     /**
@@ -63,5 +68,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param proteinString An amino acid sequence to be converted.
      * @return A new <code>BiojavaProtein</code>.
      */
+    @PublishedMethod(methodSummary="Returns a new BiojavaProtein sequence from "
+                                   + "the given String.")
     public IProtein ProteinFromString(String proteinString);
 }
