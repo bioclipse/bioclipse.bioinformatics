@@ -91,7 +91,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dna the sequence to be converted
      * @return the result of the conversion
      */
-    public IRNA DNAtoProtein(IDNA dna);
+    public IProtein DNAtoProtein(IDNA dna);
 
     /**
      * Returns the <code>IDNA</code> sequence equivalent of the given
@@ -101,7 +101,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rna the sequence to be converted
      * @return the result of the conversion
      */
-    public IRNA RNAtoDNA(IRNA rna);
+    public IDNA RNAtoDNA(IRNA rna);
 
     /**
      * Returns the <code>IProtein</code> sequence equivalent of the given
@@ -111,7 +111,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rna the sequence to be converted
      * @return the result of the conversion
      */
-    public IRNA RNAtoProtein(IRNA rna);
+    public IProtein RNAtoProtein(IRNA rna);
 
     /**
      * Returns the <code>IDNA</code> sequence equivalent of the given
@@ -126,7 +126,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param protein the sequence to be converted
      * @return the result of the conversion
      */
-    public IRNA ProteinToDNA(IProtein protein);
+    public IDNA ProteinToDNA(IProtein protein);
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given

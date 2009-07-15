@@ -94,8 +94,19 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IRNA DNAtoProtein(IDNA dna) {
-        return null;
+    public IProtein DNAtoProtein(IDNA dna) {
+        String plainSequence = dna.getPlainSequence();
+        try {
+            return proteinFromString(
+                    DNATools.toProtein(
+                            DNATools.createDNASequence(plainSequence, "")
+                    ).seqString()
+                   );
+        } catch (IllegalAlphabetException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public IRNA DNAtoRNA(IDNA dna) {
@@ -113,7 +124,7 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IRNA ProteinToDNA(IProtein protein) {
+    public IDNA ProteinToDNA(IProtein protein) {
         return null;
     }
 
@@ -121,11 +132,11 @@ public class BiojavaManager implements IBiojavaManager {
         return null;
     }
 
-    public IRNA RNAtoDNA(IRNA rna) {
+    public IDNA RNAtoDNA(IRNA rna) {
         return null;
     }
 
-    public IRNA RNAtoProtein(IRNA rna) {
+    public IProtein RNAtoProtein(IRNA rna) {
         return null;
     }
 

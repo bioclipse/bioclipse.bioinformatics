@@ -76,7 +76,7 @@ public class BiojavaManagerTest {
     @Test
     public void DNAtoProtein() {
         IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
-        IRNA protein = biojava.DNAtoProtein(dna);
+        IProtein protein = biojava.DNAtoProtein(dna);
         assertEquals(BiojavaProtein.class, protein.getClass());
         assertEquals("RSRS", protein.getPlainSequence());
     }
