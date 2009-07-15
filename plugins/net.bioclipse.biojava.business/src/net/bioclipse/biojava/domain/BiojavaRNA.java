@@ -24,6 +24,9 @@ public class BiojavaRNA extends BiojavaSequence
     }
 
     public BiojavaRNA() {
-        
+    }
+
+    public String toString() {
+        return "rna:'" + sequence.seqString() + "'";
     }
 }

@@ -30,7 +30,7 @@ import org.biojavax.bio.seq.RichSequence;
  */
 public class BiojavaSequence extends BioObject implements ISequence {
 
-    private Sequence sequence;
+    Sequence sequence;
 
     /**
      * Create a BiojavaSequence from a RichSequence
