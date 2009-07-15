@@ -64,4 +64,12 @@ public class BiojavaManagerTest {
         assertEquals("protein:'" + proteinString + "'",
                      seq.toString());
     }
+
+    @Test
+    public void DNAtoRNA() {
+        IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
+        IRNA rna = biojava.DNAtoRNA(dna);
+        assertEquals(BiojavaRNA.class, rna.getClass());
+        assertEquals("CGUAGUCGUAGU", rna.getPlainSequence());
+    }
 }

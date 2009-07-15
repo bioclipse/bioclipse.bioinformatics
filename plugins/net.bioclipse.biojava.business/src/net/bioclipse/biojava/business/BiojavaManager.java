@@ -92,7 +92,31 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e);
         }
     }
-    
+
+    public IRNA DNAtoProtein(IDNA dna) {
+        return null;
+    }
+
+    public IRNA DNAtoRNA(IDNA dna) {
+        return null;
+    }
+
+    public IRNA ProteinToDNA(IProtein protein) {
+        return null;
+    }
+
+    public IRNA ProteinToRNA(IProtein protein) {
+        return null;
+    }
+
+    public IRNA RNAtoDNA(IRNA rna) {
+        return null;
+    }
+
+    public IRNA RNAtoProtein(IRNA rna) {
+        return null;
+    }
+
     public String getManagerName() {
         return "biojava";
     }

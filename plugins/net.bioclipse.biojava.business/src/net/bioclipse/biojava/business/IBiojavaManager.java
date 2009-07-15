@@ -71,4 +71,74 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(methodSummary="Returns a new BiojavaProtein sequence from "
                                    + "the given String.")
     public IProtein ProteinFromString(String proteinString);
+
+    /**
+     * Returns the <code>IRNA</code> sequence equivalent of the given
+     * <code>IDNA</code> sequence. The conversion process is called
+     * <em>transcription</em>.
+     *
+     * @param dna the sequence to be converted
+     * @return the result of the conversion
+     */
+    public IRNA DNAtoRNA(IDNA dna);
+
+    /**
+     * Returns the <code>IProtein</code> sequence equivalent of the given
+     * <code>IDNA</code> sequence. The conversion processes involved are
+     * <em>transcription</em> followed by <em>translation</em>. The standard
+     * genetic code is used.
+     *
+     * @param dna the sequence to be converted
+     * @return the result of the conversion
+     */
+    public IRNA DNAtoProtein(IDNA dna);
+
+    /**
+     * Returns the <code>IDNA</code> sequence equivalent of the given
+     * <code>IRNA</code> sequence. The conversion process is called
+     * <em>reverse transcription</em>.
+     *
+     * @param rna the sequence to be converted
+     * @return the result of the conversion
+     */
+    public IRNA RNAtoDNA(IRNA rna);
+
+    /**
+     * Returns the <code>IProtein</code> sequence equivalent of the given
+     * <code>IRNA</code> sequence. The conversion process is called
+     * <em>translation</em>. The standard genetic code is used.
+     *
+     * @param rna the sequence to be converted
+     * @return the result of the conversion
+     */
+    public IRNA RNAtoProtein(IRNA rna);
+
+    /**
+     * Returns the <code>IDNA</code> sequence equivalent of the given
+     * <code>IProtein</code> sequence. The conversion processes involved are
+     * <em>reverse translation</em> and <em>reverse transcription</em>. The
+     * standard genetic code is used.
+     *
+     * Because the genetic code is redundant, no guarantee can be made about
+     * round-tripping an <code>IDNA</code> sequence to <code>IProtein</code>
+     * and back.
+     *
+     * @param protein the sequence to be converted
+     * @return the result of the conversion
+     */
+    public IRNA ProteinToDNA(IProtein protein);
+
+    /**
+     * Returns the <code>IRNA</code> sequence equivalent of the given
+     * <code>IProtein</code> sequence. The conversion process is called
+     * <em>reverse translation</em>. The standard genetic code is used.
+     *
+     * Because the genetic code is redundant, no guarantee can be made about
+     * round-tripping an <code>IRNA</code> sequence to <code>IProtein</code>
+     * and back.
+     *
+     * @param protein the sequence to be converted
+     * @return the result of the conversion
+     */
+    public IRNA ProteinToRNA(IProtein protein);
 }
