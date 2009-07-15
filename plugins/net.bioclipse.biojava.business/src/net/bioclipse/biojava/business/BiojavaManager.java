@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
+import org.biojava.bio.symbol.IllegalAlphabetException;
 import org.biojava.bio.symbol.IllegalSymbolException;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
@@ -98,7 +99,18 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IRNA DNAtoRNA(IDNA dna) {
-        return null;
+        String plainSequence = dna.getPlainSequence();
+        try {
+            return RNAfromString(
+                    DNATools.toRNA(
+                            DNATools.createDNASequence(plainSequence, "")
+                    ).seqString()
+                   );
+        } catch (IllegalAlphabetException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public IRNA ProteinToDNA(IProtein protein) {
