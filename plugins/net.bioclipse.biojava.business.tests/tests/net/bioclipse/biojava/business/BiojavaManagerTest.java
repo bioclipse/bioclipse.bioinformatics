@@ -80,4 +80,12 @@ public class BiojavaManagerTest {
         assertEquals(BiojavaProtein.class, protein.getClass());
         assertEquals("RSRS", protein.getPlainSequence());
     }
+
+    @Test
+    public void RNAtoProtein() {
+        IRNA rna = biojava.RNAfromString("UUUACGUGACCC");
+        IProtein protein = biojava.RNAtoProtein(rna);
+        assertEquals(BiojavaProtein.class, protein.getClass());
+        assertEquals("FT-P", protein.getPlainSequence());
+    }
 }
