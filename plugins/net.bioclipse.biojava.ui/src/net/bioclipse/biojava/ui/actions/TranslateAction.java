@@ -113,13 +113,9 @@ public abstract class TranslateAction extends ActionDelegate{
             if (convertedSeq==null) throw new IllegalArgumentException();
 
             String ret;
-            try {
-                ret = "Original sequence: " + originalSeq.getPlainSequence();
-                ret = ret + "\nConverted sequence: " + convertedSeq.getPlainSequence();
-                showMessage(ret);
-            } catch (IOException e) {
-                showMessage(e.getMessage());
-            }
+            ret = "Original sequence: " + originalSeq.getPlainSequence();
+            ret = ret + "\nConverted sequence: " + convertedSeq.getPlainSequence();
+            showMessage(ret);
 
             return;
         }

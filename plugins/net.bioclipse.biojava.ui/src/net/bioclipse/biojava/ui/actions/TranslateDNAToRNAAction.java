@@ -34,7 +34,7 @@ public class TranslateDNAToRNAAction extends TranslateAction{
         if (dnaSequence instanceof BiojavaDNA) {
             bjDNASeq = (BiojavaDNA) dnaSequence;
         }else {
-            ISequence crSeq=getBiojava().createSequence(dnaSequence.getPlainSequence());
+            ISequence crSeq=getBiojava().DNAfromString(dnaSequence.getPlainSequence());
             if (crSeq instanceof BiojavaDNA) {
                 bjDNASeq = (BiojavaDNA) crSeq;
             }else {
