@@ -82,7 +82,7 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IProtein ProteinFromString(String proteinString) {
+    public IProtein proteinFromString(String proteinString) {
         try {
             return new BiojavaProtein(ProteinTools.createProteinSequence(
                     proteinString,

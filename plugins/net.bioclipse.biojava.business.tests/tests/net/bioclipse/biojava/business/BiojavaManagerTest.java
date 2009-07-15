@@ -58,7 +58,7 @@ public class BiojavaManagerTest {
             = "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFE"
               + "SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPE"
               + "NFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH";
-        IProtein seq = biojava.ProteinFromString(proteinString);
+        IProtein seq = biojava.proteinFromString(proteinString);
         assertEquals(BiojavaProtein.class, seq.getClass());
         assertEquals(proteinString, seq.getPlainSequence());
         assertEquals("protein:'" + proteinString + "'",

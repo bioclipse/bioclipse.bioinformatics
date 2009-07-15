@@ -70,7 +70,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      */
     @PublishedMethod(methodSummary="Returns a new BiojavaProtein sequence from "
                                    + "the given String.")
-    public IProtein ProteinFromString(String proteinString);
+    public IProtein proteinFromString(String proteinString);
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given
