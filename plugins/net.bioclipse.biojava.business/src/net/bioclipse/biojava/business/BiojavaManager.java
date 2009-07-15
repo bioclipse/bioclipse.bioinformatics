@@ -137,7 +137,18 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IProtein RNAtoProtein(IRNA rna) {
-        return null;
+        String plainSequence = rna.getPlainSequence();
+        try {
+            return proteinFromString(
+                    RNATools.translate(
+                            RNATools.createRNASequence(plainSequence, "")
+                    ).seqString()
+                   );
+        } catch (IllegalAlphabetException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public String getManagerName() {

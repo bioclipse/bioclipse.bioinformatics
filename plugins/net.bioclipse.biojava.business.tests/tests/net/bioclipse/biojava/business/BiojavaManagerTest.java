@@ -86,6 +86,6 @@ public class BiojavaManagerTest {
         IRNA rna = biojava.RNAfromString("UUUACGUGACCC");
         IProtein protein = biojava.RNAtoProtein(rna);
         assertEquals(BiojavaProtein.class, protein.getClass());
-        assertEquals("FT-P", protein.getPlainSequence());
+        assertEquals("FT*P", protein.getPlainSequence());
     }
 }
