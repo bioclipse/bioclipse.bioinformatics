@@ -13,19 +13,31 @@
 
 package net.bioclipse.biojava.business;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import net.bioclipse.biojava.domain.BiojavaDNA;
-import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.biojava.domain.BiojavaProtein;
+import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 
 import org.apache.log4j.Logger;
+import org.biojava.bio.BioException;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
+import org.biojava.bio.seq.SequenceIterator;
 import org.biojava.bio.symbol.IllegalAlphabetException;
 import org.biojava.bio.symbol.IllegalSymbolException;
+import org.biojavax.bio.seq.RichSequence.IOTools;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
  * @author ola
@@ -153,5 +165,33 @@ public class BiojavaManager implements IBiojavaManager {
 
     public String getManagerName() {
         return "biojava";
+    }
+
+    public List<IProtein> proteinsFromFile(IFile file)
+        throws FileNotFoundException {
+
+        BufferedReader br;
+        try {
+            // Create a BufferedInputStream for our IFile.
+            br = new BufferedReader(new InputStreamReader(file.getContents()));
+        } catch ( CoreException ce ) {
+            // FileNotFoundException doesn't seem to accept nested exceptions.
+            throw new FileNotFoundException(ce.toString());
+        }
+
+        SequenceIterator iter = IOTools.readFastaProtein( br, null );
+        List<IProtein> proteins = new ArrayList<IProtein>();
+        try {
+            while ( iter.hasNext() )
+                proteins.add(proteinFromString(
+                    iter.nextSequence().seqString())
+                );
+        } catch (NoSuchElementException e) {
+            // Will not happen, because we do hasNext before each nextSequence
+        } catch (BioException e) {
+            throw new IllegalStateException(e);
+        }
+
+        return proteins;
     }
 }

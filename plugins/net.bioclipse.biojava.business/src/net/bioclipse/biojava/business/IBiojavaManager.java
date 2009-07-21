@@ -13,6 +13,11 @@
 
 package net.bioclipse.biojava.business;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.domain.IDNA;
@@ -153,4 +158,9 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(methodSummary="Returns the RNA sequence equivalent of the "
                                    + "given protein sequence.")
     public IRNA ProteinToRNA(IProtein protein);
+
+    @PublishedMethod(methodSummary="Returns an array of proteins read from the "
+                                   + "given gile.")
+    public List<IProtein> proteinsFromFile(IFile file)
+        throws FileNotFoundException;
 }
