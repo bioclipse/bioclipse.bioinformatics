@@ -178,11 +178,16 @@ public interface IBiojavaManager extends IBioclipseManager {
         params = "IProtein protein" )
     public IRNA ProteinToRNA(IProtein protein);
 
-    @PublishedMethod(methodSummary="Returns an array of proteins read from the "
-                                   + "given gile.")
-    public List<IProtein> proteinsFromFile(IFile file)
-        throws FileNotFoundException;
+    @PublishedMethod(
+        methodSummary = "Returns an array of proteins read from the given " +
+        		        "file.", 
+        params = "String path" )
+    public List<IProtein> proteinsFromFile(String path)
+                          throws FileNotFoundException;
 
+    public List<IProtein> proteinsFromFile(IFile file)
+                          throws FileNotFoundException;
+    
     /**
      * @param string
      * @return

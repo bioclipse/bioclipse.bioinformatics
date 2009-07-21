@@ -215,4 +215,9 @@ public class BiojavaManager implements IBiojavaManager {
         // TODO Auto-generated method stub, implement me
         return null;
     }
+
+    public List<IProtein> proteinsFromFile( String path ) throws FileNotFoundException {
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
 }
