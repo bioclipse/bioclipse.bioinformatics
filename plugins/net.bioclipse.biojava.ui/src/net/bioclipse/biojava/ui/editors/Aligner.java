@@ -279,19 +279,19 @@ public class Aligner extends EditorPart {
 
     @Override
     public void createPartControl( Composite parent ) {
-        
+
         this.parent = parent;
-        
+
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         layout.horizontalSpacing = 0;
         layout.verticalSpacing = 0;
         parent.setLayout( layout );
-        
+
         final Canvas nameCanvas = new Canvas( parent, SWT.NONE );
         data = new GridData(GridData.FILL_VERTICAL);
         nameCanvas.setLayoutData( data );
-        
+
         nameCanvas.addPaintListener( new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
@@ -317,21 +317,21 @@ public class Aligner extends EditorPart {
                 }
             }
         });
-        
+
         final ScrolledComposite sc
             = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
         GridData sc_data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING
                                         | GridData.FILL_BOTH);
         sc.setLayoutData( sc_data );
-        
+
         c = new Composite(sc, SWT.NONE);
         c.setLayout( new FillLayout() );
-        
+
         final Canvas sequenceCanvas = new Canvas( c, SWT.NONE );
         sequenceCanvas.setLocation( 0, 0 );
         setCanvasSizes();
         sc.setContent( c );
-        
+
         final char fasta[][] = new char[ sequences.size() ][];
 
         {
@@ -339,7 +339,7 @@ public class Aligner extends EditorPart {
             for ( String sequence : sequences.values() )
                 fasta[i++] = sequence.toCharArray();
         }
-        
+
         sequenceCanvas.addPaintListener( new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
@@ -358,7 +358,7 @@ public class Aligner extends EditorPart {
                         = firstVisibleColumn
                           + sc.getBounds().width / squareSize
                           + 2; // compensate for 2 possible round-downs
-                
+
                 drawSequences(fasta, firstVisibleColumn, lastVisibleColumn, gc);
                 drawSelection( gc );
                 drawConsensusSequence(
