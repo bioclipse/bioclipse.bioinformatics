@@ -80,6 +80,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dna the sequence to be converted
      * @return the result of the conversion
      */
+    @PublishedMethod(methodSummary="Returns the RNA sequence equivalent of the "
+                                   + "given DNA sequence.")
     public IRNA DNAtoRNA(IDNA dna);
 
     /**
@@ -91,6 +93,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dna the sequence to be converted
      * @return the result of the conversion
      */
+    @PublishedMethod(methodSummary="Returns the protein sequence equivalent of "
+                     + "the given DNA sequence.")
     public IProtein DNAtoProtein(IDNA dna);
 
     /**
@@ -101,6 +105,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rna the sequence to be converted
      * @return the result of the conversion
      */
+    @PublishedMethod(methodSummary="Returns the DNA sequence equivalent of the "
+                                   + "given RNA sequence.")
     public IDNA RNAtoDNA(IRNA rna);
 
     /**
@@ -111,6 +117,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rna the sequence to be converted
      * @return the result of the conversion
      */
+    @PublishedMethod(methodSummary="Returns the protein sequence equivalent of "
+                                   + "the given RNA sequence.")
     public IProtein RNAtoProtein(IRNA rna);
 
     /**
@@ -126,6 +134,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param protein the sequence to be converted
      * @return the result of the conversion
      */
+    @PublishedMethod(methodSummary="Returns the DNA sequence equivalent of the "
+                                   + "given protein sequence.")
     public IDNA ProteinToDNA(IProtein protein);
 
     /**
@@ -140,5 +150,7 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param protein the sequence to be converted
      * @return the result of the conversion
      */
+    @PublishedMethod(methodSummary="Returns the RNA sequence equivalent of the "
+                                   + "given protein sequence.")
     public IRNA ProteinToRNA(IProtein protein);
 }
