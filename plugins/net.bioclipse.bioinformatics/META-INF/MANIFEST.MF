@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bioclipse Bioinformatics
+Bundle-SymbolicName: net.bioclipse.bioinformatics
+Bundle-Version: 1.0.0
+Bundle-Activator: net.bioclipse.bioinformatics.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
