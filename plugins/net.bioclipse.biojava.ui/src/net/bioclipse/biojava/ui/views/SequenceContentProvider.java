@@ -21,7 +21,6 @@
  ******************************************************************************/
 package net.bioclipse.biojava.ui.views;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.Map;
 
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IBioObject;
 import net.bioclipse.core.domain.ISequence;
 import net.bioclipse.core.util.LogUtils;
@@ -255,14 +253,8 @@ public class SequenceContentProvider implements ITreeContentProvider,
                  modelFile.getFileExtension().toUpperCase() ) ) {
             List<ISequence> model;
             if ( modelFile.exists() ) {
-                try {
-                    model = biojava.sequencesFromFile(
-                            modelFile.getLocation().toOSString());
-                } catch (IOException e) {
-                    return null;
-                } catch (BioclipseException e) {
-                    return null;
-                }
+                model = biojava.sequencesFromFile(
+                        modelFile.getLocation().toOSString());
 
                 if (model == null) return null;
 
