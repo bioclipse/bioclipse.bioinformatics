@@ -256,7 +256,7 @@ public class SequenceContentProvider implements ITreeContentProvider,
             List<ISequence> model;
             if ( modelFile.exists() ) {
                 try {
-                    model = biojava.loadSequences(
+                    model = biojava.sequencesFromFile(
                             modelFile.getLocation().toOSString());
                 } catch (IOException e) {
                     return null;

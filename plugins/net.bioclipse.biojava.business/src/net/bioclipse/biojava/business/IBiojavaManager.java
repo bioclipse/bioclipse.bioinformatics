@@ -13,11 +13,16 @@
 
 package net.bioclipse.biojava.business;
 
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
+
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
+import net.bioclipse.core.domain.ISequence;
 import net.bioclipse.managers.business.IBioclipseManager;
 
 /**
@@ -153,4 +158,14 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(methodSummary="Returns the RNA sequence equivalent of the "
                                    + "given protein sequence.")
     public IRNA ProteinToRNA(IProtein protein);
+
+    /**
+     * @param string
+     * @return
+     */
+    @PublishedMethod( methodSummary = "Loads sequences from file at path",
+                      params = "String path" ) 
+    public List<ISequence> sequencesFromFile( String path );
+    
+    public List<ISequence> sequencesFromFile( IFile file );
 }

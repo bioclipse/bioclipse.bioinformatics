@@ -10,8 +10,20 @@
  *     Ola Spjuth
  *
  ******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2009 Jonathan Alvarsson <jonalv@users.sourceforge.net>
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * <http://www.eclipse.org/legal/epl-v10.html>
+ *
+ * Contact: http://www.bioclipse.net/
+ ******************************************************************************/
 
 package net.bioclipse.biojava.business;
+
+import java.util.List;
 
 import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.biojava.domain.BiojavaRNA;
@@ -19,6 +31,7 @@ import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
+import net.bioclipse.core.domain.ISequence;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.seq.DNATools;
@@ -26,6 +39,7 @@ import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
 import org.biojava.bio.symbol.IllegalAlphabetException;
 import org.biojava.bio.symbol.IllegalSymbolException;
+import org.eclipse.core.resources.IFile;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
  * @author ola
@@ -45,7 +59,6 @@ public class BiojavaManager implements IBiojavaManager {
         "org.biojavax.bio.seq.io.UniProtXMLFormat",
         "org.biojavax.bio.seq.io.RichSequenceFormat"
     };
-
 
     public BiojavaManager() {
         // Introduce the allowed formats
@@ -153,5 +166,16 @@ public class BiojavaManager implements IBiojavaManager {
 
     public String getManagerName() {
         return "biojava";
+    }
+
+    public List<ISequence> sequencesFromFile( String string ) {
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
+
+    public List<ISequence> sequencesFromFile( IFile file ) {
+
+        // TODO Auto-generated method stub, implement me
+        return null;
     }
 }
