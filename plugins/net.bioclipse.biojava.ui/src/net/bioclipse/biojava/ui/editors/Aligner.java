@@ -9,8 +9,7 @@
 
 package net.bioclipse.biojava.ui.editors;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,14 +17,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.bioclipse.biojava.business.Activator;
+import net.bioclipse.biojava.business.IBiojavaManager;
+import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.ui.editors.ColorManager;
 
-import org.biojava.bio.BioException;
-import org.biojava.bio.seq.Sequence;
-import org.biojava.bio.seq.SequenceIterator;
-import org.biojavax.bio.seq.RichSequence.IOTools;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -109,6 +106,8 @@ public class Aligner extends EditorPart {
     private GridData data;
     private Composite parent;
     private Composite c;
+    private IBiojavaManager biojava
+        = Activator.getDefault().getBioJavaManager();
     
     @Override
     public void doSave( IProgressMonitor monitor ) {
@@ -141,36 +140,19 @@ public class Aligner extends EditorPart {
         if (file == null)
             return;
 
-        SequenceIterator iter;
+        List<IProtein> proteins;
         try {
-            // Create a BufferedInputStream for our IFile.
-            BufferedReader br
-                = new BufferedReader(new InputStreamReader(file.getContents()));
-            
-            // Create an iterator from the BufferedInputStream.
-            // We have to generalize this from just proteins to anything.
-            // The 'null' indicates that we don't care about which
-            // namespace the sequence ends up getting.
-            iter = IOTools.readFastaProtein( br, null );
-        } catch ( CoreException ce ) {
-            // File not found. TODO: This should be logged.
-            ce.printStackTrace();
-            return;
+            proteins = biojava.proteinsFromFile(file);
+        } catch (FileNotFoundException e1) {
+            return; // No exception handling at all! We just give up! Gasp!
         }
 
-        try {
-            // Add the sequences one by one to the Map. Do minor cosmetics
-            // on the name by removing everything up to and including to
-            // the last '|', if any.
-            while ( iter.hasNext() ) {
-                Sequence s = iter.nextSequence();
-                String name = s.getName().replaceFirst( ".*\\|", "" );
-                sequences.put( name, s.seqString() );
-            }
-        }
-        catch ( BioException e ) {
-            // There was a parsing error. TODO: This should be logged.
-            e.printStackTrace();
+        // Add the sequences one by one to the Map. Do minor cosmetics
+        // on the name by removing everything up to and including to
+        // the last '|', if any.
+        for (IProtein protein : proteins) {
+            String name = protein.getName().replaceFirst( ".*\\|", "" );
+            sequences.put( name, protein.getPlainSequence() );
         }
 
         // We only show a consensus sequence if there is more than one
@@ -526,10 +508,10 @@ public class Aligner extends EditorPart {
                              + squareSize/2 * (dragEnd.y<dragStart.y?-1:1) // 2
                             ) / squareSize;                                // 3
                     
-                    selectionTopLeftInSquares.x += xDelta;
+                    selectionTopLeftInSquares.x       += xDelta;
                     selectionBottomRightInSquares.x   += xDelta;
 
-                    selectionTopLeftInSquares.y += yDelta;
+                    selectionTopLeftInSquares.y       += yDelta;
                     selectionBottomRightInSquares.y   += yDelta;
                     
                     sequenceCanvas.redraw();
