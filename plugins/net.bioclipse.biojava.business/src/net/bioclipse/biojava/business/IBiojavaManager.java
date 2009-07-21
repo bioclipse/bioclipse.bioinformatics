@@ -51,8 +51,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dnaString A DNA sequence to be converted.
      * @return A new <code>BiojavaDNA</code>.
      */
-    @PublishedMethod(methodSummary="Returns a new BiojavaDNA sequence from "
-                                   + "the given String.")
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaDNA sequence from the given " +
+        		        "String.",
+        params = "String dnaString" )
     public IDNA DNAfromString(String dnaString);
 
     /**
@@ -62,8 +64,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rnaString An RNA sequence to be converted.
      * @return A new <code>BiojavaRNA</code>.
      */
-    @PublishedMethod(methodSummary="Returns a new BiojavaRNA sequence from "
-                                   + "the given String.")
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaRNA sequence from the given " +
+        		        "String.",
+        params = "String rnaString" )
     public IRNA RNAfromString(String rnaString);
 
     /**
@@ -73,8 +77,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param proteinString An amino acid sequence to be converted.
      * @return A new <code>BiojavaProtein</code>.
      */
-    @PublishedMethod(methodSummary="Returns a new BiojavaProtein sequence from "
-                                   + "the given String.")
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaProtein sequence from the given " +
+        		        "String.",
+        params = "String proteinString" )
     public IProtein proteinFromString(String proteinString);
 
     /**
@@ -85,8 +91,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dna the sequence to be converted
      * @return the result of the conversion
      */
-    @PublishedMethod(methodSummary="Returns the RNA sequence equivalent of the "
-                                   + "given DNA sequence.")
+    @PublishedMethod(
+        methodSummary = "Returns the RNA sequence equivalent of the given DNA " +
+        		        "sequence.",
+        params = "IDNA dna" )
     public IRNA DNAtoRNA(IDNA dna);
 
     /**
@@ -98,8 +106,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param dna the sequence to be converted
      * @return the result of the conversion
      */
-    @PublishedMethod(methodSummary="Returns the protein sequence equivalent of "
-                     + "the given DNA sequence.")
+    @PublishedMethod(
+        methodSummary = "Returns the protein sequence equivalent of the " +
+        		        "given DNA sequence.",
+        params = "IDNA dna" )
     public IProtein DNAtoProtein(IDNA dna);
 
     /**
@@ -110,8 +120,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rna the sequence to be converted
      * @return the result of the conversion
      */
-    @PublishedMethod(methodSummary="Returns the DNA sequence equivalent of the "
-                                   + "given RNA sequence.")
+    @PublishedMethod(
+        methodSummary = "Returns the DNA sequence equivalent of the given " +
+        		        "RNA sequence.",
+        params = "IRNA rna" )
     public IDNA RNAtoDNA(IRNA rna);
 
     /**
@@ -122,8 +134,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param rna the sequence to be converted
      * @return the result of the conversion
      */
-    @PublishedMethod(methodSummary="Returns the protein sequence equivalent of "
-                                   + "the given RNA sequence.")
+    @PublishedMethod(
+        methodSummary = "Returns the protein sequence equivalent of the " +
+        		        "given RNA sequence.", 
+        params = "IRNA rna" )
     public IProtein RNAtoProtein(IRNA rna);
 
     /**
@@ -139,8 +153,10 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param protein the sequence to be converted
      * @return the result of the conversion
      */
-    @PublishedMethod(methodSummary="Returns the DNA sequence equivalent of the "
-                                   + "given protein sequence.")
+    @PublishedMethod(
+        methodSummary = "Returns the DNA sequence equivalent of the given " +
+        		        "protein sequence.",
+        params = "IProtein protein" )
     public IDNA ProteinToDNA(IProtein protein);
 
     /**
@@ -155,16 +171,19 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @param protein the sequence to be converted
      * @return the result of the conversion
      */
-    @PublishedMethod(methodSummary="Returns the RNA sequence equivalent of the "
-                                   + "given protein sequence.")
+    @PublishedMethod(
+        methodSummary = "Returns the RNA sequence equivalent of the given " +
+        		        "protein sequence.",
+        params = "IProtein protein" )
     public IRNA ProteinToRNA(IProtein protein);
 
     /**
      * @param string
      * @return
      */
-    @PublishedMethod( methodSummary = "Loads sequences from file at path",
-                      params = "String path" ) 
+    @PublishedMethod( 
+        methodSummary = "Loads sequences from file at path",
+        params = "String path" ) 
     public List<ISequence> sequencesFromFile( String path );
     
     public List<ISequence> sequencesFromFile( IFile file );
