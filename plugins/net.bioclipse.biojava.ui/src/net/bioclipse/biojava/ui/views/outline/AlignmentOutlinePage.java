@@ -1,6 +1,5 @@
 package net.bioclipse.biojava.ui.views.outline;
 
-import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Collection;
@@ -21,15 +20,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -48,9 +44,6 @@ public class AlignmentOutlinePage extends Page
     private final static int MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS = 8;
     private int canvasWidthInSquares, canvasHeightInSquares;
 
-    private IEditorInput    input;
-    private AlignmentEditor editor;
-    
     private Canvas sequenceCanvas;
     
     //          seqname, sequence
@@ -64,8 +57,6 @@ public class AlignmentOutlinePage extends Page
     }
     
     public void setInput( IEditorInput input ) {
-        this.input = input;
-        
         sequences = new LinkedHashMap<String, String>();
 
         // Turn the editor input into an IFile.
@@ -288,6 +279,7 @@ public class AlignmentOutlinePage extends Page
     public void selectionChanged( IWorkbenchPart part, ISelection selection ) {
     }
 
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter ) {
         return null;
     }

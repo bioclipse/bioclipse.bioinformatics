@@ -79,27 +79,6 @@ public abstract class TranslateAction extends ActionDelegate{
                 return;
             }
             ISequence originalSeq = (ISequence) obj;
-/*
-            if (obj instanceof BiojavaSequence) {
-                originalSeq=(BiojavaSequence)obj;
-            }
-            else {//Create a BioJavaAASequence from plainSequence
-
-                String plainSequence=null;
-                try {
-                    plainSequence= originalSeq.getPlainSequence();
-                } catch (IOException e) {
-                    showMessage("Could not get sequence from selection. Reason: " + e.getMessage());
-                    return;
-                }
-
-                originalSeq=getBiojava().createSequence(plainSequence);
-                if (originalSeq==null){
-                    showMessage("This sequence is not a Protein Sequence.");
-                    return;
-                }
-            }
-            */
 
             //Do conversion
             convertedSeq=null;

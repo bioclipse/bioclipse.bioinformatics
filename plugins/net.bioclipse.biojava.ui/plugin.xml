@@ -78,20 +78,7 @@
 
    <extension
          point="org.eclipse.ui.popupMenus">
-      <!--objectContribution
-            adaptable="false"
-            id="net.bioclipse.biojava.ui.actions.SequenceResource"
-            objectClass="net.bioclipse.core.domain.ISequence">
-         <action
-               class="net.bioclipse.biojava.ui.actions.TranslateDNAToRNAAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.TranslateDNAToRNAAction"
-               label="Iseq action"
-               menubarPath="additions"
-               tooltip="Do something with ISequence"/>
-      </objectContribution--> 
-      <objectContribution
+    <objectContribution
             adaptable="false"
             id="net.bioclipse.biojava.ui.actions.DNASequenceResource"
             objectClass="net.bioclipse.core.domain.IDNASequence">
@@ -111,22 +98,6 @@
                label="Translate DNA to Protein"
                menubarPath="additions"
                tooltip="Translate the selected sequence to RNA"/>
-         <!--action
-               class="net.bioclipse.biojava.ui.actions.ComplementDNAAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.ComplementDNAAction"
-               label="Complement DNA"
-               menubarPath="additions"
-               tooltip="Complement the selected sequence"/>
-         <action
-               class="net.bioclipse.biojava.ui.actions.RevComplementDNAAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.RefComplementDNAAction"
-               label="ReverseComplement DNA"
-               menubarPath="additions"
-               tooltip="Reverse complement the selected sequence"/-->
       </objectContribution>
       <objectContribution
             adaptable="false"
