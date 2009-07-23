@@ -15,16 +15,6 @@
 
    <extension
          point="org.eclipse.ui.editors">
-      <!--editor
-            class="net.bioclipse.biojava.ui.editors.SequenceEditor"
-            contributorClass="net.bioclipse.biojava.ui.editors.SequenceEditorContributor"
-            icon="icons/sequence4.gif"
-            id="net.bioclipse.biojava.ui.editors.SequenceEditor"
-            name="Sequence Editor">
-            <contentTypeBinding
-                  contentTypeId="net.bioclipse.biojava.ui.sequenceType">
-            </contentTypeBinding>
-      </editor-->
       <editor
             class="net.bioclipse.biojava.ui.editors.AlignmentEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
