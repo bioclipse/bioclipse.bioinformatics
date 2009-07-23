@@ -19,7 +19,6 @@ import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 
 /**
@@ -27,8 +26,6 @@ import org.junit.Test;
  *
  */
 public class BiojavaManagerTest {
-
-    private Logger logger = Logger.getLogger(BiojavaManagerTest.class);
 
     private IBiojavaManager biojava = new BiojavaManager();
 
