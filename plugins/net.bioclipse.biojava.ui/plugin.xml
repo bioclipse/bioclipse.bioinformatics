@@ -16,7 +16,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="net.bioclipse.biojava.ui.editors.AlignmentEditor"
+            class="net.bioclipse.biojava.ui.editors.SequenceEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="fasta"
             icon="icons/logo/logo_16_trans.gif"

@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.bioclipse.biojava.ui.editors.Aligner;
-import net.bioclipse.biojava.ui.editors.AlignmentEditor;
+import net.bioclipse.biojava.ui.editors.SequenceEditor;
 
 import org.biojava.bio.BioException;
 import org.biojava.bio.seq.Sequence;
@@ -36,7 +36,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-public class AlignmentOutlinePage extends Page
+public class SequenceOutlinePage extends Page
                                   implements IContentOutlinePage,
                                   ISelectionListener, IAdaptable {
 
@@ -50,7 +50,7 @@ public class AlignmentOutlinePage extends Page
     private Map<String,  String> sequences;
     private int consensusRow;
 
-    public AlignmentOutlinePage(IEditorInput input, AlignmentEditor editor) {
+    public SequenceOutlinePage(IEditorInput input, SequenceEditor editor) {
         super();
 
         setInput(input);

@@ -9,7 +9,7 @@
 
 package net.bioclipse.biojava.ui.editors;
 
-import net.bioclipse.biojava.ui.views.outline.AlignmentOutlinePage;
+import net.bioclipse.biojava.ui.views.outline.SequenceOutlinePage;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.PartInitException;
@@ -17,10 +17,10 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-public class AlignmentEditor extends MultiPageEditorPart {
+public class SequenceEditor extends MultiPageEditorPart {
 
     private Aligner aligner;
-    private AlignmentOutlinePage outlinePage;
+    private SequenceOutlinePage outlinePage;
     
     @Override
     protected void createPages() {
@@ -58,7 +58,7 @@ public class AlignmentEditor extends MultiPageEditorPart {
        if (IContentOutlinePage.class.equals(required))
            return outlinePage
                = outlinePage == null
-                   ? new AlignmentOutlinePage(getEditorInput(), this)
+                   ? new SequenceOutlinePage(getEditorInput(), this)
                    : outlinePage;
        
        return super.getAdapter(required);

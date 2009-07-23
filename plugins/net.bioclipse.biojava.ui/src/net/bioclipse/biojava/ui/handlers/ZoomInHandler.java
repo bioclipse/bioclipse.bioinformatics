@@ -1,6 +1,6 @@
 package net.bioclipse.biojava.ui.handlers;
 
-import net.bioclipse.biojava.ui.editors.AlignmentEditor;
+import net.bioclipse.biojava.ui.editors.SequenceEditor;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -16,10 +16,10 @@ public class ZoomInHandler extends AbstractHandler implements IHandler {
 
         IEditorPart editor = HandlerUtil.getActiveEditor( event );
 
-        if (!(editor instanceof AlignmentEditor))
+        if (!(editor instanceof SequenceEditor))
             return null;
 
-        ((AlignmentEditor) editor).zoomIn();
+        ((SequenceEditor) editor).zoomIn();
         
         return null;
     }
