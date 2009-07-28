@@ -37,8 +37,8 @@ import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SequenceOutlinePage extends Page
-                                  implements IContentOutlinePage,
-                                  ISelectionListener, IAdaptable {
+                                 implements IContentOutlinePage,
+                                            ISelectionListener, IAdaptable {
 
     private int squareSize = 8;
     private final static int MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS = 8;
@@ -69,7 +69,7 @@ public class SequenceOutlinePage extends Page
             // Create a BufferedInputStream for our IFile.
             BufferedReader br
                 = new BufferedReader(new InputStreamReader(file.getContents()));
-            
+
             // Create an iterator from the BufferedInputStream.
             // We have to generalize this from just proteins to anything.
             // The 'null' indicates that we don't care about which
@@ -105,11 +105,11 @@ public class SequenceOutlinePage extends Page
                 consensusSequence( sequences.values() )
             );
         }
-        
+
         canvasHeightInSquares = sequences.size();
         canvasWidthInSquares = maxLength( sequences.values() );
     }
-    
+
     private static String consensusSequence( final Collection<String>
                                              sequences ) {
 
@@ -135,13 +135,13 @@ public class SequenceOutlinePage extends Page
         
         Map<Character, Boolean> columnChars
             = new HashMap<Character, Boolean>();
-        
+
         for ( String seq : sequences )
             columnChars.put( seq.length() > index
                                ? seq.charAt(index)
                                : '\0',
                              true );
-        
+
         return columnChars.size() == 1
                ? columnChars.keySet().iterator().next()
                : Character.forDigit( Math.min(columnChars.size(), 9), 10 );
@@ -156,17 +156,11 @@ public class SequenceOutlinePage extends Page
         sb.addSelectionListener( new SelectionListener(){
 
             public void widgetDefaultSelected( SelectionEvent e ) {
-
-                // TODO Auto-generated method stub
-                
             }
 
             public void widgetSelected( SelectionEvent e ) {
-
                 sequenceCanvas.redraw();
-                
             }
-            
         });
         
 
@@ -177,7 +171,7 @@ public class SequenceOutlinePage extends Page
             for ( String sequence : sequences.values() )
                 fasta[i++] = sequence.toCharArray();
         }
-        
+
         sequenceCanvas.addPaintListener( new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
@@ -190,17 +184,11 @@ public class SequenceOutlinePage extends Page
                     gc.setForeground( Aligner.textColor );
                 }
 
-//                int firstVisibleColumn
-//                        = sc.getHorizontalBar().getSelection() / squareSize,
-//                    lastVisibleColumn
-//                        = firstVisibleColumn
-//                          + sc.getBounds().width / squareSize
-//                          + 2; // compensate for 2 possible round-downs
-                
-                int firstVisibleColumn = sequenceCanvas.getHorizontalBar().getSelection(),
+                int firstVisibleColumn
+                        = sequenceCanvas.getHorizontalBar().getSelection(),
                     lastVisibleColumn
                         = sequences.values().iterator().next().length();
-                
+
                 drawSequences(fasta, firstVisibleColumn, lastVisibleColumn, gc);
                 drawConsensusSequence(
                     fasta[canvasHeightInSquares-1],
@@ -213,8 +201,6 @@ public class SequenceOutlinePage extends Page
                 int xCoord = 0;
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
-
-                    
 
                     for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
                         
@@ -230,22 +216,21 @@ public class SequenceOutlinePage extends Page
                           :   "GP".contains( cc ) ? Aligner.smallAAColor
                           :    'C' == c           ? Aligner.cysteineColor
                                                   : Aligner.normalAAColor );
-                        
+
                         int yCoord = row * squareSize;
-                        
+
                         gc.fillRectangle(xCoord, yCoord,
                                          squareSize, squareSize);
-                        
+
                         if ( Character.isUpperCase( c )
                              && squareSize
                                   >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
                             gc.drawText( "" + c, xCoord + 4, yCoord + 2 );
-                        
                     }
                     xCoord += squareSize;
                 }
             }
-            
+
             private void drawConsensusSequence( final char[] sequence,
                                                 int firstVisibleColumn,
                                                 int lastVisibleColumn, GC gc ) {
@@ -257,19 +242,17 @@ public class SequenceOutlinePage extends Page
 
                     char c = sequence.length > column ? sequence[column] : ' ';
                     int consensusDegree = Character.isDigit(c) ? c - '0' : 1;
-                            
+
                     gc.setBackground(
                         Aligner.consensusColors[ consensusDegree-1 ]);
-                        
-                     
-                        
+
                     gc.fillRectangle(xCoord, yCoord, squareSize, squareSize);
-                        
+
                     if ( Character.isUpperCase( c )
                          && squareSize
                               >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
                         gc.drawText( "" + c, xCoord + 4, yCoord + 2 );
-                    
+
                     xCoord += squareSize;
                 }
             }
@@ -286,7 +269,6 @@ public class SequenceOutlinePage extends Page
 
     @Override
     public Control getControl() {
-        
         return sequenceCanvas;
     }
 
@@ -299,13 +281,11 @@ public class SequenceOutlinePage extends Page
     }
 
     public ISelection getSelection() {
-
-        // TODO Auto-generated method stub
         return null;
     }
 
     public void removeSelectionChangedListener(
-        ISelectionChangedListener listener ) {
+            ISelectionChangedListener listener ) {
     }
 
     public void setSelection( ISelection selection ) {
