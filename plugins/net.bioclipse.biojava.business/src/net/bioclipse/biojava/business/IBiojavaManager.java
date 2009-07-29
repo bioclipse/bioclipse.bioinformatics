@@ -82,7 +82,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaProtein sequence from the given " +
                         "String.",
         params = "String proteinString" )
-    public IProtein proteinFromString(String proteinString);
+    public IProtein proteinFromPlainString(String proteinString);
 
     /**
      * Returns a new <code>BiojavaDNA</code> sequence from the given
@@ -121,7 +121,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaProtein sequence from the given " +
                         "String.",
         params = "String proteinString" )
-    public IProtein proteinFromPlainString(String proteinString);
+    public IProtein proteinFromString(String proteinString);
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given
