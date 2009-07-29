@@ -63,6 +63,13 @@ public class BiojavaManagerTest {
     }
 
     @Test
+    public void createFromFASTAstring() {
+        String dnaString = ">test DNA String\nCGTAGTCGTAGT";
+        IDNA seq = biojava.DNAfromString(dnaString);
+        assertEquals("cgtagtcgtagt", seq.getPlainSequence());
+    }
+
+    @Test
     public void DNAtoRNA() {
         IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
         IRNA rna = biojava.DNAtoRNA(dna);

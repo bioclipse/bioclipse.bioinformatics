@@ -7,7 +7,7 @@
  *
  *****************************************************************************/
 
-package net.bioclipse.biojava.domain;
+package net.bioclipse.biojava.business;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +23,7 @@ public class StringUtils {
      * @param content
      * @return
      */
-    public static String removeUntilFirstNewline(String content) {
+    public static String withoutFirstLine(String content) {
 
         Matcher matcher = NEWLINE.matcher(content);
         if ( matcher.find() )
