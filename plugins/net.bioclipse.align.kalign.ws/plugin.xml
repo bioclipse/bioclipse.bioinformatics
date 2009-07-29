@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="net.bioclipse.scripting.contribution">
+      <scriptContribution
+         id="net.bioclipse.align.kalign.ws.business.KalignManager"
+         service="net.bioclipse.align.kalign.ws.business.KalignManagerFactory">
+      </scriptContribution>
+   </extension>
+
+</plugin>

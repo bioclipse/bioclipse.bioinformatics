@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:osgi="http://www.springframework.org/schema/osgi"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                      http://www.springframework.org/schema/beans/spring-beans.xsd
+                      http://www.springframework.org/schema/osgi 
+                      http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+
+  <osgi:reference id="recordingAdvice" 
+                  interface="net.bioclipse.recording.IRecordingAdvice" />
+
+  <osgi:reference id="javaManagerDispatcherAdvisor"
+                  interface="net.bioclipse.managers.business.IJavaManagerDispatcherAdvisor" />
+
+  <osgi:reference id="javaScriptManagerDispatcherAdvisor" 
+                  interface="net.bioclipse.managers.business.IJavaScriptManagerDispatcherAdvisor"/>
+
+  <osgi:reference id="wrapInProxyAdvice"
+                  interface="net.bioclipse.recording.IWrapInProxyAdvice" />  
+  
+  <bean id="recordingAdvisor"
+  		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice"  ref="recordingAdvice" />
+  		<property name="pattern" value=".*" />
+  </bean>
+  
+  <!-- The target that later on will be proxied. Our manager class. -->
+  <bean id="kalignManagerTarget" 
+        class="net.bioclipse.align.kalign.ws.business.KalignManager">
+  </bean>
+  
+  <!--+ 
+      | The proxy puts together the managerTarget, the pointcut advisor
+      | and defines which interfaces to be proxied 
+      +-->
+  <bean id="javaKalignManager"
+  		class="org.springframework.aop.framework.ProxyFactoryBean">
+  	<property name="target" 
+  	          ref="kalignManagerTarget" />
+  	<property name="proxyInterfaces" 
+  	          value="net.bioclipse.align.kalign.ws.business.IKalignJavaManager" />
+  	<property name="interceptorNames">
+        <list>
+	        <value>recordingAdvisor</value>
+	        <value>wrapInProxyAdvice</value>
+	        <value>javaManagerDispatcherAdvisor</value>
+        </list>
+    </property>
+  </bean>
+  
+  <bean id="javaScriptKalignManager"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" 
+              ref="kalignManagerTarget" />
+    <property name="proxyInterfaces" 
+              value="net.bioclipse.align.kalign.ws.business.IKalignJSManager" />
+    <property name="interceptorNames" >
+        <list>
+            <value>recordingAdvisor</value>
+            <value>wrapInProxyAdvice</value>
+            <value>javaScriptManagerDispatcherAdvisor</value>           
+        </list>
+    </property>    
+  </bean>
+
+  <!-- publishes the final manager (the proxy) -->
+  <osgi:service
+    id="javaKalignManagerOSGI" 
+    ref="javaKalignManager"
+    interface="net.bioclipse.align.kalign.ws.business.IKalignManager" />
+  
+  <osgi:service
+    id="javaScriptKalignManagerOSGI"
+    ref="javaScriptKalignManager"
+    interface="net.bioclipse.align.kalign.ws.business.IKalignJSManager" />
+</beans>
