@@ -64,7 +64,7 @@ public class BiojavaManagerTest {
 
     @Test
     public void DNAtoRNA() {
-        IDNA dna = biojava.DNAfromString("cgtagtcgtagt");
+        IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
         IRNA rna = biojava.DNAtoRNA(dna);
         assertEquals(BiojavaRNA.class, rna.getClass());
         assertEquals("cguagucguagu", rna.getPlainSequence());
@@ -72,7 +72,7 @@ public class BiojavaManagerTest {
 
     @Test
     public void DNAtoProtein() {
-        IDNA dna = biojava.DNAfromString("cgtagtcgtagt");
+        IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
         IProtein protein = biojava.DNAtoProtein(dna);
         assertEquals(BiojavaProtein.class, protein.getClass());
         assertEquals("RSRS", protein.getPlainSequence());
@@ -80,17 +80,9 @@ public class BiojavaManagerTest {
 
     @Test
     public void RNAtoProtein() {
-        IRNA rna = biojava.RNAfromString("uuuacgugaccc");
+        IRNA rna = biojava.RNAfromString("UUUACGUGACCC");
         IProtein protein = biojava.RNAtoProtein(rna);
         assertEquals(BiojavaProtein.class, protein.getClass());
         assertEquals("FT*P", protein.getPlainSequence());
-    }
-
-    @Test
-    public void RNAtoDNA() {
-        IRNA rna = biojava.RNAfromString("cguagucguagu");
-        IDNA dna = biojava.RNAtoDNA(rna);
-        assertEquals(BiojavaDNA.class, dna.getClass());
-        assertEquals("cgtagtcgtagt", dna.getPlainSequence());
     }
 }
