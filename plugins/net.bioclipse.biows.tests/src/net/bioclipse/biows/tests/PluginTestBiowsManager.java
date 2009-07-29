@@ -1,6 +1,9 @@
 package net.bioclipse.biows.tests;
 
 import static org.junit.Assert.*;
+
+import java.util.List;
+
 import net.bioclipse.biows.Activator;
 import net.bioclipse.biows.business.IBiowsManager;
 import net.bioclipse.core.business.BioclipseException;
@@ -16,8 +19,8 @@ public class PluginTestBiowsManager {
     public void testQueryEMBL() throws BioclipseException{
         
         IBiowsManager biows = Activator.getDefault().getBiowsManager();
-        IDNA dna=biows.queryEMBL( "J00231" );
-        assertNotNull( dna );
+        List<IDNA> dna=biows.queryEMBL( "J00231" );
+        assertEquals( 1, dna.size());
 
 //        J00231,HSFOS,ROD894,LOP242600
         
@@ -27,8 +30,8 @@ public class PluginTestBiowsManager {
     public void testQueryUniprot() throws BioclipseException{
         
         IBiowsManager biows = Activator.getDefault().getBiowsManager();
-        IProtein protein=biows.queryUniProtKB( "Q9Y2H6" );
-        assertNotNull( protein );
+        List<IProtein> proteins=biows.queryUniProtKB( "Q9Y2H6" );
+        assertEquals( 1, proteins.size());
         
         //Q9Y2H6,O95273,P08246
         

@@ -71,7 +71,7 @@ public class BiowsManager implements IBioclipseManager {
 
         String fasta=download( "refseq", seqid );
 
-        return biojava.DNAsfromString( fasta );
+        return biojava.DNAsFromString( fasta );
 
     }
 

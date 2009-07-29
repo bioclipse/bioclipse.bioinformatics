@@ -10,6 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.biows.business;
 
+import java.util.List;
+
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.Recorded;
@@ -33,7 +35,7 @@ public interface IBiowsManager extends IBioclipseManager {
                      		"database at EBI. " +
                      		"Seqid should be RefSeq ID separated by comma OR space, " +
                      		"e.g. NM_")
-    public IDNA queryRefseq(String seqid) throws BioclipseException;
+    public List<IDNA> queryRefseq(String seqid) throws BioclipseException;
 
     @Recorded
     @PublishedMethod(params="String seqid",
@@ -42,7 +44,7 @@ public interface IBiowsManager extends IBioclipseManager {
                         "database at EBI. " +
                         "Seqid can be either accession number (e.g. M10051) or " +
                         "entry name (e.g. HSINSR). ")
-    public IDNA queryEMBL(String seqid) throws BioclipseException;
+    public List<IDNA> queryEMBL(String seqid) throws BioclipseException;
 
     @Recorded
     @PublishedMethod(params="String seqid",
@@ -52,7 +54,7 @@ public interface IBiowsManager extends IBioclipseManager {
                         "Entries can be retrieved by entry name " +
                         "(e.g. INSR_HUMAN) or by accession number " +
                         "(e.g. P06213). ")
-    public IProtein queryUniProtKB(String seqid) throws BioclipseException;
+    public List<IProtein> queryUniProtKB(String seqid) throws BioclipseException;
 
 
 
