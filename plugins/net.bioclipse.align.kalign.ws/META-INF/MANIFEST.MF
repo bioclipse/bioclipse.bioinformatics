@@ -49,3 +49,5 @@ Import-Package: org.apache.commons.discovery,
  org.apache.log4j.spi,
  org.apache.log4j.varia,
  org.apache.log4j.xml
+Export-Package: net.bioclipse.align.kalign.ws,
+ net.bioclipse.align.kalign.ws.business

@@ -10,11 +10,28 @@
  ******************************************************************************/
 package net.bioclipse.align.kalign.ws.business;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.biojava.bio.program.sax.ClustalWAlignmentSAXParser;
+import org.biojava.bio.program.sax.SequenceAlignmentSAXParser;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.seq.Sequence;
+import org.biojava.bio.symbol.Alignment;
+import org.biojava.bio.symbol.Alphabet;
+import org.biojava.bio.symbol.SimpleAlignment;
+import org.biojavax.bio.seq.RichSequence;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import uk.ac.ebi.www.WSKalign.Data;
 import uk.ac.ebi.www.WSKalign.InputParams;
@@ -22,6 +39,9 @@ import uk.ac.ebi.www.WSKalign.WSFile;
 import uk.ac.ebi.www.WSKalign.WSKalign;
 import uk.ac.ebi.www.WSKalign.WSKalignServiceLocator;
 
+import net.bioclipse.align.kalign.ws.util.SequenceCollectionContentHandler;
+import net.bioclipse.biojava.business.IBiojavaManager;
+import net.bioclipse.biojava.domain.BiojavaSequence;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
@@ -178,6 +198,7 @@ public class KalignManager implements IBioclipseManager {
             logger.debug("\n ** Results ** ");
 
             byte[] payload = null;
+            //We could get several files in theory, this is not handled yet
             for (WSFile file : result){
                 logger.debug("File type: " + file.getType());
                 logger.debug("File extension: " + file.getExt());
@@ -189,20 +210,63 @@ public class KalignManager implements IBioclipseManager {
                 logger.debug("====");
             }
 
+
             monitor.subTask( "Parsing results..." );
-            //Parse in BioJava
-            //TODO: IMPLEMENT
 
+            //Set up a buffered reader for the contents
+            ByteArrayInputStream ins=new ByteArrayInputStream(payload);
+            BufferedReader contents = new BufferedReader(
+                                                    new InputStreamReader(ins));
 
+            if (type.equals( "P" )){
+                parseAlignmentIntoProteins(contents);
+            }
+            else {
+            }
+
+            return null;
+            
 
         } catch ( Exception e ) {
             throw new BioclipseException("Error in KAlign WS: ", e);
-        }finally{
-            monitor.done();
         }
 
-        //TODO: return something
-        return null;
+    }
+
+
+    private void parseAlignmentIntoProteins( BufferedReader contents ) 
+    throws IOException, SAXException, BioclipseException {
+
+        Alphabet alphabet = DNATools.getDNA();
+        Map seqMap = new HashMap();
+
+        SequenceAlignmentSAXParser parser = 
+                                           new SequenceAlignmentSAXParser();
+
+        SequenceCollectionContentHandler handler = 
+                     new SequenceCollectionContentHandler(seqMap, alphabet);
+
+        parser.setContentHandler(handler);
+        parser.parse(new InputSource(contents));
+
+
+        // Finally I create the alignment object using the Map
+        Alignment alignment = new SimpleAlignment(seqMap);
+        
+        
+        for (Object obj : seqMap.keySet()){
+            Object seq = seqMap.get( obj );
+            if ( seq instanceof Sequence ) {
+                Sequence biojavaseq = (Sequence) seq;
+                //FOXME: continue here
+            }
+            else{
+                throw new BioclipseException("Alignment expected a protein but " +
+                		"was instanceof: " + seq);
+            }
+            
+        }
+        
     }
 }
 
