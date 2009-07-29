@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="net.bioclipse.scripting.contribution">
+      <scriptContribution
+         id="net.bioclipse.biows.business.BiowsManager"
+         service="net.bioclipse.biows.business.BiowsManagerFactory">
+      </scriptContribution>
+   </extension>
+
+</plugin>

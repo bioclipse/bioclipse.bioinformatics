@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:osgi="http://www.springframework.org/schema/osgi"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                      http://www.springframework.org/schema/beans/spring-beans.xsd
+                      http://www.springframework.org/schema/osgi 
+                      http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+
+  <osgi:reference id="recordingAdvice" 
+                  interface="net.bioclipse.recording.IRecordingAdvice" />
+
+  <osgi:reference id="javaManagerDispatcherAdvisor"
+                  interface="net.bioclipse.managers.business.IJavaManagerDispatcherAdvisor" />
+
+  <osgi:reference id="javaScriptManagerDispatcherAdvisor" 
+                  interface="net.bioclipse.managers.business.IJavaScriptManagerDispatcherAdvisor"/>
+
+  <osgi:reference id="wrapInProxyAdvice"
+                  interface="net.bioclipse.recording.IWrapInProxyAdvice" />  
+  
+  <bean id="recordingAdvisor"
+  		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice"  ref="recordingAdvice" />
+  		<property name="pattern" value=".*" />
+  </bean>
+  
+  <!-- The target that later on will be proxied. Our manager class. -->
+  <bean id="biowsManagerTarget" 
+        class="net.bioclipse.biows.business.BiowsManager">
+  </bean>
+  
+  <!--+ 
+      | The proxy puts together the managerTarget, the pointcut advisor
+      | and defines which interfaces to be proxied 
+      +-->
+  <bean id="javaBiowsManager"
+  		class="org.springframework.aop.framework.ProxyFactoryBean">
+  	<property name="target" 
+  	          ref="biowsManagerTarget" />
+  	<property name="proxyInterfaces" 
+  	          value="net.bioclipse.biows.business.IBiowsJavaManager" />
+  	<property name="interceptorNames">
+        <list>
+	        <value>recordingAdvisor</value>
+	        <value>wrapInProxyAdvice</value>
+	        <value>javaManagerDispatcherAdvisor</value>
+        </list>
+    </property>
+  </bean>
+  
+  <bean id="javaScriptBiowsManager"
+        class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" 
+              ref="biowsManagerTarget" />
+    <property name="proxyInterfaces" 
+              value="net.bioclipse.biows.business.IBiowsJSManager" />
+    <property name="interceptorNames" >
+        <list>
+            <value>recordingAdvisor</value>
+            <value>wrapInProxyAdvice</value>
+            <value>javaScriptManagerDispatcherAdvisor</value>           
+        </list>
+    </property>    
+  </bean>
+
+  <!-- publishes the final manager (the proxy) -->
+  <osgi:service
+    id="javaBiowsManagerOSGI" 
+    ref="javaBiowsManager"
+    interface="net.bioclipse.biows.business.IBiowsManager" />
+  
+  <osgi:service
+    id="javaScriptBiowsManagerOSGI"
+    ref="javaScriptBiowsManager"
+    interface="net.bioclipse.biows.business.IBiowsJSManager" />
+</beans>
