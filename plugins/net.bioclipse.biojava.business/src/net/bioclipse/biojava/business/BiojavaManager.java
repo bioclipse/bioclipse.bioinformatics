@@ -84,6 +84,9 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IDNA DNAfromString(String dnaString) {
+        if (dnaString.startsWith(">")) {
+            dnaString = StringUtils.withoutFirstLine(dnaString);
+        }
         try {
             return new BiojavaDNA(DNATools.createDNASequence(
                     dnaString,
