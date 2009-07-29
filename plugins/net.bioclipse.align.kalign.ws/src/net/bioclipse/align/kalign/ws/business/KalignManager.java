@@ -33,8 +33,8 @@ import net.bioclipse.managers.business.IBioclipseManager;
  * A manager for invoking KALign at EBI using SOAP 
  * with client stub call generated using Axis 1.4.
  * 
- * KAlign@EBI Web site: http://www.ebi.ac.uk/Tools/webservices/services/dbfetch
- * WSDL: http://www.ebi.ac.uk/Tools/webservices/wsdl/WSDbfetch.wsdl
+ * KAlign@EBI Web site: http://www.ebi.ac.uk/Tools/webservices/services/kalign
+ * WSDL: http://www.ebi.ac.uk/Tools/webservices/wsdl/WSKalign.wsdl
  * 
  * @author ola
  *

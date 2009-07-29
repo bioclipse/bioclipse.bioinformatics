@@ -23,6 +23,11 @@ import net.bioclipse.webservices.business.IWebservicesManager;
 
 
 /**
+ * This manager makes use of net.bioclipse.webservices WSDbfetch service @ EBI 
+ * via SOAP to query and retrieve sequences.
+ * 
+ * Website: http://www.ebi.ac.uk/Tools/webservices/services/dbfetch
+ * WSDL: http://www.ebi.ac.uk/Tools/webservices/wsdl/WSDbfetch.wsdl
  * 
  * @author ola
  *
