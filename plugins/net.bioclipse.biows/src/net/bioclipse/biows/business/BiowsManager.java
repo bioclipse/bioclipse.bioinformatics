@@ -10,6 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.biows.business;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
@@ -40,36 +42,36 @@ public class BiowsManager implements IBioclipseManager {
         return "biows";
     }
     
-    public IDNA queryEMBL(String seqid) throws BioclipseException{
+    public List<IDNA> queryEMBL(String seqid) throws BioclipseException{
 
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
         .getDefault().getBioJavaManager();
 
         String fasta=download( "embl", seqid );
 
-        return biojava.DNAfromString( fasta );
+        return biojava.DNAsFromString( fasta );
 
     }
 
-    public IProtein queryUniProtKB(String seqid) throws BioclipseException{
+    public List<IProtein> queryUniProtKB(String seqid) throws BioclipseException{
 
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
         .getDefault().getBioJavaManager();
 
         String fasta=download( "uniprotkb", seqid );
 
-        return biojava.proteinFromString( fasta );
+        return biojava.proteinsFromString( fasta );
 
     }
 
-    public IDNA queryRefseq(String seqid) throws BioclipseException{
+    public List<IDNA> queryRefseq(String seqid) throws BioclipseException{
 
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
         .getDefault().getBioJavaManager();
 
         String fasta=download( "refseq", seqid );
 
-        return biojava.DNAfromString( fasta );
+        return biojava.DNAsfromString( fasta );
 
     }
 
