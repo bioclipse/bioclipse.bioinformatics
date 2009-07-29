@@ -173,21 +173,40 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @return the result of the conversion
      */
     @PublishedMethod(
-        methodSummary = "Returns the RNA sequence equivalent of the given " +
-                        "protein sequence.",
+        methodSummary = "Returns the RNA sequence equivalent of the given "
+                        + "protein sequence.",
         params = "IProtein protein" )
     public IRNA ProteinToRNA(IProtein protein);
 
     @PublishedMethod(
-        methodSummary = "Returns an array of proteins read from the given " +
-                        "file.",
+            methodSummary = "Returns an array of DNA sequences from the "
+                            + "given file.",
+            params = "String path" )
+        public List<IDNA> DNAsFromFile(String path)
+                              throws FileNotFoundException;
+
+        public List<IDNA> DNAsFromFile(IFile file)
+                              throws FileNotFoundException;
+
+    @PublishedMethod(
+            methodSummary = "Returns an array of RNA sequences from the "
+                            + "given file.",
+            params = "String path" )
+        public List<IRNA> RNAsFromFile(String path)
+                              throws FileNotFoundException;
+
+        public List<IRNA> RNAsFromFile(IFile file)
+                              throws FileNotFoundException;
+
+    @PublishedMethod(
+        methodSummary = "Returns an array of proteins from the given file.",
         params = "String path" )
     public List<IProtein> proteinsFromFile(String path)
-                          throws FileNotFoundException;
+                              throws FileNotFoundException;
 
     public List<IProtein> proteinsFromFile(IFile file)
-                          throws FileNotFoundException;
-    
+                              throws FileNotFoundException;
+
     /**
      * @param string
      * @return
@@ -196,6 +215,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Loads sequences from file at path",
         params = "String path" )
     public List<ISequence> sequencesFromFile( String path );
-    
-    public List<ISequence> sequencesFromFile( IFile file );
+
+    public List<ISequence> sequencesFromFile( IFile file )
+        throws FileNotFoundException;
 }

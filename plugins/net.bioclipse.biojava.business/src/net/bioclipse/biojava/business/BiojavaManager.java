@@ -23,10 +23,11 @@
 
 package net.bioclipse.biojava.business;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -43,10 +44,12 @@ import org.biojava.bio.BioException;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
-import org.biojava.bio.seq.SequenceIterator;
 import org.biojava.bio.symbol.IllegalAlphabetException;
 import org.biojava.bio.symbol.IllegalSymbolException;
-import org.biojavax.bio.seq.RichSequence.IOTools;
+import org.biojavax.Namespace;
+import org.biojavax.RichObjectFactory;
+import org.biojavax.bio.seq.RichSequence;
+import org.biojavax.bio.seq.RichSequenceIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 /**
@@ -186,31 +189,47 @@ public class BiojavaManager implements IBiojavaManager {
         return "biojava";
     }
 
+    public List<IDNA> DNAsFromFile( String path ) throws FileNotFoundException {
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
+
+    public List<IDNA> DNAsFromFile(IFile file)
+        throws FileNotFoundException {
+
+        List<IDNA> dnas = new ArrayList<IDNA>();
+        for (final ISequence seq : sequencesFromFile(file))
+            dnas.add(IDNA.class.cast(seq));
+        return dnas;
+    }
+
+    public List<IRNA> RNAsFromFile( String path ) throws FileNotFoundException {
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
+
+    public List<IRNA> RNAsFromFile(IFile file)
+        throws FileNotFoundException {
+
+        List<IRNA> rnas = new ArrayList<IRNA>();
+        for (final ISequence seq : sequencesFromFile(file))
+            rnas.add(IRNA.class.cast(seq));
+        return rnas;
+    }
+
+    public List<IProtein> proteinsFromFile( String path )
+        throws FileNotFoundException {
+
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
+
     public List<IProtein> proteinsFromFile(IFile file)
         throws FileNotFoundException {
 
-        BufferedReader br;
-        try {
-            // Create a BufferedInputStream for our IFile.
-            br = new BufferedReader(new InputStreamReader(file.getContents()));
-        } catch ( CoreException ce ) {
-            // FileNotFoundException doesn't seem to accept nested exceptions.
-            throw new FileNotFoundException(ce.toString());
-        }
-
-        SequenceIterator iter = IOTools.readFastaProtein( br, null );
         List<IProtein> proteins = new ArrayList<IProtein>();
-        try {
-            while ( iter.hasNext() )
-                proteins.add(proteinFromString(
-                    iter.nextSequence().seqString())
-                );
-        } catch (NoSuchElementException e) {
-            // Will not happen, because we do hasNext before each nextSequence
-        } catch (BioException e) {
-            throw new IllegalStateException(e);
-        }
-
+        for (final ISequence seq : sequencesFromFile(file))
+            proteins.add(IProtein.class.cast(seq));
         return proteins;
     }
 
@@ -219,14 +238,45 @@ public class BiojavaManager implements IBiojavaManager {
         throw new IllegalStateException("This method should not be called");
     }
 
-    public List<ISequence> sequencesFromFile( IFile file ) {
+    public List<ISequence> sequencesFromFile( IFile file )
+        throws FileNotFoundException {
+        
+        BufferedInputStream bufferedStream;
+        try {
+            bufferedStream = new BufferedInputStream( file.getContents() );
+        } catch (CoreException ce) {
+            throw new FileNotFoundException(ce.toString());
+        }
 
-        // TODO Auto-generated method stub, implement me
-        return null;
-    }
+        Namespace ns = RichObjectFactory.getDefaultNamespace();
+        RichSequenceIterator seqit = null;
 
-    public List<IProtein> proteinsFromFile( String path ) throws FileNotFoundException {
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
+        try {
+            seqit = RichSequence.IOTools.readStream(bufferedStream, ns);
+        } catch (IOException e) {
+            logger.error("Couldn't read sequences from file", e);
+            return Collections.emptyList();
+        }
+
+        List<ISequence> sequences = new ArrayList<ISequence>();
+        try {
+            while ( seqit.hasNext() ) {
+                RichSequence rseq;
+                    rseq = seqit.nextRichSequence();
+                if (rseq == null)
+                    continue;
+                String alphabet = rseq.getAlphabet().getName();
+                sequences.add(
+                      "DNA".equals(alphabet) ? new BiojavaDNA(rseq)
+                    : "RNA".equals(alphabet) ? new BiojavaRNA(rseq)
+                    :                          new BiojavaProtein(rseq) );
+            }
+        } catch (NoSuchElementException e) {
+            logger.error("Read past last sequence", e);
+        } catch (BioException e) {
+            logger.error(e);
+        }
+
+        return sequences;
     }
 }
