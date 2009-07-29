@@ -56,6 +56,45 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaDNA sequence from the given " +
                         "String.",
         params = "String dnaString" )
+    public IDNA DNAfromPlainString(String dnaString);
+
+    /**
+     * Returns a new <code>BiojavaRNA</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param rnaString An RNA sequence to be converted.
+     * @return A new <code>BiojavaRNA</code>.
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaRNA sequence from the given " +
+                        "String.",
+        params = "String rnaString" )
+    public IRNA RNAfromPlainString(String rnaString);
+
+    /**
+     * Returns a new <code>BiojavaProtein</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param proteinString An amino acid sequence to be converted.
+     * @return A new <code>BiojavaProtein</code>.
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaProtein sequence from the given " +
+                        "String.",
+        params = "String proteinString" )
+    public IProtein proteinFromString(String proteinString);
+
+    /**
+     * Returns a new <code>BiojavaDNA</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param dnaString A DNA sequence to be converted.
+     * @return A new <code>BiojavaDNA</code>.
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaDNA sequence from the given " +
+                        "String.",
+        params = "String dnaString" )
     public IDNA DNAfromString(String dnaString);
 
     /**
@@ -82,7 +121,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaProtein sequence from the given " +
                         "String.",
         params = "String proteinString" )
-    public IProtein proteinFromString(String proteinString);
+    public IProtein proteinFromPlainString(String proteinString);
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given
@@ -158,7 +197,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns the DNA sequence equivalent of the given " +
                         "protein sequence.",
         params = "IProtein protein" )
-    public IDNA ProteinToDNA(IProtein protein);
+    public IDNA proteinToDNA(IProtein protein);
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given
@@ -176,7 +215,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns the RNA sequence equivalent of the given "
                         + "protein sequence.",
         params = "IProtein protein" )
-    public IRNA ProteinToRNA(IProtein protein);
+    public IRNA proteinToRNA(IProtein protein);
 
     @PublishedMethod(
             methodSummary = "Returns an array of DNA sequences from the "

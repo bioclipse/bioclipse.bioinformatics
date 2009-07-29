@@ -24,8 +24,10 @@
 package net.bioclipse.biojava.business;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -87,9 +89,30 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IDNA DNAfromString(String dnaString) {
-        if (dnaString.startsWith(">")) {
-            dnaString = StringUtils.withoutFirstLine(dnaString);
-        }
+        return IDNA.class.cast(
+            sequencesFromInputStream(
+                new ByteArrayInputStream(dnaString.getBytes())
+            ).get(0)
+        );
+    }
+
+    public IRNA RNAfromString(String rnaString) {
+        return IRNA.class.cast(
+            sequencesFromInputStream(
+                new ByteArrayInputStream(rnaString.getBytes())
+            ).get(0)
+        );
+    }
+
+    public IProtein proteinFromString(String proteinString) {
+        return IProtein.class.cast(
+            sequencesFromInputStream(
+                new ByteArrayInputStream(proteinString.getBytes())
+            ).get(0)
+        );
+    }
+
+    public IDNA DNAfromPlainString(String dnaString) {
         try {
             return new BiojavaDNA(DNATools.createDNASequence(
                     dnaString,
@@ -100,10 +123,7 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IRNA RNAfromString(String rnaString) {
-        if (rnaString.startsWith(">")) {
-            rnaString = StringUtils.withoutFirstLine(rnaString);
-        }
+    public IRNA RNAfromPlainString(String rnaString) {
         try {
             return new BiojavaRNA(RNATools.createRNASequence(
                     rnaString,
@@ -114,10 +134,7 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IProtein proteinFromString(String proteinString) {
-        if (proteinString.startsWith(">")) {
-            proteinString = StringUtils.withoutFirstLine(proteinString);
-        }
+    public IProtein proteinFromPlainString(String proteinString) {
         try {
             return new BiojavaProtein(ProteinTools.createProteinSequence(
                     proteinString,
@@ -131,7 +148,7 @@ public class BiojavaManager implements IBiojavaManager {
     public IProtein DNAtoProtein(IDNA dna) {
         String plainSequence = dna.getPlainSequence();
         try {
-            return proteinFromString(
+            return proteinFromPlainString(
                     DNATools.toProtein(
                             DNATools.createDNASequence(plainSequence, "")
                     ).seqString()
@@ -146,7 +163,7 @@ public class BiojavaManager implements IBiojavaManager {
     public IRNA DNAtoRNA(IDNA dna) {
         String plainSequence = dna.getPlainSequence();
         try {
-            return RNAfromString(
+            return RNAfromPlainString(
                     DNATools.toRNA(
                             DNATools.createDNASequence(plainSequence, "")
                     ).seqString()
@@ -158,11 +175,11 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IDNA ProteinToDNA(IProtein protein) {
+    public IDNA proteinToDNA(IProtein protein) {
         return null;
     }
 
-    public IRNA ProteinToRNA(IProtein protein) {
+    public IRNA proteinToRNA(IProtein protein) {
         return null;
     }
 
@@ -173,7 +190,7 @@ public class BiojavaManager implements IBiojavaManager {
     public IProtein RNAtoProtein(IRNA rna) {
         String plainSequence = rna.getPlainSequence();
         try {
-            return proteinFromString(
+            return proteinFromPlainString(
                     RNATools.translate(
                             RNATools.createRNASequence(plainSequence, "")
                     ).seqString()
@@ -240,14 +257,17 @@ public class BiojavaManager implements IBiojavaManager {
 
     public List<ISequence> sequencesFromFile( IFile file )
         throws FileNotFoundException {
-        
-        BufferedInputStream bufferedStream;
+
         try {
-            bufferedStream = new BufferedInputStream( file.getContents() );
+            return sequencesFromInputStream(file.getContents());
         } catch (CoreException ce) {
             throw new FileNotFoundException(ce.toString());
         }
+    }
 
+    private List<ISequence> sequencesFromInputStream(InputStream stream) {
+
+        BufferedInputStream bufferedStream = new BufferedInputStream(stream);
         Namespace ns = RichObjectFactory.getDefaultNamespace();
         RichSequenceIterator seqit = null;
 

@@ -32,7 +32,7 @@ public class BiojavaManagerTest {
     @Test
     public void createDNA() {
         String dnaString = "CGTAGTCGTAGT";
-        IDNA seq = biojava.DNAfromString(dnaString);
+        IDNA seq = biojava.DNAfromPlainString(dnaString);
         assertEquals(BiojavaDNA.class, seq.getClass());
         assertEquals(dnaString.toLowerCase(), seq.getPlainSequence());
         assertEquals("dna:'" + dnaString.toLowerCase() + "'",
@@ -42,7 +42,7 @@ public class BiojavaManagerTest {
     @Test
     public void createRNA() {
         String rnaString = "UUUACGUGACCC";
-        IRNA seq = biojava.RNAfromString(rnaString);
+        IRNA seq = biojava.RNAfromPlainString(rnaString);
         assertEquals(BiojavaRNA.class, seq.getClass());
         assertEquals(rnaString.toLowerCase(), seq.getPlainSequence());
         assertEquals("rna:'" + rnaString.toLowerCase() + "'",
@@ -55,7 +55,7 @@ public class BiojavaManagerTest {
             = "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFE"
               + "SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPE"
               + "NFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH";
-        IProtein seq = biojava.proteinFromString(proteinString);
+        IProtein seq = biojava.proteinFromPlainString(proteinString);
         assertEquals(BiojavaProtein.class, seq.getClass());
         assertEquals(proteinString, seq.getPlainSequence());
         assertEquals("protein:'" + proteinString + "'",
@@ -85,7 +85,7 @@ public class BiojavaManagerTest {
 
     @Test
     public void DNAtoRNA() {
-        IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
+        IDNA dna = biojava.DNAfromPlainString("CGTAGTCGTAGT");
         IRNA rna = biojava.DNAtoRNA(dna);
         assertEquals(BiojavaRNA.class, rna.getClass());
         assertEquals("cguagucguagu", rna.getPlainSequence());
@@ -93,7 +93,7 @@ public class BiojavaManagerTest {
 
     @Test
     public void DNAtoProtein() {
-        IDNA dna = biojava.DNAfromString("CGTAGTCGTAGT");
+        IDNA dna = biojava.DNAfromPlainString("CGTAGTCGTAGT");
         IProtein protein = biojava.DNAtoProtein(dna);
         assertEquals(BiojavaProtein.class, protein.getClass());
         assertEquals("RSRS", protein.getPlainSequence());
@@ -101,7 +101,7 @@ public class BiojavaManagerTest {
 
     @Test
     public void RNAtoProtein() {
-        IRNA rna = biojava.RNAfromString("UUUACGUGACCC");
+        IRNA rna = biojava.RNAfromPlainString("UUUACGUGACCC");
         IProtein protein = biojava.RNAtoProtein(rna);
         assertEquals(BiojavaProtein.class, protein.getClass());
         assertEquals("FT*P", protein.getPlainSequence());
