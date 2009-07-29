@@ -98,6 +98,9 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IRNA RNAfromString(String rnaString) {
+        if (rnaString.startsWith(">")) {
+            rnaString = StringUtils.withoutFirstLine(rnaString);
+        }
         try {
             return new BiojavaRNA(RNATools.createRNASequence(
                     rnaString,
@@ -109,6 +112,9 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IProtein proteinFromString(String proteinString) {
+        if (proteinString.startsWith(">")) {
+            proteinString = StringUtils.withoutFirstLine(proteinString);
+        }
         try {
             return new BiojavaProtein(ProteinTools.createProteinSequence(
                     proteinString,
