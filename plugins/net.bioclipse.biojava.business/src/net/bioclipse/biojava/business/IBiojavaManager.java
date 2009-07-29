@@ -95,7 +95,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaDNA sequence from the given " +
                         "String.",
         params = "String dnaString" )
-    public IDNA DNAfromString(String dnaString);
+    public List<IDNA> DNAsFromString(String dnaString);
 
     /**
      * Returns a new <code>BiojavaRNA</code> sequence from the given
@@ -108,7 +108,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaRNA sequence from the given " +
                         "String.",
         params = "String rnaString" )
-    public IRNA RNAfromString(String rnaString);
+    public List<IRNA> RNAsFromString(String rnaString);
 
     /**
      * Returns a new <code>BiojavaProtein</code> sequence from the given
@@ -121,7 +121,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaProtein sequence from the given " +
                         "String.",
         params = "String proteinString" )
-    public IProtein proteinFromString(String proteinString);
+    public List<IProtein> proteinsFromString(String proteinString);
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given

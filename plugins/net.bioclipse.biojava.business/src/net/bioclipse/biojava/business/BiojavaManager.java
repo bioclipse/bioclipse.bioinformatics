@@ -88,28 +88,28 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IDNA DNAfromString(String dnaString) {
-        return IDNA.class.cast(
-            sequencesFromInputStream(
-                new ByteArrayInputStream(dnaString.getBytes())
-            ).get(0)
-        );
+    public List<IDNA> DNAsFromString(String dnaString) {
+        List<IDNA> dnas = new ArrayList<IDNA>();
+        for (final ISequence seq : sequencesFromInputStream(
+                new ByteArrayInputStream(dnaString.getBytes())))
+            dnas.add(IDNA.class.cast(seq));
+        return dnas;
     }
 
-    public IRNA RNAfromString(String rnaString) {
-        return IRNA.class.cast(
-            sequencesFromInputStream(
-                new ByteArrayInputStream(rnaString.getBytes())
-            ).get(0)
-        );
+    public List<IRNA> RNAsFromString(String rnaString) {
+        List<IRNA> rnas = new ArrayList<IRNA>();
+        for (final ISequence seq : sequencesFromInputStream(
+                new ByteArrayInputStream(rnaString.getBytes())))
+            rnas.add(IRNA.class.cast(seq));
+        return rnas;
     }
 
-    public IProtein proteinFromString(String proteinString) {
-        return IProtein.class.cast(
-            sequencesFromInputStream(
-                new ByteArrayInputStream(proteinString.getBytes())
-            ).get(0)
-        );
+    public List<IProtein> proteinsFromString(String proteinString) {
+        List<IProtein> proteins = new ArrayList<IProtein>();
+        for (final ISequence seq : sequencesFromInputStream(
+                new ByteArrayInputStream(proteinString.getBytes())))
+            proteins.add(IProtein.class.cast(seq));
+        return proteins;
     }
 
     public IDNA DNAfromPlainString(String dnaString) {

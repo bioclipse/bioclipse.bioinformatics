@@ -65,17 +65,17 @@ public class BiojavaManagerTest {
     @Test
     public void createFromFASTAstring() {
         String dnaString = ">test DNA String\nCGTAGTCGTAGT";
-        IDNA dnaSeq = biojava.DNAfromString(dnaString);
+        IDNA dnaSeq = biojava.DNAsFromString(dnaString).get(0);
         assertEquals("cgtagtcgtagt", dnaSeq.getPlainSequence());
         String rnaString = ">test RNA String\nUUUACGUGACCC";
-        IRNA rnaSeq = biojava.RNAfromString(rnaString);
+        IRNA rnaSeq = biojava.RNAsFromString(rnaString).get(0);
         assertEquals("uuuacgugaccc", rnaSeq.getPlainSequence());
         String proteinString
             = ">test Protein String\n"
               + "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFE"
               + "SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPE"
               + "NFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH";
-        IProtein proteinSeq = biojava.proteinFromString(proteinString);
+        IProtein proteinSeq = biojava.proteinsFromString(proteinString).get(0);
         assertEquals(
             "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFE"
             + "SFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPE"
