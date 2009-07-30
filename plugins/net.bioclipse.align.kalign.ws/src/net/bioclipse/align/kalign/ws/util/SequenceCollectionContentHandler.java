@@ -1,36 +1,54 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Ola Spjuth.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Ola Spjuth - initial API and implementation
+ ******************************************************************************/
 package net.bioclipse.align.kalign.ws.util;
 
-import java.util.Map;
+import java.util.List;
+
+import net.bioclipse.biojava.business.Activator;
+import net.bioclipse.biojava.business.IBiojavaManager;
+import net.bioclipse.core.domain.ISequence;
 
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
-import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.symbol.Alphabet;
-import org.biojava.bio.symbol.IllegalSymbolException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-
+/**
+ * 
+ * @author ola
+ *
+ */
 public class SequenceCollectionContentHandler extends DefaultHandler {
 
-    private final Map sequenceMap;
+//    private final Map sequenceMap;
+    private final List<ISequence> sequences;
     private final Alphabet alphabet;
 
+    @SuppressWarnings("unused") //until bug 1442 resolved
     private String currentSeqName;
     private String currentSeq;
 
     /**
      * Creates a new <code>SequenceAlignmentContentHandler</code> instance.
      *
-     * @param map
+     * @param sequences
      * The map to be filled with sequences
      * @param alphabet
      * The alphabet to be used
      */
-    public SequenceCollectionContentHandler(Map map, Alphabet alphabet) {
-        this.sequenceMap = map;
+    public SequenceCollectionContentHandler(List<ISequence> sequences, Alphabet alphabet) {
+        this.sequences = sequences;
         this.alphabet = alphabet;
     }
 
@@ -76,34 +94,22 @@ public class SequenceCollectionContentHandler extends DefaultHandler {
     }
 
     private void endCurrentSequence() {
+        IBiojavaManager biojava=Activator.getDefault().getBioJavaManager();
         if (this.alphabet.equals(DNATools.getDNA())) {
-            try {
-                Sequence seq = DNATools.createDNASequence(currentSeq,
-                                                          currentSeqName);
-                this.sequenceMap.put(currentSeqName, seq);
-            } catch (IllegalSymbolException e) {
-                System.err.println(this.getClass()
-                                   + " - IllegalSymbolException: " + e.getMessage());
-            }
+            sequences.add( biojava.DNAfromPlainString( currentSeq ));
+            //FIXME: Change to below when bug 1442 is resolved
+//          sequences.add( biojava.DNAfromPlainString( currentSeqName, currentSeq ));
 
         } else if (this.alphabet.equals(RNATools.getRNA())) {
-            try {
-                Sequence seq = RNATools.createRNASequence(currentSeq,
-                                                          currentSeqName);
-                this.sequenceMap.put(currentSeqName, seq);
-            } catch (IllegalSymbolException e) {
-                System.err.println(this.getClass()
-                                   + " - IllegalSymbolException: " + e.getMessage());
-            }
+            sequences.add( biojava.RNAfromPlainString( currentSeq ));
+            //FIXME: Change to below when bug 1442 is resolved
+//          sequences.add( biojava.RNAfromPlainString( currentSeqName, currentSeq ));
+
         } else if (this.alphabet.equals(ProteinTools.getAlphabet())) {
-            try {
-                Sequence seq = ProteinTools.createProteinSequence(currentSeq,
-                                                                  currentSeqName);
-                this.sequenceMap.put(currentSeqName, seq);
-            } catch (IllegalSymbolException e) {
-                System.err.println(this.getClass()
-                                   + " - IllegalSymbolException: " + e.getMessage());
-            }
+            sequences.add( biojava.proteinFromPlainString( currentSeq ));
+            //FIXME: Change to below when bug 1442 is resolved
+//            sequences.add( biojava.proteinFromPlainString( currentSeqName, currentSeq ));
+
         }
     }
 

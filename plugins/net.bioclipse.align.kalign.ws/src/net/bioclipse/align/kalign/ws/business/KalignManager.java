@@ -14,22 +14,14 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.program.sax.ClustalWAlignmentSAXParser;
-import org.biojava.bio.program.sax.SequenceAlignmentSAXParser;
 import org.biojava.bio.seq.DNATools;
-import org.biojava.bio.seq.Sequence;
-import org.biojava.bio.symbol.Alignment;
+import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.symbol.Alphabet;
-import org.biojava.bio.symbol.SimpleAlignment;
-import org.biojavax.bio.seq.RichSequence;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -40,12 +32,11 @@ import uk.ac.ebi.www.WSKalign.WSKalign;
 import uk.ac.ebi.www.WSKalign.WSKalignServiceLocator;
 
 import net.bioclipse.align.kalign.ws.util.SequenceCollectionContentHandler;
-import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.biojava.domain.BiojavaSequence;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.managers.business.IBioclipseManager;
 
 
@@ -82,7 +73,7 @@ public class KalignManager implements IBioclipseManager {
                                throws BioclipseException{
 
 
-        List<IDNA> returnList=new ArrayList<IDNA>();
+        List<IDNA> returnList=new RecordableList<IDNA>();
         List<? extends ISequence> alist = align(dnalist, "N", monitor);
         for (ISequence seq : alist){
             if ( seq instanceof IDNA ) {
@@ -111,7 +102,7 @@ public class KalignManager implements IBioclipseManager {
                                        IProgressMonitor monitor) 
                                        throws BioclipseException{
         
-        List<IProtein> returnList=new ArrayList<IProtein>();
+        List<IProtein> returnList=new RecordableList<IProtein>();
         List<? extends ISequence> alist = align(proteinList, "P", monitor);
         for (ISequence seq : alist){
             if ( seq instanceof IProtein ) {
@@ -144,9 +135,9 @@ public class KalignManager implements IBioclipseManager {
             throw new BioclipseException("SequenceList must not be empty.");
         
         if (!(type.equals( "P" ) || type.equals( "N" )))
-            throw new BioclipseException("Type must be either 'P' (for protein)" +
+            throw new BioclipseException("Type must be either 'P' " +
+            		"(for protein)" +
             		" or 'N' (for nucleotide).");
-        
 
         logger.debug( "Starting Kalign WS" );
         monitor.subTask( "Preparing input" );
@@ -164,8 +155,11 @@ public class KalignManager implements IBioclipseManager {
         StringBuffer sequenceBuffer=new StringBuffer();
         int i=1;
         for (ISequence seq : sequenceList){
-            //FIXME: Use biojava manager for this serialization when avavilable
-            sequenceBuffer.append(">Sequence"+i+"\n" + seq.getPlainSequence()+"\n");
+            //FIXME: Use biojava manager for this serialization when available
+            String name=seq.getName();
+            if (name==null) name = "Sequence" + i;
+            sequenceBuffer.append(">" + name +"\n"+seq.getPlainSequence()+"\n");
+            i++;
         }
         inSeq.setContent( sequenceBuffer.toString() );
 
@@ -188,7 +182,7 @@ public class KalignManager implements IBioclipseManager {
                 monitor.subTask( "Waiting for result..." );
                 if(status.equals("RUNNING") || status.equals("PENDING")) {
                     // Wait before polling again.
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 }
             }
 
@@ -212,20 +206,24 @@ public class KalignManager implements IBioclipseManager {
 
 
             monitor.subTask( "Parsing results..." );
+//            String resstr="CLUSTAL W(";
+            String resstr=new String(payload);
+            resstr=resstr.substring( 42 );
+            
+            System.out.println("After rewrite:\n"+resstr);
 
             //Set up a buffered reader for the contents
-            ByteArrayInputStream ins=new ByteArrayInputStream(payload);
+            ByteArrayInputStream ins=new ByteArrayInputStream(
+                                                             resstr.getBytes());
             BufferedReader contents = new BufferedReader(
                                                     new InputStreamReader(ins));
 
             if (type.equals( "P" )){
-                parseAlignmentIntoProteins(contents);
+                return parseKalignResult(contents, ProteinTools.getAlphabet());
             }
             else {
+                return parseKalignResult(contents, DNATools.getDNA());
             }
-
-            return null;
-            
 
         } catch ( Exception e ) {
             throw new BioclipseException("Error in KAlign WS: ", e);
@@ -234,38 +232,22 @@ public class KalignManager implements IBioclipseManager {
     }
 
 
-    private void parseAlignmentIntoProteins( BufferedReader contents ) 
+   private List<? extends ISequence> parseKalignResult( BufferedReader contents, 
+                                                         Alphabet alphabet) 
     throws IOException, SAXException, BioclipseException {
 
-        Alphabet alphabet = DNATools.getDNA();
-        Map seqMap = new HashMap();
+        List<ISequence> sequences=new RecordableList<ISequence>();
 
-        SequenceAlignmentSAXParser parser = 
-                                           new SequenceAlignmentSAXParser();
-
+        ClustalWAlignmentSAXParser parser = 
+                                           new ClustalWAlignmentSAXParser();
+        
         SequenceCollectionContentHandler handler = 
-                     new SequenceCollectionContentHandler(seqMap, alphabet);
+                     new SequenceCollectionContentHandler(sequences, alphabet);
 
         parser.setContentHandler(handler);
         parser.parse(new InputSource(contents));
 
-
-        // Finally I create the alignment object using the Map
-        Alignment alignment = new SimpleAlignment(seqMap);
-        
-        
-        for (Object obj : seqMap.keySet()){
-            Object seq = seqMap.get( obj );
-            if ( seq instanceof Sequence ) {
-                Sequence biojavaseq = (Sequence) seq;
-                //FOXME: continue here
-            }
-            else{
-                throw new BioclipseException("Alignment expected a protein but " +
-                		"was instanceof: " + seq);
-            }
-            
-        }
+        return sequences;
         
     }
 }
