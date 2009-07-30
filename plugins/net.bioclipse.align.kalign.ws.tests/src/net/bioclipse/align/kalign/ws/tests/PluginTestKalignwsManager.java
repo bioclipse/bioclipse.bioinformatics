@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Ola Spjuth.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Ola Spjuth - initial API and implementation
+ ******************************************************************************/
 package net.bioclipse.align.kalign.ws.tests;
 
 import static org.junit.Assert.*;
@@ -36,6 +46,9 @@ public class PluginTestKalignwsManager {
         List<IDNA> res = kalign.alignDNA( dnalist );
         assertEquals( 2, res.size() );
         
+        assertEquals( "ctc--ttcgg~~~", res.get( 0 ).getPlainSequence() );
+        assertEquals( "ctcaattcggaaa", res.get( 1 ).getPlainSequence() );
+        
     }
 
     @Test
@@ -52,6 +65,9 @@ public class PluginTestKalignwsManager {
         List<IProtein> res = kalign.alignProteins( proteinlist );
         assertEquals( 2, res.size() );
         
+        assertEquals( "A------SAMPLESEQ", res.get( 0 ).getPlainSequence() );
+        assertEquals( "ANOTHERSAMPLESEQ", res.get( 1 ).getPlainSequence() );
+
     }
 
 }
