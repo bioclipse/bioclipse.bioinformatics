@@ -24,6 +24,7 @@ public class SequenceEditor extends MultiPageEditorPart {
 
     private Aligner aligner;
     private SequenceOutlinePage outlinePage;
+    private boolean dirty;
     
     @Override
     protected void createPages() {
@@ -38,6 +39,10 @@ public class SequenceEditor extends MultiPageEditorPart {
         } catch ( PartInitException e ) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isDirty() {
+        return dirty;
     }
 
     @Override
@@ -79,7 +84,8 @@ public class SequenceEditor extends MultiPageEditorPart {
         return aligner.getSequences();
     }
 
-    public void setSequences(List<ISequence> alignedSequences) {
-        aligner.setSequences(alignedSequences);
+    public void setSequences(List<ISequence> sequences) {
+        aligner.setSequences(sequences);
+        dirty = true;
     }
 }
