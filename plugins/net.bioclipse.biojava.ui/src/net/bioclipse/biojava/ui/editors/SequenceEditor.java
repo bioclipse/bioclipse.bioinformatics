@@ -72,7 +72,9 @@ public class SequenceEditor extends MultiPageEditorPart {
         aligner.zoomOut();
     }
 
-    public void align() {
-        aligner.align();
-    }
+    //FIXME: I assume this should be ported to the kalign plugin?
+    
+//    public void align() {
+//        aligner.align();
+//    }
 }

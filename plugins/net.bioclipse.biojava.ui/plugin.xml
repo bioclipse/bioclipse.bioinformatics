@@ -76,7 +76,7 @@
 
 <!-- Object Contributions for Biojava -->
 
-   <extension
+   <!--extension
          point="org.eclipse.ui.popupMenus">
     <objectContribution
             adaptable="false"
@@ -142,33 +142,7 @@
                tooltip="Long running operation on an IAASequence that fails"/>
       </objectContribution>
 
-
-
-
-      <objectContribution
-            id="net.bioclipse.biojava.ui.filecontribution"
-            objectClass="org.eclipse.core.resources.IFile">
-        <visibility>
-			<objectState
-                  name="contentTypeId"
-                  value="net.bioclipse.biojava.ui.sequenceType"/>
-        </visibility>
-          <action
-               class="net.bioclipse.biojava.ui.actions.LongRunningAction"
-               id="net.bioclipse.biojava.ui.actions.LongRunningActionFILE"
-               label="Long running operation on File"
-               icon="icons/sequence3.gif"
-               definitionId="net.bioclipse.biojava.ui.LongRunningCommand">
-         </action>
-         <action
-               class="net.bioclipse.biojava.ui.actions.FailingLongRunningAction"
-               id="net.bioclipse.biojava.ui.actions.FailingLongRunningActionFILE"
-               label="Failing Long running operation on File"
-               icon="icons/sequence3.gif">
-         </action>
-      </objectContribution>
-
-   </extension>
+   </extension-->
 
 	   <extension
          point="org.eclipse.ui.commands">
@@ -191,16 +165,6 @@
    </extension>
 
   <extension point="org.eclipse.ui.menus">
-     <menuContribution locationURI="popup:org.eclipse.ui.popup.any">
-        <command commandId="net.bioclipse.biojava.ui.LongRunningCommand"
-              id="net.bioclipse.biojava.ui.LongRunningCommandContribution"
-              label="Long running command action"
-              style="push">
-           <visibleWhen checkEnabled="false">
-                <reference definitionId="net.bioclipse.biojava.ui.sequenceType"/>
-           </visibleWhen>
-        </command>
-     </menuContribution>
      
      <menuContribution
          locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
@@ -215,37 +179,9 @@
               </reference>
             </visibleWhen>
           </command>
-         
-          <separator name="additions"
-                     visible="false" />
-        </toolbar>
-     </menuContribution>
 
-     <menuContribution
-         locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         
-        <toolbar id="net.bioclipse.biojava.ui.editor.toolbar">
           <command commandId="net.bioclipse.biojava.ui.actions.zoomin"
                    tooltip="Zoom in"
-                   icon="icons/zoom_in.png">
-            <visibleWhen>
-              <reference
-                definitionId="net.bioclipse.definitions.activeAlignmentEditor">
-              </reference>
-            </visibleWhen>
-          </command>
-         
-          <separator name="additions"
-                     visible="false" />
-        </toolbar>
-     </menuContribution>
-
-     <menuContribution
-         locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         
-        <toolbar id="net.bioclipse.biojava.ui.editor.toolbar">
-          <command commandId="net.bioclipse.biojava.ui.actions.align"
-                   tooltip="Align"
                    icon="icons/zoom_in.png">
             <visibleWhen>
               <reference

@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.bioclipse.align.kalign.ws.business.IKalignManager;
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.core.business.BioclipseException;
@@ -599,42 +598,44 @@ public class Aligner extends EditorPart {
         parent.layout();
         parent.redraw();
     }
+    
+    //FIXME: I assume this should be ported to the kalign ws plugin?
 
-    public void align() {
-        IKalignManager kalign
-            = net.bioclipse.align.kalign.ws.Activator
-              .getDefault().getKalignManager();
-        List<IProtein> proteins = new ArrayList<IProtein>();
-        for ( String plainSequence : sequences.values() )
-            proteins.add(biojava.proteinFromPlainString(plainSequence));
-        List<IProtein> res;
-        try {
-            res = kalign.alignProteins( proteins );
-        } catch (BioclipseException e) {
-            // TODO: Right thing to do here would probably be to throw up
-            //       an apologetic message box.
-            return;
-        }
-        sequences.clear();
-        // Add the sequences one by one to the Map. Do minor cosmetics
-        // on the name by removing everything up to and including to
-        // the last '|', if any.
-        for (IProtein protein : res) {
-            String name = protein.getName().replaceFirst( ".*\\|", "" );
-            sequences.put( name, protein.getPlainSequence() );
-        }
-        // We only show a consensus sequence if there is more than one
-        // sequence already.
-        consensusRow  = sequences.size();
-        if (consensusRow > 1) {
-            sequences.put(
-                "Consensus",
-                consensusSequence( sequences.values() )
-            );
-        }
-        
-        canvasHeightInSquares = sequences.size();
-        canvasWidthInSquares = maxLength( sequences.values() );
-        c.redraw();
-    }
+//    public void align() {
+//        IKalignManager kalign
+//            = net.bioclipse.align.kalign.ws.Activator
+//              .getDefault().getKalignManager();
+//        List<IProtein> proteins = new ArrayList<IProtein>();
+//        for ( String plainSequence : sequences.values() )
+//            proteins.add(biojava.proteinFromPlainString(plainSequence));
+//        List<IProtein> res;
+//        try {
+//            res = kalign.alignProteins( proteins );
+//        } catch (BioclipseException e) {
+//            // TODO: Right thing to do here would probably be to throw up
+//            //       an apologetic message box.
+//            return;
+//        }
+//        sequences.clear();
+//        // Add the sequences one by one to the Map. Do minor cosmetics
+//        // on the name by removing everything up to and including to
+//        // the last '|', if any.
+//        for (IProtein protein : res) {
+//            String name = protein.getName().replaceFirst( ".*\\|", "" );
+//            sequences.put( name, protein.getPlainSequence() );
+//        }
+//        // We only show a consensus sequence if there is more than one
+//        // sequence already.
+//        consensusRow  = sequences.size();
+//        if (consensusRow > 1) {
+//            sequences.put(
+//                "Consensus",
+//                consensusSequence( sequences.values() )
+//            );
+//        }
+//        
+//        canvasHeightInSquares = sequences.size();
+//        canvasWidthInSquares = maxLength( sequences.values() );
+//        c.redraw();
+//    }
 }
