@@ -47,15 +47,17 @@ public class Activator extends AbstractUIPlugin {
         super.start(context);
         plugin = this;
     
-    finderTracker = new ServiceTracker( context,
-                                        IKalignManager.class.getName(),
-                                        null );
-    finderTracker.open();
-    
-    jsFinderTracker = new ServiceTracker( context,
-                                          IKalignJSManager.class.getName(),
-                                          null );
-    jsFinderTracker.open();
+            finderTracker = new ServiceTracker( context,
+                                                IKalignManager.class.getName(),
+                                                null );
+            finderTracker.open();
+            
+            jsFinderTracker = new ServiceTracker(
+                context,
+                IKalignJSManager.class.getName(),
+                null
+            );
+            jsFinderTracker.open();
         }
 
     /*
@@ -76,36 +78,36 @@ public class Activator extends AbstractUIPlugin {
         return plugin;
     }
 
-  public IKalignManager getKalignManager() {
-      IKalignManager biowsManager;
-      
-      try {
-          biowsManager
-              = (IKalignManager) finderTracker.waitForService(1000*30);
-      }
-      catch (InterruptedException e) {
-          throw
+    public IKalignManager getKalignManager() {
+        IKalignManager biowsManager;
+
+        try {
+            biowsManager
+            = (IKalignManager) finderTracker.waitForService(1000*30);
+        }
+        catch (InterruptedException e) {
+            throw
             new IllegalStateException("Could not get biows manager", e);
-      }
-      if (biowsManager == null) {
-          throw new IllegalStateException("Could not get biows manager");
-      }
-      return biowsManager;
-  }
-  
-  public IKalignJSManager getKalignJSManager() {
-      IKalignJSManager biowsJSManager;
-      
-      try {
-          biowsJSManager
-              = (IKalignJSManager) jsFinderTracker.waitForService(1000*30);
-      }
-      catch (InterruptedException e) {
-          throw new IllegalStateException("Could not get biows JS manager");
-      }
-      if (biowsJSManager == null) {
-          throw new IllegalStateException("Could not get biows JS manager");
-      }
-      return biowsJSManager;
-  }
+        }
+        if (biowsManager == null) {
+            throw new IllegalStateException("Could not get biows manager");
+        }
+        return biowsManager;
+    }
+
+    public IKalignJSManager getKalignJSManager() {
+        IKalignJSManager biowsJSManager;
+
+        try {
+            biowsJSManager
+            = (IKalignJSManager) jsFinderTracker.waitForService(1000*30);
+        }
+        catch (InterruptedException e) {
+            throw new IllegalStateException("Could not get biows JS manager");
+        }
+        if (biowsJSManager == null) {
+            throw new IllegalStateException("Could not get biows JS manager");
+        }
+        return biowsJSManager;
+    }
 }

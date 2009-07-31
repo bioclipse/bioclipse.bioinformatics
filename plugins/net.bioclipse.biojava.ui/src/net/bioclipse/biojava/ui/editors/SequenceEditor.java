@@ -71,4 +71,8 @@ public class SequenceEditor extends MultiPageEditorPart {
     public void zoomOut() {
         aligner.zoomOut();
     }
+
+    public void align() {
+        aligner.align();
+    }
 }

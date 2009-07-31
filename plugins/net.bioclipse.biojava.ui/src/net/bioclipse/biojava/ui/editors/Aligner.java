@@ -17,8 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.bioclipse.align.kalign.ws.business.IKalignManager;
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.ui.editors.ColorManager;
 
@@ -179,7 +181,7 @@ public class Aligner extends EditorPart {
         
         return consensus.toString();
     }
-    
+
     private static int maxLength( final Collection<String> strings ) {
         
         int maxLength = 0;
@@ -189,7 +191,7 @@ public class Aligner extends EditorPart {
         
         return maxLength;
     }
-    
+
     private static char consensusChar( final Collection<String> sequences,
                                        final int index ) {
         
@@ -232,27 +234,27 @@ public class Aligner extends EditorPart {
             xRight  = Math.max( selectionStart.x, selectionEnd.x ),
             yTop    = Math.min( selectionStart.y, selectionEnd.y ),
             yBottom = Math.max( selectionStart.y, selectionEnd.y );
-    
+
         // clip
         xLeft   = Math.max( xLeft, 0 );
         xRight  = Math.min( xRight, canvasWidthInSquares * squareSize );
         yTop    = Math.max( yTop, 0 );
         yBottom = Math.min( yBottom, (canvasHeightInSquares-1) * squareSize );
-    
+
         // round down
         xLeft  =                   xLeft / squareSize;
         yTop   =                    yTop / squareSize;
-    
+
         // round up
         xRight  =  (xRight+squareSize-1) / squareSize;
         yBottom = (yBottom+squareSize-1) / squareSize;
-    
+
         // make sure a selection always has positive area
         if ( xRight <= xLeft )
             xRight = xLeft + 1;
         if ( yBottom <= yTop && yTop < canvasHeightInSquares-1 )
             yBottom = yTop + 1;
-    
+
         // special case: mark along the consensus row
         if ( yTop == yBottom )
             yTop = 0;
@@ -262,7 +264,7 @@ public class Aligner extends EditorPart {
         selectionBottomRightInSquares.x = xRight;
         selectionBottomRightInSquares.y = yBottom;
     }
-    
+
     // Returns the four boundary coordinates, in pixels, of the current
     // selection, with the current dragged distance taken into account.
     private int[] boundaries() {
@@ -596,5 +598,43 @@ public class Aligner extends EditorPart {
         setCanvasSizes();
         parent.layout();
         parent.redraw();
+    }
+
+    public void align() {
+        IKalignManager kalign
+            = net.bioclipse.align.kalign.ws.Activator
+              .getDefault().getKalignManager();
+        List<IProtein> proteins = new ArrayList<IProtein>();
+        for ( String plainSequence : sequences.values() )
+            proteins.add(biojava.proteinFromPlainString(plainSequence));
+        List<IProtein> res;
+        try {
+            res = kalign.alignProteins( proteins );
+        } catch (BioclipseException e) {
+            // TODO: Right thing to do here would probably be to throw up
+            //       an apologetic message box.
+            return;
+        }
+        sequences.clear();
+        // Add the sequences one by one to the Map. Do minor cosmetics
+        // on the name by removing everything up to and including to
+        // the last '|', if any.
+        for (IProtein protein : res) {
+            String name = protein.getName().replaceFirst( ".*\\|", "" );
+            sequences.put( name, protein.getPlainSequence() );
+        }
+        // We only show a consensus sequence if there is more than one
+        // sequence already.
+        consensusRow  = sequences.size();
+        if (consensusRow > 1) {
+            sequences.put(
+                "Consensus",
+                consensusSequence( sequences.values() )
+            );
+        }
+        
+        canvasHeightInSquares = sequences.size();
+        canvasWidthInSquares = maxLength( sequences.values() );
+        c.redraw();
     }
 }
