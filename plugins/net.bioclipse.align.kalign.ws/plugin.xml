@@ -25,7 +25,7 @@
          
           <command commandId="net.bioclipse.align.kalign.ws.Align"
                    tooltip="Align"
-                   icon="icons/sequence4.gif">
+                   icon="icons/align.png">
             <visibleWhen>
               <reference
                 definitionId="net.bioclipse.definitions.activeAlignmentEditor">
