@@ -9,7 +9,10 @@
 
 package net.bioclipse.biojava.ui.editors;
 
+import java.util.List;
+
 import net.bioclipse.biojava.ui.views.outline.SequenceOutlinePage;
+import net.bioclipse.core.domain.ISequence;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.PartInitException;
@@ -72,9 +75,11 @@ public class SequenceEditor extends MultiPageEditorPart {
         aligner.zoomOut();
     }
 
-    //FIXME: I assume this should be ported to the kalign plugin?
-    
-//    public void align() {
-//        aligner.align();
-//    }
+    public java.util.List<ISequence> getSequences() {
+        return aligner.getSequences();
+    }
+
+    public void setSequences(List<ISequence> alignedSequences) {
+        aligner.setSequences(alignedSequences);
+    }
 }

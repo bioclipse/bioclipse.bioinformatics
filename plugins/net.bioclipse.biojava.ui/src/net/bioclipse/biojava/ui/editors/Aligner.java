@@ -19,8 +19,7 @@ import java.util.Map;
 
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IProtein;
+import net.bioclipse.core.domain.ISequence;
 import net.bioclipse.ui.editors.ColorManager;
 
 import org.eclipse.core.resources.IFile;
@@ -109,6 +108,7 @@ public class Aligner extends EditorPart {
     private Composite c;
     private IBiojavaManager biojava
         = Activator.getDefault().getBioJavaManager();
+    private char fastas[][];
     
     @Override
     public void doSave( IProgressMonitor monitor ) {
@@ -133,41 +133,56 @@ public class Aligner extends EditorPart {
     @Override
     public void setInput( IEditorInput input ) {
         super.setInput(input);
-        
-        sequences = new LinkedHashMap<String, String>();
 
         // Turn the editor input into an IFile.
         IFile file = (IFile) input.getAdapter( IFile.class );
         if (file == null)
             return;
 
-        List<IProtein> proteins;
+        List<ISequence> sequences;
         try {
-            proteins = biojava.proteinsFromFile(file);
+            sequences = biojava.sequencesFromFile(file);
         } catch (FileNotFoundException e1) {
             return; // No exception handling at all! We just give up! Gasp!
         }
+        this.setSequences(sequences);
+    }
+
+    public void setSequences(List<ISequence> seqs) {
+        sequences = new LinkedHashMap<String, String>();
 
         // Add the sequences one by one to the Map. Do minor cosmetics
         // on the name by removing everything up to and including to
         // the last '|', if any.
-        for (IProtein protein : proteins) {
-            String name = protein.getName().replaceFirst( ".*\\|", "" );
-            sequences.put( name, protein.getPlainSequence() );
+        for (ISequence seq : seqs) {
+            String name = seq.getName().replaceFirst( ".*\\|", "" );
+            sequences.put( name, seq.getPlainSequence() );
         }
 
         // We only show a consensus sequence if there is more than one
         // sequence already.
-        consensusRow  = sequences.size();
-        if (consensusRow > 1) {
+        if (sequences.size() > 1) {
             sequences.put(
                 "Consensus",
                 consensusSequence( sequences.values() )
             );
         }
-        
+
         canvasHeightInSquares = sequences.size();
         canvasWidthInSquares = maxLength( sequences.values() );
+
+        fastas = new char[ sequences.size() ][];
+
+        {
+            int i = 0;
+            for ( String sequence : sequences.values() )
+                fastas[i++] = sequence.toCharArray();
+        }
+
+        if (parent != null) {
+            parent.layout();
+            parent.redraw();
+        }
     }
 
     private static String consensusSequence( final Collection<String>
@@ -333,14 +348,6 @@ public class Aligner extends EditorPart {
         setCanvasSizes();
         sc.setContent( c );
 
-        final char fasta[][] = new char[ sequences.size() ][];
-
-        {
-            int i = 0;
-            for ( String sequence : sequences.values() )
-                fasta[i++] = sequence.toCharArray();
-        }
-
         sequenceCanvas.addPaintListener( new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
@@ -360,10 +367,10 @@ public class Aligner extends EditorPart {
                           + sc.getBounds().width / squareSize
                           + 2; // compensate for 2 possible round-downs
 
-                drawSequences(fasta, firstVisibleColumn, lastVisibleColumn, gc);
+                drawSequences(fastas, firstVisibleColumn, lastVisibleColumn, gc);
                 drawSelection( gc );
                 drawConsensusSequence(
-                    fasta[canvasHeightInSquares-1],
+                    fastas[canvasHeightInSquares-1],
                     firstVisibleColumn, lastVisibleColumn, gc);
             }
 
@@ -598,44 +605,25 @@ public class Aligner extends EditorPart {
         parent.layout();
         parent.redraw();
     }
-    
-    //FIXME: I assume this should be ported to the kalign ws plugin?
 
-//    public void align() {
-//        IKalignManager kalign
-//            = net.bioclipse.align.kalign.ws.Activator
-//              .getDefault().getKalignManager();
-//        List<IProtein> proteins = new ArrayList<IProtein>();
-//        for ( String plainSequence : sequences.values() )
-//            proteins.add(biojava.proteinFromPlainSequence(plainSequence));
-//        List<IProtein> res;
-//        try {
-//            res = kalign.alignProteins( proteins );
-//        } catch (BioclipseException e) {
-//            // TODO: Right thing to do here would probably be to throw up
-//            //       an apologetic message box.
-//            return;
-//        }
-//        sequences.clear();
-//        // Add the sequences one by one to the Map. Do minor cosmetics
-//        // on the name by removing everything up to and including to
-//        // the last '|', if any.
-//        for (IProtein protein : res) {
-//            String name = protein.getName().replaceFirst( ".*\\|", "" );
-//            sequences.put( name, protein.getPlainSequence() );
-//        }
-//        // We only show a consensus sequence if there is more than one
-//        // sequence already.
-//        consensusRow  = sequences.size();
-//        if (consensusRow > 1) {
-//            sequences.put(
-//                "Consensus",
-//                consensusSequence( sequences.values() )
-//            );
-//        }
-//        
-//        canvasHeightInSquares = sequences.size();
-//        canvasWidthInSquares = maxLength( sequences.values() );
-//        c.redraw();
-//    }
+    public List<ISequence> getSequences() {
+      List<String> seqvals = new ArrayList<String>( sequences.values() );
+      if (seqvals.size() > 1)
+          seqvals.remove(seqvals.size() - 1);
+
+      List<ISequence> seqs = new ArrayList<ISequence>();
+      for ( String plainSequence : seqvals )
+          seqs.add(biojava.proteinFromPlainSequence(plainSequence));
+      return seqs;
+    }
+
+    enum Type {
+        DNA,
+        RNA,
+        PROTEIN
+    }
+
+    public Type getSequenceType() {
+        return Type.PROTEIN;
+    }
 }

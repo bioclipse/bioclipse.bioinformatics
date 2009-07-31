@@ -11,7 +11,15 @@
  ******************************************************************************/
 package net.bioclipse.align.kalign.ws.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.bioclipse.align.kalign.ws.Activator;
+import net.bioclipse.align.kalign.ws.business.IKalignManager;
 import net.bioclipse.biojava.ui.editors.SequenceEditor;
+import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.domain.IProtein;
+import net.bioclipse.core.domain.ISequence;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -34,17 +42,23 @@ public class AlignHandler extends AbstractHandler implements IHandler {
         if (!(editor instanceof SequenceEditor))
             return null;
 
-        //MASAK: borde väl bli så här typ
-        
-//        editor.getSequencesToAlign();
-//        
-//        IKalignJavaManager kalign=Activator.getDefault().getKalignManager();
-//        kalign.alignDNA( dnaList )
-//        or
-//        kalign.alignProteins( proteinList )
-//        editor.setSequences(...)
-       
-        
+        List<ISequence> sequences = ((SequenceEditor)editor).getSequences();
+        IKalignManager kalign = Activator.getDefault().getKalignManager();
+        List<IProtein> proteins = new ArrayList<IProtein>();
+        for (ISequence seq : sequences)
+            proteins.add(IProtein.class.cast(seq));
+        List<IProtein> alignedProteins;
+        try {
+            alignedProteins = kalign.alignProteins(proteins);
+        } catch (BioclipseException e) {
+            // TODO: Better error handling
+            return null;
+        }
+        List<ISequence> alignedSequences = new ArrayList<ISequence>();
+        for (ISequence seq : alignedProteins)
+            alignedSequences.add(IProtein.class.cast(seq));
+        ((SequenceEditor)editor).setSequences(alignedSequences);
+
         return null;
     }
 
