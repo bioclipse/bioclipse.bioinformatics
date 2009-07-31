@@ -26,6 +26,7 @@ package net.bioclipse.biojava.business;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -46,8 +47,13 @@ import org.biojava.bio.BioException;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
+import org.biojava.bio.seq.db.HashSequenceDB;
+import org.biojava.bio.seq.db.IllegalIDException;
+import org.biojava.bio.seq.db.SequenceDB;
+import org.biojava.bio.seq.io.SeqIOTools;
 import org.biojava.bio.symbol.IllegalAlphabetException;
 import org.biojava.bio.symbol.IllegalSymbolException;
+import org.biojava.utils.ChangeVetoException;
 import org.biojavax.Namespace;
 import org.biojavax.RichObjectFactory;
 import org.biojavax.bio.seq.RichSequence;
@@ -59,6 +65,7 @@ import org.eclipse.core.runtime.CoreException;
  * @author ola
  *
  */
+@SuppressWarnings("deprecation")
 public class BiojavaManager implements IBiojavaManager {
 
     private static final Logger logger = Logger.getLogger(BiojavaManager.class);
@@ -314,5 +321,36 @@ public class BiojavaManager implements IBiojavaManager {
         }
 
         return sequences;
+    }
+
+    public void proteinsToFASTAfile(List<IProtein> proteins, String path) {
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
+
+    public void proteinsToFASTAfile(List<IProtein> proteins, IFile file) {
+        SequenceDB db = new HashSequenceDB();
+
+        for (IProtein protein : proteins) {
+            try {
+                db.addSequence(ProteinTools.createProteinSequence(protein.getPlainSequence(), protein.getName()));
+            } catch (IllegalIDException e) {
+                throw new IllegalArgumentException(e);
+            } catch (ChangeVetoException e) {
+                throw new IllegalArgumentException(e);
+            } catch (IllegalSymbolException e) {
+                throw new IllegalArgumentException(e);
+            } catch (BioException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+   
+        try {
+            SeqIOTools.writeFasta(new FileOutputStream(file.getFullPath().toFile()), db);
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

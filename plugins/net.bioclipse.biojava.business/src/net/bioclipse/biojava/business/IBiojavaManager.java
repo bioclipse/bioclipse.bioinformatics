@@ -296,4 +296,12 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     public List<ISequence> sequencesFromFile( IFile file )
         throws FileNotFoundException;
+
+    @PublishedMethod(
+        methodSummary = "Saves an array of proteins to a FASTA file.",
+        params = "String path" )
+    public void proteinsToFASTAfile(List<IProtein> proteins, String path);
+
+    public void proteinsToFASTAfile(List<IProtein> proteins, IFile file);
+
 }
