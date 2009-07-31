@@ -40,8 +40,8 @@ public class PluginTestKalignwsManager {
                                          .getDefault().getBioJavaManager();
         
         List<IDNA> dnalist=new ArrayList<IDNA>();
-        dnalist.add(biojava.DNAfromPlainString( "ctcttcgg" ));
-        dnalist.add(biojava.DNAfromPlainString( "ctcaattcggaaa" ));
+        dnalist.add(biojava.DNAfromPlainSequence( "ctcttcgg" ));
+        dnalist.add(biojava.DNAfromPlainSequence( "ctcaattcggaaa" ));
         
         List<IDNA> res = kalign.alignDNA( dnalist );
         assertEquals( 2, res.size() );
@@ -59,8 +59,8 @@ public class PluginTestKalignwsManager {
                                          .getDefault().getBioJavaManager();
         
         List<IProtein> proteinlist=new ArrayList<IProtein>();
-        proteinlist.add(biojava.proteinFromPlainString( "ASAMPLESEQ" ));
-        proteinlist.add(biojava.proteinFromPlainString( "ANOTHERSAMPLESEQ" ));
+        proteinlist.add(biojava.proteinFromPlainSequence( "ASAMPLESEQ" ));
+        proteinlist.add(biojava.proteinFromPlainSequence( "ANOTHERSAMPLESEQ" ));
 
         List<IProtein> res = kalign.alignProteins( proteinlist );
         assertEquals( 2, res.size() );

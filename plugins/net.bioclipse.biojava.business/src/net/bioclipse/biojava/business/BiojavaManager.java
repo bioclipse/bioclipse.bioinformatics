@@ -112,33 +112,49 @@ public class BiojavaManager implements IBiojavaManager {
         return proteins;
     }
 
-    public IDNA DNAfromPlainString(String dnaString) {
+    public IDNA DNAfromPlainSequence(String dnaString) {
+        return DNAfromPlainSequence(dnaString,
+                                    "seq" + System.currentTimeMillis());
+    }
+
+    public IRNA RNAfromPlainSequence(String rnaString) {
+        return RNAfromPlainSequence(rnaString,
+                                    "seq" + System.currentTimeMillis());
+    }
+
+    public IProtein proteinFromPlainSequence(String proteinString) {
+        return proteinFromPlainSequence(proteinString,
+                                        "seq" + System.currentTimeMillis());
+    }
+
+    public IDNA DNAfromPlainSequence(String dnaString, String name) {
         try {
             return new BiojavaDNA(DNATools.createDNASequence(
                     dnaString,
-                    "seq" + System.currentTimeMillis()
+                    name
             ));
         } catch (IllegalSymbolException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public IRNA RNAfromPlainString(String rnaString) {
+    public IRNA RNAfromPlainSequence(String rnaString, String name) {
         try {
             return new BiojavaRNA(RNATools.createRNASequence(
                     rnaString,
-                    "seq" + System.currentTimeMillis()
+                    name
             ));
         } catch (IllegalSymbolException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public IProtein proteinFromPlainString(String proteinString) {
+    public IProtein proteinFromPlainSequence(String proteinString,
+                                             String name) {
         try {
             return new BiojavaProtein(ProteinTools.createProteinSequence(
                     proteinString,
-                    "seq" + System.currentTimeMillis()
+                    name
             ));
         } catch (IllegalSymbolException e) {
             throw new IllegalArgumentException(e);
@@ -148,7 +164,7 @@ public class BiojavaManager implements IBiojavaManager {
     public IProtein DNAtoProtein(IDNA dna) {
         String plainSequence = dna.getPlainSequence();
         try {
-            return proteinFromPlainString(
+            return proteinFromPlainSequence(
                     DNATools.toProtein(
                             DNATools.createDNASequence(plainSequence, "")
                     ).seqString()
@@ -163,7 +179,7 @@ public class BiojavaManager implements IBiojavaManager {
     public IRNA DNAtoRNA(IDNA dna) {
         String plainSequence = dna.getPlainSequence();
         try {
-            return RNAfromPlainString(
+            return RNAfromPlainSequence(
                     DNATools.toRNA(
                             DNATools.createDNASequence(plainSequence, "")
                     ).seqString()
@@ -190,7 +206,7 @@ public class BiojavaManager implements IBiojavaManager {
     public IProtein RNAtoProtein(IRNA rna) {
         String plainSequence = rna.getPlainSequence();
         try {
-            return proteinFromPlainString(
+            return proteinFromPlainSequence(
                     RNATools.translate(
                             RNATools.createRNASequence(plainSequence, "")
                     ).seqString()

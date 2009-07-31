@@ -56,7 +56,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaDNA sequence from the given " +
                         "String.",
         params = "String dnaString" )
-    public IDNA DNAfromPlainString(String dnaString);
+    public IDNA DNAfromPlainSequence(String dnaString);
 
     /**
      * Returns a new <code>BiojavaRNA</code> sequence from the given
@@ -69,7 +69,7 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaRNA sequence from the given " +
                         "String.",
         params = "String rnaString" )
-    public IRNA RNAfromPlainString(String rnaString);
+    public IRNA RNAfromPlainSequence(String rnaString);
 
     /**
      * Returns a new <code>BiojavaProtein</code> sequence from the given
@@ -82,7 +82,46 @@ public interface IBiojavaManager extends IBioclipseManager {
         methodSummary = "Returns a new BiojavaProtein sequence from the given " +
                         "String.",
         params = "String proteinString" )
-    public IProtein proteinFromPlainString(String proteinString);
+    public IProtein proteinFromPlainSequence(String proteinString);
+
+    /**
+     * Returns a new <code>BiojavaDNA</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param dnaString A DNA sequence to be converted.
+     * @return A new <code>BiojavaDNA</code>.
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaDNA sequence from the given " +
+                        "String.",
+        params = "String dnaString, String name" )
+    public IDNA DNAfromPlainSequence(String dnaString, String name);
+
+    /**
+     * Returns a new <code>BiojavaRNA</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param rnaString An RNA sequence to be converted.
+     * @return A new <code>BiojavaRNA</code>.
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaRNA sequence from the given " +
+                        "String.",
+        params = "String rnaString, String name" )
+    public IRNA RNAfromPlainSequence(String rnaString, String name);
+
+    /**
+     * Returns a new <code>BiojavaProtein</code> sequence from the given
+     * <code>String</code>.
+     *
+     * @param proteinString An amino acid sequence to be converted.
+     * @return A new <code>BiojavaProtein</code>.
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a new BiojavaProtein sequence from the given " +
+                        "String.",
+        params = "String proteinString, String name" )
+    public IProtein proteinFromPlainSequence(String proteinString, String name);
 
     /**
      * Returns a new <code>BiojavaDNA</code> sequence from the given

@@ -606,7 +606,7 @@ public class Aligner extends EditorPart {
               .getDefault().getKalignManager();
         List<IProtein> proteins = new ArrayList<IProtein>();
         for ( String plainSequence : sequences.values() )
-            proteins.add(biojava.proteinFromPlainString(plainSequence));
+            proteins.add(biojava.proteinFromPlainSequence(plainSequence));
         List<IProtein> res;
         try {
             res = kalign.alignProteins( proteins );

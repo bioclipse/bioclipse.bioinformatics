@@ -35,7 +35,6 @@ public class SequenceCollectionContentHandler extends DefaultHandler {
     private final List<ISequence> sequences;
     private final Alphabet alphabet;
 
-    @SuppressWarnings("unused") //until bug 1442 resolved
     private String currentSeqName;
     private String currentSeq;
 
@@ -96,20 +95,14 @@ public class SequenceCollectionContentHandler extends DefaultHandler {
     private void endCurrentSequence() {
         IBiojavaManager biojava=Activator.getDefault().getBioJavaManager();
         if (this.alphabet.equals(DNATools.getDNA())) {
-            sequences.add( biojava.DNAfromPlainString( currentSeq ));
-            //FIXME: Change to below when bug 1442 is resolved
-//          sequences.add( biojava.DNAfromPlainString( currentSeqName, currentSeq ));
-
+            sequences.add( biojava.DNAfromPlainSequence( currentSeq,
+                                                         currentSeqName ));
         } else if (this.alphabet.equals(RNATools.getRNA())) {
-            sequences.add( biojava.RNAfromPlainString( currentSeq ));
-            //FIXME: Change to below when bug 1442 is resolved
-//          sequences.add( biojava.RNAfromPlainString( currentSeqName, currentSeq ));
-
+            sequences.add( biojava.RNAfromPlainSequence( currentSeq,
+                                                         currentSeqName ));
         } else if (this.alphabet.equals(ProteinTools.getAlphabet())) {
-            sequences.add( biojava.proteinFromPlainString( currentSeq ));
-            //FIXME: Change to below when bug 1442 is resolved
-//            sequences.add( biojava.proteinFromPlainString( currentSeqName, currentSeq ));
-
+            sequences.add( biojava.proteinFromPlainSequence( currentSeq,
+                                                             currentSeqName ));
         }
     }
 
