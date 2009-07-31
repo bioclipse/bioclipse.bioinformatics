@@ -344,7 +344,7 @@ public class BiojavaManager implements IBiojavaManager {
                 throw new IllegalArgumentException(e);
             }
         }
-   
+
         try {
             SeqIOTools.writeFasta(new FileOutputStream(file.getFullPath().toFile()), db);
         } catch (FileNotFoundException e) {
