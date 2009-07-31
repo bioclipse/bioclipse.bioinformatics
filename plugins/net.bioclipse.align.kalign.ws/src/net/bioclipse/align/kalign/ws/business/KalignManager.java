@@ -110,7 +110,7 @@ public class KalignManager implements IBioclipseManager {
                 returnList.add( protein );
             }else{
                 throw new BioclipseException("Not all results of Kalign " +
-                		"WS are proteins.");
+                        "WS are proteins.");
             }
         }
         
@@ -136,8 +136,8 @@ public class KalignManager implements IBioclipseManager {
         
         if (!(type.equals( "P" ) || type.equals( "N" )))
             throw new BioclipseException("Type must be either 'P' " +
-            		"(for protein)" +
-            		" or 'N' (for nucleotide).");
+                    "(for protein)" +
+                    " or 'N' (for nucleotide).");
 
         logger.debug( "Starting Kalign WS" );
         monitor.subTask( "Preparing input" );

@@ -211,7 +211,7 @@ public class WSKalignSoapBindingStub extends org.apache.axis.client.Stub impleme
 
     /**
      * Get the results of a job (see
-     * 				http://www.ebi.ac.uk/Tools/webservices/services/kalign#poll_jobid_type)
+     * http://www.ebi.ac.uk/Tools/webservices/services/kalign#poll_jobid_type)
      */
     public byte[] poll(java.lang.String jobid, java.lang.String type) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
@@ -247,7 +247,7 @@ public class WSKalignSoapBindingStub extends org.apache.axis.client.Stub impleme
 
     /**
      * Submit a Kalign analysis job (see
-     * 				http://www.ebi.ac.uk/Tools/webservices/services/kalign#runkalign_params_content)
+     * http://www.ebi.ac.uk/Tools/webservices/services/kalign#runkalign_params_content)
      */
     public java.lang.String runKalign(uk.ac.ebi.www.WSKalign.InputParams params, uk.ac.ebi.www.WSKalign.Data[] content) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
@@ -283,7 +283,7 @@ public class WSKalignSoapBindingStub extends org.apache.axis.client.Stub impleme
 
     /**
      * Get the status of a submited job (see
-     * 				http://www.ebi.ac.uk/Tools/webservices/services/kalign#checkstatus_jobid)
+     * http://www.ebi.ac.uk/Tools/webservices/services/kalign#checkstatus_jobid)
      */
     public java.lang.String checkStatus(java.lang.String jobid) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
@@ -319,7 +319,7 @@ public class WSKalignSoapBindingStub extends org.apache.axis.client.Stub impleme
 
     /**
      * Get the available result types for a completed job (see
-     * 				http://www.ebi.ac.uk/Tools/webservices/services/kalign#getresults_jobid)
+     * http://www.ebi.ac.uk/Tools/webservices/services/kalign#getresults_jobid)
      */
     public uk.ac.ebi.www.WSKalign.WSFile[] getResults(java.lang.String jobid) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {

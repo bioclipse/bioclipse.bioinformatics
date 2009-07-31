@@ -23,59 +23,61 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "net.bioclipse.biows";
+    // The plug-in ID
+    public static final String PLUGIN_ID = "net.bioclipse.biows";
 
-	// The shared instance
-	private static Activator plugin;
-	
+    // The shared instance
+    private static Activator plugin;
+
   private ServiceTracker finderTracker;
   private ServiceTracker jsFinderTracker;
 
   private static final Logger logger = Logger.getLogger(Activator.class);
 
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
+    /**
+     * The constructor
+     */
+    public Activator() {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     */
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
     
-    finderTracker = new ServiceTracker( context,
-                                        IBiowsManager.class.getName(),
-                                        null );
-    finderTracker.open();
-    
-    jsFinderTracker = new ServiceTracker( context,
-                                          IBiowsJSManager.class.getName(),
-                                          null );
-    jsFinderTracker.open();
-    	}
+            finderTracker = new ServiceTracker( context,
+                                                IBiowsManager.class.getName(),
+                                                null );
+            finderTracker.open();
+            
+            jsFinderTracker = new ServiceTracker(
+                context,
+                IBiowsJSManager.class.getName(),
+                null
+            );
+            jsFinderTracker.open();
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+    }
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static Activator getDefault() {
+        return plugin;
+    }
 
   public IBiowsManager getBiowsManager() {
       IBiowsManager biowsManager;
@@ -109,6 +111,4 @@ public class Activator extends AbstractUIPlugin {
       }
       return biowsJSManager;
   }
-	
-	
 }

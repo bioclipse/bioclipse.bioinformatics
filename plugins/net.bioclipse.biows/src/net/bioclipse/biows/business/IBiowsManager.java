@@ -31,10 +31,10 @@ public interface IBiowsManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="String seqid",
                      methodSummary="Download DNA sequences in FASTA format " +
-                     		"from the refseq " +
-                     		"database at EBI. " +
-                     		"Seqid should be RefSeq ID separated by comma OR space, " +
-                     		"e.g. NM_")
+                     "from the refseq " +
+                     "database at EBI. " +
+                     "Seqid should be RefSeq ID separated by comma OR space, " +
+                     "e.g. NM_")
     public List<IDNA> queryRefseq(String seqid) throws BioclipseException;
 
     @Recorded

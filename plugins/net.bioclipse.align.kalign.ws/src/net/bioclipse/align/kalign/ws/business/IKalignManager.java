@@ -41,7 +41,7 @@ public interface IKalignManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="List<IDNA> dnaList",
                      methodSummary="Align a list of DNA sequences using the " +
-                     		"KAlign Web service at EBI.")
+                             "KAlign Web service at EBI.")
     public List<IDNA> alignDNA(List<IDNA> dnaList) throws BioclipseException;
 
     
@@ -58,7 +58,7 @@ public interface IKalignManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="List<IProtein> proteinList",
                      methodSummary="Align a list of protein sequences using " +
-                     		"the KAlign Web service at EBI.")
+                             "the KAlign Web service at EBI.")
     public List<IProtein> alignProteins(List<IProtein> proteinList) throws BioclipseException;
     
     
