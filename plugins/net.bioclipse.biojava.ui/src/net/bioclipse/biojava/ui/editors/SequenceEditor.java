@@ -11,17 +11,31 @@ package net.bioclipse.biojava.ui.editors;
 
 import java.util.List;
 
+import net.bioclipse.biojava.business.Activator;
+import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.biojava.ui.views.outline.SequenceOutlinePage;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.util.LogUtils;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SequenceEditor extends MultiPageEditorPart {
 
+    private Logger logger = Logger.getLogger(SequenceEditor.class);
+
+    public static final String SEQUENCE_EDITOR_ID = 
+                              "net.bioclipse.biojava.ui.editors.SequenceEditor";
+    
     private Aligner aligner;
     private SequenceOutlinePage outlinePage;
     private boolean dirty;
@@ -34,7 +48,7 @@ public class SequenceEditor extends MultiPageEditorPart {
                                            getEditorInput() ),
                 pageIndex2 = this.addPage( new TextEditor(),
                                            getEditorInput() );
-            setPageText(pageIndex1, "Alignment");
+            setPageText(pageIndex1, "Sequences");
             setPageText(pageIndex2, "Source");
         } catch ( PartInitException e ) {
             e.printStackTrace();
@@ -47,6 +61,27 @@ public class SequenceEditor extends MultiPageEditorPart {
 
     @Override
     public void doSave( IProgressMonitor monitor ) {
+
+        if (!( getEditorInput() instanceof FileEditorInput )) {
+            showError( "Sequence editor can only save to file." );
+            return;
+        }
+        FileEditorInput fed = (FileEditorInput) getEditorInput();
+        IFile file= fed.getFile();
+        IBiojavaManager biojava = Activator.getDefault().getBioJavaManager();
+
+        //Save sequences to FASTA format
+        try {
+            biojava.sequencesToFASTAfile( getSequences(), file, monitor);
+            //Clear dirty flag
+            dirty = false;
+            firePropertyChange( IEditorPart.PROP_DIRTY );
+
+        } catch ( BioclipseException e ) {
+            LogUtils.handleException( e, logger, 
+                                 net.bioclipse.biojava.ui.Activator.PLUGIN_ID );
+        }
+
     }
 
     @Override
@@ -87,5 +122,15 @@ public class SequenceEditor extends MultiPageEditorPart {
     public void setSequences(List<ISequence> sequences) {
         aligner.setSequences(sequences);
         dirty = true;
+        firePropertyChange( IEditorPart.PROP_DIRTY );
+        
     }
+    
+    private void showError(String message) {
+        MessageDialog.openError( 
+                                      getSite().getShell(),
+                                      "Error",
+                                      message);
+    }
+
 }
