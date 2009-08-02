@@ -18,17 +18,38 @@
       <editor
             class="net.bioclipse.biojava.ui.editors.SequenceEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            extensions="fasta"
-            icon="icons/logo/logo_16_trans.gif"
-            id="net.bioclipse.biojava.ui.editors.AlignmentEditor"
-            name="Alignment">
+            icon="icons/sequence4.gif"
+            id="net.bioclipse.biojava.ui.editors.SequenceEditor"
+            name="Sequence Editor">
             <contentTypeBinding
                   contentTypeId="net.bioclipse.biojava.ui.sequenceType">
             </contentTypeBinding>
       </editor>
    </extension>
 
-   <extension
+      <extension
+         point="net.bioclipse.ui.business.editorShortname">
+         <shortname
+               alias="sequence"
+               editorID="net.bioclipse.biojava.ui.editors.SequenceEditor">
+         </shortname>
+   </extension>
+   
+      <extension
+         point="net.bioclipse.ui.bioobjectDescriber">
+		<BioObject
+	        describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
+    	    id="net.bioclipse.cdk.sequenceditor.describer"
+    	    objectClass="net.bioclipse.core.domain.RecordableList">
+		</BioObject>         
+		<BioObject
+	        describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
+    	    id="net.bioclipse.cdk.sequenceditor.describer"
+    	    objectClass="net.bioclipse.core.domain.ISequence">
+		</BioObject>         
+   </extension>
+
+   <!--extension
          point="org.eclipse.ui.navigator.navigatorContent">
       <navigatorContent 
             contentProvider="net.bioclipse.biojava.ui.views.SequenceContentProvider"
@@ -59,10 +80,10 @@
          </and>
          </triggerPoints>
       </navigatorContent>
-   </extension>
+   </extension-->
 
 <!-- Add SequenceContent to expand Sequences with BioJava -->
-<extension
+<!--extension
       point="org.eclipse.ui.navigator.viewer">
       <viewerContentBinding
             viewerId="net.bioclipse.navigator">
@@ -72,79 +93,9 @@
             </contentExtension>
             </includes>
       </viewerContentBinding>
-</extension>
+</extension-->
 
-<!-- Object Contributions for Biojava -->
-
-   <!--extension
-         point="org.eclipse.ui.popupMenus">
-    <objectContribution
-            adaptable="false"
-            id="net.bioclipse.biojava.ui.actions.DNASequenceResource"
-            objectClass="net.bioclipse.core.domain.IDNASequence">
-         <action
-               class="net.bioclipse.biojava.ui.actions.TranslateDNAToRNAAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.TranslateDNAToRNAAction"
-               label="Translate DNA to RNA"
-               menubarPath="additions"
-               tooltip="Translate the selected sequence to RNA"/>
-         <action
-               class="net.bioclipse.biojava.ui.actions.TranslateDNAToProteinAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.TranslateDNAToProteinAction"
-               label="Translate DNA to Protein"
-               menubarPath="additions"
-               tooltip="Translate the selected sequence to RNA"/>
-      </objectContribution>
-      <objectContribution
-            adaptable="false"
-            id="net.bioclipse.biojava.ui.actions.RNASequenceResource"
-            objectClass="net.bioclipse.core.domain.IRNASequence">
-         <action
-               class="net.bioclipse.biojava.ui.actions.TranslateRNAToDNAAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.TranslateRNAToDNAAction"
-               label="Translate RNA to DNA"
-               menubarPath="additions"
-               tooltip="Translate the selected RNA sequence to DNA"/>
-         <action
-               class="net.bioclipse.biojava.ui.actions.TranslateRNAToProteinAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.TranslateRNAToProteinAction"
-               label="Translate RNA to Protein"
-               menubarPath="additions"
-               tooltip="Translate the selected RNA sequence to Protein"/>
-      </objectContribution>
-      <objectContribution
-            adaptable="false"
-            id="net.bioclipse.biojava.ui.actions.AASequenceResource"
-            objectClass="net.bioclipse.core.domain.IAASequence">
-               <action
-               class="net.bioclipse.biojava.ui.actions.LongRunningAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.LongRunningAction"
-               label="Long protein action"
-               menubarPath="additions"
-               tooltip="Long running operation on an IAASequence"/>
-               <action
-               class="net.bioclipse.biojava.ui.actions.FailingLongRunningAction"
-               enablesFor="1"
-               icon="icons/sequence3.gif"
-               id="net.bioclipse.biojava.ui.actions.FailingLongRunningAction"
-               label="Failing long protein action"
-               menubarPath="additions"
-               tooltip="Long running operation on an IAASequence that fails"/>
-      </objectContribution>
-
-   </extension-->
-
-	   <extension
+  <extension
          point="org.eclipse.ui.commands">
          <category
                id="net.bioclipse.biojava.ui.category"
@@ -157,9 +108,9 @@
    </extension>
 
    <extension point="org.eclipse.core.expressions.definitions">
-      <definition id="net.bioclipse.definitions.activeAlignmentEditor">
+      <definition id="net.bioclipse.definitions.activeSequenceEditor">
          <with variable="activeEditorId">
-            <equals value="net.bioclipse.biojava.ui.editors.AlignmentEditor" />
+            <equals value="net.bioclipse.biojava.ui.editors.SequenceEditor" />
          </with>
       </definition>
    </extension>
@@ -175,7 +126,7 @@
                    icon="icons/zoom_out.png">
             <visibleWhen>
               <reference
-                definitionId="net.bioclipse.definitions.activeAlignmentEditor">
+                definitionId="net.bioclipse.definitions.activeSequenceEditor">
               </reference>
             </visibleWhen>
           </command>
@@ -185,13 +136,20 @@
                    icon="icons/zoom_in.png">
             <visibleWhen>
               <reference
-                definitionId="net.bioclipse.definitions.activeAlignmentEditor">
+                definitionId="net.bioclipse.definitions.activeSequenceEditor">
               </reference>
             </visibleWhen>
           </command>
          
           <separator name="additions"
                      visible="false" />
+                     
+            <visibleWhen>
+              <reference
+                definitionId="net.bioclipse.definitions.activeSequenceEditor">
+              </reference>
+            </visibleWhen>
+                     
         </toolbar>
      </menuContribution>
   </extension>
@@ -201,15 +159,6 @@
              description="Zoom in"
              name="Zoom in">
     </command>
-  </extension>
-
-  <extension point="org.eclipse.ui.handlers">
-    <handler class="net.bioclipse.biojava.ui.handlers.ZoomInHandler"
-            commandId="net.bioclipse.biojava.ui.actions.zoomin">
-    </handler>
-  </extension>
-
-  <extension point="org.eclipse.ui.commands">
     <command id="net.bioclipse.biojava.ui.actions.zoomout"
              description="Zoom out"
              name="Zoom out">
@@ -217,22 +166,13 @@
   </extension>
 
   <extension point="org.eclipse.ui.handlers">
+    <handler class="net.bioclipse.biojava.ui.handlers.ZoomInHandler"
+            commandId="net.bioclipse.biojava.ui.actions.zoomin">
+    </handler>
     <handler class="net.bioclipse.biojava.ui.handlers.ZoomOutHandler"
             commandId="net.bioclipse.biojava.ui.actions.zoomout">
     </handler>
   </extension>
 
-  <extension point="org.eclipse.ui.commands">
-    <command id="net.bioclipse.biojava.ui.actions.align"
-             description="Align"
-             name="Align">
-    </command>
-  </extension>
-
-  <extension point="org.eclipse.ui.handlers">
-    <handler class="net.bioclipse.biojava.ui.handlers.AlignHandler"
-            commandId="net.bioclipse.biojava.ui.actions.align">
-    </handler>
-  </extension>
 
 </plugin>
