@@ -10,13 +10,13 @@
       </scriptContribution>
    </extension>
    
-      <extension point="org.eclipse.core.expressions.definitions">
-      <definition id="net.bioclipse.definitions.activeAlignmentEditor">
+      <!--extension point="org.eclipse.core.expressions.definitions">
+      <definition id="net.bioclipse.definitions.activeSequenceEditor">
          <with variable="activeEditorId">
-            <equals value="net.bioclipse.biojava.ui.editors.AlignmentEditor" />
+            <equals value="net.bioclipse.biojava.ui.editors.SequenceEditor" />
          </with>
       </definition>
-   </extension>
+   </extension-->
    
 
   <extension point="org.eclipse.ui.menus">
@@ -28,7 +28,7 @@
                    icon="icons/align.png">
             <visibleWhen>
               <reference
-                definitionId="net.bioclipse.definitions.activeAlignmentEditor">
+                definitionId="net.bioclipse.definitions.activeSequenceEditor">
               </reference>
             </visibleWhen>
           </command> 
