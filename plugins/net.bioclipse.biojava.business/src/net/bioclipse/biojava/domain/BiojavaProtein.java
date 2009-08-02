@@ -27,6 +27,7 @@ public class BiojavaProtein extends BiojavaSequence
     }
 
     public String toString() {
-        return "protein:'" + sequence.seqString() + "'";
+        return "Protein, name='" + sequence.getName() + "': " 
+        + sequence.seqString();
     }
 }

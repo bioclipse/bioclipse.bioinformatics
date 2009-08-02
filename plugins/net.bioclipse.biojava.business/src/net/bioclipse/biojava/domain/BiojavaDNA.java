@@ -28,6 +28,7 @@ public class BiojavaDNA extends BiojavaSequence
     }
 
     public String toString() {
-        return "dna:'" + sequence.seqString() + "'";
+        return "DNA: '" + sequence.getName() + "': " 
+        + sequence.seqString();
     }
 }
