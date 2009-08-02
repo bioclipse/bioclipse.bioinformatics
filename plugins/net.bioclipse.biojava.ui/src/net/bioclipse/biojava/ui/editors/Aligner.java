@@ -607,14 +607,30 @@ public class Aligner extends EditorPart {
     }
 
     public List<ISequence> getSequences() {
+
+        List<ISequence> seqs = new ArrayList<ISequence>();
+
+        for (String name : sequences.keySet()){
+            if (!("Consensus".equals( name ))){
+                String plainSequence = sequences.get( name );
+                seqs.add(biojava.proteinFromPlainSequence(plainSequence, name));
+            }
+        }
+        return seqs;
+
+        //Below is old impl by masak. TODO: Remove after review
+/*        
       List<String> seqvals = new ArrayList<String>( sequences.values() );
+      
+      //Remove consensus sequence
       if (seqvals.size() > 1)
           seqvals.remove(seqvals.size() - 1);
 
       List<ISequence> seqs = new ArrayList<ISequence>();
       for ( String plainSequence : seqvals )
-          seqs.add(biojava.proteinFromPlainSequence(plainSequence));
+          seqs.add(biojava.proteinFromPlainSequence(plainSequence, name));
       return seqs;
+      */
     }
 
     enum Type {
