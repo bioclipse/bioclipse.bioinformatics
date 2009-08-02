@@ -48,9 +48,10 @@ public interface IBiowsManager extends IBioclipseManager {
 
     @Recorded
     @PublishedMethod(params="String seqid",
-                     methodSummary="Download DNA sequences in FASTA format " +
-                        "from the refseq " +
-                        "database at EBI. " +
+                     methodSummary="Download protein sequences in FASTA " +
+                     		"format " +
+                        "from the Uniprot KnowwledgeBase " +
+                        "at EBI. " +
                         "Entries can be retrieved by entry name " +
                         "(e.g. INSR_HUMAN) or by accession number " +
                         "(e.g. P06213). ")
