@@ -25,10 +25,12 @@ package net.bioclipse.biojava.business;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,10 +39,13 @@ import java.util.NoSuchElementException;
 import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.biojava.domain.BiojavaRNA;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.domain.RecordableList;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.BioException;
@@ -59,7 +64,11 @@ import org.biojavax.RichObjectFactory;
 import org.biojavax.bio.seq.RichSequence;
 import org.biojavax.bio.seq.RichSequenceIterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
  * @author ola
@@ -182,6 +191,28 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e);
         }
     }
+    
+    public List<IProtein> DNAtoProtein(List<IDNA> dnas) {
+        
+        List<IProtein> proteins = new RecordableList<IProtein>();
+        try {
+            for (IDNA dna : dnas){
+                String plainSequence = dna.getPlainSequence();
+                proteins.add(proteinFromPlainSequence(
+                                   DNATools.toProtein(
+                                   DNATools.createDNASequence(plainSequence, "")
+                                   ).seqString()
+                ));
+            }
+        } catch (IllegalAlphabetException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalSymbolException e) {
+            throw new IllegalArgumentException(e);
+        }
+        
+        return proteins;
+    }
+
 
     public IRNA DNAtoRNA(IDNA dna) {
         String plainSequence = dna.getPlainSequence();
@@ -327,6 +358,224 @@ public class BiojavaManager implements IBiojavaManager {
         //TODO: Change to latest world order and remove this method
         throw new IllegalStateException("This method should not be called");
     }
+
+    public void sequencesToFASTAfile(List<ISequence> sequences, String path) {
+        //TODO: Change to latest world order and remove this method
+        throw new IllegalStateException("This method should not be called");
+    }
+
+    public void sequencesToFASTAfile(final List<ISequence> sequences, 
+                                     final IFile file, 
+                                     IProgressMonitor monitor)
+                                     throws BioclipseException{
+        
+        SequenceDB db = new HashSequenceDB();
+
+        //Delegate to proteins or DNA
+        for (ISequence seq : sequences){
+            if ( seq instanceof IProtein ) {
+                IProtein protein = (IProtein) seq;
+                try {
+                    db.addSequence(ProteinTools.createProteinSequence(
+                                                     protein.getPlainSequence(),
+                                                     protein.getName()));
+                    logger.debug("Added protein sequence: " + protein.getName()
+                                 + " to write.");
+                } catch ( IllegalIDException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( ChangeVetoException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( IllegalSymbolException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( BioException e ) {
+                    throw new IllegalArgumentException(e);
+                }
+
+            }
+            else if ( seq instanceof IDNA ) {
+                IDNA dna = (IDNA) seq;
+                try {
+                    db.addSequence(DNATools.createDNASequence( 
+                                                         dna.getPlainSequence(),
+                                                         dna.getName()));
+                    logger.debug("Added DNA sequence: " + dna.getName()
+                                 + " to write.");
+                } catch ( IllegalIDException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( ChangeVetoException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( IllegalSymbolException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( BioException e ) {
+                    throw new IllegalArgumentException(e);
+                }
+
+            }
+            else{
+                throw new IllegalArgumentException("Only IProteins and " +
+                                           "IDNA allowed in list of sequences");
+            }
+        }
+
+        try {
+            //Write to byte[]
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, db);
+
+            //Write byte[] as new content to file
+            ByteArrayInputStream bis=new ByteArrayInputStream(bos.toByteArray());
+            file.setContents( bis, false, false, monitor );
+
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        } catch ( CoreException e ) {
+            throw new BioclipseException("Error saving file: " + e.getMessage());
+        }
+
+
+    }
+    
+    public String sequencesToFASTAString(
+                                     final List<? extends ISequence> sequences){
+        
+        SequenceDB db = new HashSequenceDB();
+
+        //Delegate to proteins or DNA
+        for (ISequence seq : sequences){
+            if ( seq instanceof IProtein ) {
+                IProtein protein = (IProtein) seq;
+                try {
+                    db.addSequence(ProteinTools.createProteinSequence(
+                                                     protein.getPlainSequence(),
+                                                     protein.getName()));
+                } catch ( IllegalIDException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( ChangeVetoException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( IllegalSymbolException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( BioException e ) {
+                    throw new IllegalArgumentException(e);
+                }
+
+            }
+            else if ( seq instanceof IDNA ) {
+                IDNA dna = (IDNA) seq;
+                try {
+                    db.addSequence(DNATools.createDNASequence( 
+                                                         dna.getPlainSequence(),
+                                                         dna.getName()));
+                } catch ( IllegalIDException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( ChangeVetoException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( IllegalSymbolException e ) {
+                    throw new IllegalArgumentException(e);
+                } catch ( BioException e ) {
+                    throw new IllegalArgumentException(e);
+                }
+
+            }
+            else{
+                throw new IllegalArgumentException("Only IProteins and " +
+                                           "IDNA allowed in list of sequences");
+            }
+        }
+
+        try {
+            //Write to byte[]
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, db);
+
+            return bos.toString();
+
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+    
+    public RecordableList<ISequence> createSequenceList()
+                                                    throws BioclipseException,
+                                                    InvocationTargetException {
+        return new RecordableList<ISequence>();
+    }
+
+    
+    public String proteinsToFASTAString(final List<IProtein> proteins){
+
+        SequenceDB db = new HashSequenceDB();
+
+        //Delegate to proteins or DNA
+        for (IProtein protein : proteins){
+            try {
+                db.addSequence(ProteinTools.createProteinSequence(
+                                                     protein.getPlainSequence(),
+                                                     protein.getName()));
+            } catch ( IllegalIDException e ) {
+                throw new IllegalArgumentException(e);
+            } catch ( ChangeVetoException e ) {
+                throw new IllegalArgumentException(e);
+            } catch ( IllegalSymbolException e ) {
+                throw new IllegalArgumentException(e);
+            } catch ( BioException e ) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
+        try {
+            //Write to byte[]
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, db);
+
+            return bos.toString();
+
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public String dnaToFASTAString(final List<IDNA> dnas){
+
+        SequenceDB db = new HashSequenceDB();
+
+        //Delegate to proteins or DNA
+        for (IDNA dna : dnas){
+            try {
+                db.addSequence(DNATools.createDNASequence( 
+                                                         dna.getPlainSequence(),
+                                                          dna.getName()));
+            } catch ( IllegalIDException e ) {
+                throw new IllegalArgumentException(e);
+            } catch ( ChangeVetoException e ) {
+                throw new IllegalArgumentException(e);
+            } catch ( IllegalSymbolException e ) {
+                throw new IllegalArgumentException(e);
+            } catch ( BioException e ) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
+        try {
+            //Write to byte[]
+            ByteArrayOutputStream bos=new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, db);
+
+            return bos.toString();
+
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+
 
     public void proteinsToFASTAfile(List<IProtein> proteins, IFile file) {
         SequenceDB db = new HashSequenceDB();

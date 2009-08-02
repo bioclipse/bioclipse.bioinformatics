@@ -14,16 +14,20 @@
 package net.bioclipse.biojava.business;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
+import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.domain.RecordableList;
 import net.bioclipse.managers.business.IBioclipseManager;
 
 /**
@@ -190,6 +194,13 @@ public interface IBiojavaManager extends IBioclipseManager {
                         "given DNA sequence.",
         params = "IDNA dna" )
     public IProtein DNAtoProtein(IDNA dna);
+    
+    @PublishedMethod(
+      methodSummary = "Returns a list of protein sequences as transcribed and " +
+      		"translated from the given DNA sequences.",
+         params = "List<IDNA> dnas" )
+    public List<IProtein> DNAtoProtein( List<IDNA> dnas );
+
 
     /**
      * Returns the <code>IDNA</code> sequence equivalent of the given
@@ -285,10 +296,6 @@ public interface IBiojavaManager extends IBioclipseManager {
     public List<IProtein> proteinsFromFile(IFile file)
                               throws FileNotFoundException;
 
-    /**
-     * @param string
-     * @return
-     */
     @PublishedMethod( 
         methodSummary = "Loads sequences from file at path",
         params = "String path" )
@@ -303,5 +310,35 @@ public interface IBiojavaManager extends IBioclipseManager {
     public void proteinsToFASTAfile(List<IProtein> proteins, String path);
 
     public void proteinsToFASTAfile(List<IProtein> proteins, IFile file);
+
+    @PublishedMethod(
+                 methodSummary = "Saves an array of sequences to a FASTA file.",
+                 params = "String path" )
+    public void sequencesToFASTAfile( List<ISequence> sequences, String path );
+    public void sequencesToFASTAfile( List<ISequence> sequences, IFile file, 
+                                      IProgressMonitor monitor ) 
+                                      throws BioclipseException;
+
+    @PublishedMethod(
+           methodSummary = "Serialize a list of sequences to a FASTA String.",
+           params = "List<ISequence> sequences" )
+    public String sequencesToFASTAString( List<? extends ISequence> sequences );
+
+    @PublishedMethod(
+                     methodSummary = "Serialize a list of DNA sequences " +
+                     		"to a FASTA String.",
+                     params = "List<IDNA> dnas" )
+    public String dnaToFASTAString( List<IDNA> dnas );
+
+    @PublishedMethod(
+                     methodSummary = "Serialize a list of protein sequences " +
+                        "to a FASTA String.",
+                     params = "List<IProtein> proteins" )
+    public String proteinsToFASTAString( List<IProtein> proteins );
+
+    @PublishedMethod(methodSummary = "Create an empty list of Sequences")
+    public RecordableList<ISequence> createSequenceList() 
+        throws BioclipseException, InvocationTargetException;
+
 
 }
