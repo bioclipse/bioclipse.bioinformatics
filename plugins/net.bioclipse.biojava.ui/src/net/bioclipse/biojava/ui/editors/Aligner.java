@@ -57,7 +57,7 @@ public class Aligner extends EditorPart {
 
     static final Display display = Display.getCurrent();
     static final ColorManager colorManager = new ColorManager();
-    
+
     static public final Color
         normalAAColor   = display.getSystemColor( SWT.COLOR_WHITE ),
         polarAAColor    = colorManager.getColor( new RGB(0xD0, 0xFF, 0xD0) ),
@@ -72,7 +72,7 @@ public class Aligner extends EditorPart {
         consensusColor  = colorManager.getColor( new RGB(0xAA, 0xAA, 0xAA) ),
         selectionColor1 = display.getSystemColor( SWT.COLOR_BLACK ),
         selectionColor2 = display.getSystemColor( SWT.COLOR_BLACK );
-    
+
     static public final Color[] consensusColors
         = generateColorList( new int[] {
                 0xFFFFDD, // only one type; total consensus
@@ -85,20 +85,20 @@ public class Aligner extends EditorPart {
                 0x88886C,
                 0x77775F
         } );
-    
+
     //          seqname, sequence
     private Map<String,  String> sequences;
     private int consensusRow;
 
     private static Point np() { return new Point(0, 0); }
-    
+
     private Point selectionStart                = np(),
                   selectionEnd                  = np(),
                   dragStart                     = np(),
                   dragEnd                       = np(),
                   selectionTopLeftInSquares     = np(),
                   selectionBottomRightInSquares = np();
-    
+
     private boolean currentlySelecting         = false,
                     currentlyDraggingSelection = false,
                     selectionVisible           = false;
@@ -109,7 +109,7 @@ public class Aligner extends EditorPart {
     private IBiojavaManager biojava
         = Activator.getDefault().getBioJavaManager();
     private char fastas[][];
-    
+
     @Override
     public void doSave( IProgressMonitor monitor ) {
     }
@@ -121,15 +121,15 @@ public class Aligner extends EditorPart {
     @Override
     public void init( IEditorSite site, IEditorInput input )
         throws PartInitException {
-        
+
         if (!(input instanceof IFileEditorInput))
             throw new PartInitException(
                 "Invalid Input: Must be IFileEditorInput");
-        
+
         setSite(site);
         setInput(input);
     }
-    
+
     @Override
     public void setInput( IEditorInput input ) {
         super.setInput(input);
@@ -192,32 +192,32 @@ public class Aligner extends EditorPart {
         for ( int i = 0, n = maxLength(sequences); i < n; ++i ) {
             consensus.append( consensusChar(sequences, i) );
         }
-        
+
         return consensus.toString();
     }
 
     private static int maxLength( final Collection<String> strings ) {
-        
+
         int maxLength = 0;
         for ( String s : strings )
             if ( maxLength < s.length() )
                 maxLength = s.length();
-        
+
         return maxLength;
     }
 
     private static char consensusChar( final Collection<String> sequences,
                                        final int index ) {
-        
+
         Map<Character, Boolean> columnChars
             = new HashMap<Character, Boolean>();
-        
+
         for ( String seq : sequences )
             columnChars.put( seq.length() > index
                                ? seq.charAt(index)
                                : '\0',
                              true );
-        
+
         return columnChars.size() == 1
                ? columnChars.keySet().iterator().next()
                : Character.forDigit( Math.min(columnChars.size(), 9), 10 );
@@ -384,7 +384,7 @@ public class Aligner extends EditorPart {
                     int xCoord = column * squareSize;
 
                     for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
-                        
+
                         char c = fasta[row].length > column
                                  ? fasta[row][column] : ' ';
                         String cc = c + "";
@@ -397,12 +397,12 @@ public class Aligner extends EditorPart {
                           :   "GP".contains( cc ) ? smallAAColor
                           :    'C' == c           ? cysteineColor
                                                   : normalAAColor );
-                        
+
                         int yCoord = row * squareSize;
-                        
+
                         gc.fillRectangle(xCoord, yCoord,
                                          squareSize, squareSize);
-                        
+
                         if ( Character.isUpperCase( c )
                              && squareSize
                                   >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
@@ -410,34 +410,34 @@ public class Aligner extends EditorPart {
                     }
                 }
             }
-            
+
             private void drawConsensusSequence( final char[] sequence,
                                                 int firstVisibleColumn,
                                                 int lastVisibleColumn, GC gc ) {
 
                 int yCoord = (canvasHeightInSquares-1) * squareSize;
-                
+
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
 
                     char c = sequence.length > column ? sequence[column] : ' ';
                     int consensusDegree = Character.isDigit(c) ? c - '0' : 1;
-                            
+
                     gc.setBackground(consensusColors[ consensusDegree-1 ]);
-                        
+
                     int xCoord = column * squareSize;
-                        
+
                     gc.fillRectangle(xCoord, yCoord, squareSize, squareSize);
-                        
+
                     if ( Character.isUpperCase( c )
                          && squareSize
                               >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
                         gc.drawText( "" + c, xCoord + 4, yCoord + 2 );
                 }
             }
-            
+
             private void drawSelection( GC gc ) {
-                
+
                 if (!selectionVisible)
                     return;
 
@@ -452,7 +452,7 @@ public class Aligner extends EditorPart {
                                   yTop,
                                   xRight - xLeft - 1,
                                   yBottom - yTop - 1 );
-                
+
                 gc.setBackground( selectionColor2 );
                 gc.setAlpha( 64 ); // 25%
                 gc.fillRectangle( xLeft           + 1,
@@ -462,7 +462,7 @@ public class Aligner extends EditorPart {
                 gc.setAlpha( 255 ); // opaque again
             }
         });
-        
+
         sequenceCanvas.addMouseListener( new MouseListener() {
 
             public void mouseDoubleClick( MouseEvent e ) {
@@ -478,11 +478,11 @@ public class Aligner extends EditorPart {
                     yTop    = boundaries[1],
                     xRight  = boundaries[2],
                     yBottom = boundaries[3];
-                
+
                 if ( selectionVisible
                      && xLeft <= e.x && e.x <= xRight
                      && yTop  <= e.y && e.y <= yBottom ) {
-                    
+
                     currentlyDraggingSelection = true;
                     dragStart.x = dragEnd.x = e.x;
                     dragStart.y = dragEnd.y = e.y;
@@ -497,7 +497,7 @@ public class Aligner extends EditorPart {
             }
 
             public void mouseUp( MouseEvent e ) {
-                
+
                 if (currentlyDraggingSelection) {
                     // The expressions do three things:
                     //
@@ -515,22 +515,22 @@ public class Aligner extends EditorPart {
                           = (dragEnd.y - dragStart.y                       // 1
                              + squareSize/2 * (dragEnd.y<dragStart.y?-1:1) // 2
                             ) / squareSize;                                // 3
-                    
+
                     selectionTopLeftInSquares.x       += xDelta;
                     selectionBottomRightInSquares.x   += xDelta;
 
                     selectionTopLeftInSquares.y       += yDelta;
                     selectionBottomRightInSquares.y   += yDelta;
-                    
+
                     sequenceCanvas.redraw();
                 }
-                
+
                 dragEnd = new Point(dragStart.x, dragStart.y);
                 currentlySelecting = currentlyDraggingSelection = false;
             }
-            
+
         });
-        
+
         sequenceCanvas.addMouseMoveListener( new MouseMoveListener() {
 
             public void mouseMove( MouseEvent e ) {
@@ -539,14 +539,14 @@ public class Aligner extends EditorPart {
                 if (currentlySelecting) {
                   selectionEnd.x = e.x;
                   selectionEnd.y = e.y;
-                  
+
                   selectionVisible = true;
 
                   int viewPortLeft  = -c.getLocation().x,
                       viewPortRight = viewPortLeft + sc.getBounds().width,
                       viewPortTop   = -c.getLocation().y,
                       maximumLeft   = sc.getHorizontalBar().getMaximum();
-                  
+
                   if ( e.x > viewPortRight ) {
                       viewPortLeft += e.x - viewPortRight;
                       if (viewPortRight >= maximumLeft )
@@ -557,25 +557,25 @@ public class Aligner extends EditorPart {
                       if (viewPortLeft < 0)
                           viewPortLeft = 0;
                   }
-                  
+
                   if ( viewPortLeft != -c.getLocation().x ) {
                       sc.getHorizontalBar().setSelection( viewPortLeft );
                       c.setLocation( -viewPortLeft, -viewPortTop );
                   }
-                  
+
                   sequenceCanvas.redraw();
-                  
+
                   selectionBounds();
                 }
-                
+
                 if (currentlyDraggingSelection) {
                     dragEnd.x = e.x;
                     dragEnd.y = e.y;
-                    
+
                     sequenceCanvas.redraw();
                 }
             }
-            
+
         });
     }
 
@@ -619,9 +619,9 @@ public class Aligner extends EditorPart {
         return seqs;
 
         //Below is old impl by masak. TODO: Remove after review
-/*        
+/*
       List<String> seqvals = new ArrayList<String>( sequences.values() );
-      
+
       //Remove consensus sequence
       if (seqvals.size() > 1)
           seqvals.remove(seqvals.size() - 1);

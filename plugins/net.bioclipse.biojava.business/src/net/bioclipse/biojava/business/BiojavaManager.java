@@ -191,9 +191,9 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e);
         }
     }
-    
+
     public List<IProtein> DNAtoProtein(List<IDNA> dnas) {
-        
+
         List<IProtein> proteins = new RecordableList<IProtein>();
         try {
             for (IDNA dna : dnas){
@@ -209,7 +209,7 @@ public class BiojavaManager implements IBiojavaManager {
         } catch (IllegalSymbolException e) {
             throw new IllegalArgumentException(e);
         }
-        
+
         return proteins;
     }
 
@@ -364,11 +364,11 @@ public class BiojavaManager implements IBiojavaManager {
         throw new IllegalStateException("This method should not be called");
     }
 
-    public void sequencesToFASTAfile(final List<ISequence> sequences, 
-                                     final IFile file, 
+    public void sequencesToFASTAfile(final List<ISequence> sequences,
+                                     final IFile file,
                                      IProgressMonitor monitor)
                                      throws BioclipseException{
-        
+
         SequenceDB db = new HashSequenceDB();
 
         //Delegate to proteins or DNA
@@ -395,7 +395,7 @@ public class BiojavaManager implements IBiojavaManager {
             else if ( seq instanceof IDNA ) {
                 IDNA dna = (IDNA) seq;
                 try {
-                    db.addSequence(DNATools.createDNASequence( 
+                    db.addSequence(DNATools.createDNASequence(
                                                          dna.getPlainSequence(),
                                                          dna.getName()));
                     logger.debug("Added DNA sequence: " + dna.getName()
@@ -436,10 +436,10 @@ public class BiojavaManager implements IBiojavaManager {
 
 
     }
-    
+
     public String sequencesToFASTAString(
                                      final List<? extends ISequence> sequences){
-        
+
         SequenceDB db = new HashSequenceDB();
 
         //Delegate to proteins or DNA
@@ -464,7 +464,7 @@ public class BiojavaManager implements IBiojavaManager {
             else if ( seq instanceof IDNA ) {
                 IDNA dna = (IDNA) seq;
                 try {
-                    db.addSequence(DNATools.createDNASequence( 
+                    db.addSequence(DNATools.createDNASequence(
                                                          dna.getPlainSequence(),
                                                          dna.getName()));
                 } catch ( IllegalIDException e ) {
@@ -497,14 +497,14 @@ public class BiojavaManager implements IBiojavaManager {
             throw new IllegalArgumentException(e);
         }
     }
-    
+
     public RecordableList<ISequence> createSequenceList()
                                                     throws BioclipseException,
                                                     InvocationTargetException {
         return new RecordableList<ISequence>();
     }
 
-    
+
     public String proteinsToFASTAString(final List<IProtein> proteins){
 
         SequenceDB db = new HashSequenceDB();
@@ -547,7 +547,7 @@ public class BiojavaManager implements IBiojavaManager {
         //Delegate to proteins or DNA
         for (IDNA dna : dnas){
             try {
-                db.addSequence(DNATools.createDNASequence( 
+                db.addSequence(DNATools.createDNASequence(
                                                          dna.getPlainSequence(),
                                                           dna.getName()));
             } catch ( IllegalIDException e ) {

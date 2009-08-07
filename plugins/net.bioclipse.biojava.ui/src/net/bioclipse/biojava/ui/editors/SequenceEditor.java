@@ -33,13 +33,13 @@ public class SequenceEditor extends MultiPageEditorPart {
 
     private Logger logger = Logger.getLogger(SequenceEditor.class);
 
-    public static final String SEQUENCE_EDITOR_ID = 
+    public static final String SEQUENCE_EDITOR_ID =
                               "net.bioclipse.biojava.ui.editors.SequenceEditor";
-    
+
     private Aligner aligner;
     private SequenceOutlinePage outlinePage;
     private boolean dirty;
-    
+
     @Override
     protected void createPages() {
         setPartName( getEditorInput().getName() );
@@ -78,7 +78,7 @@ public class SequenceEditor extends MultiPageEditorPart {
             firePropertyChange( IEditorPart.PROP_DIRTY );
 
         } catch ( BioclipseException e ) {
-            LogUtils.handleException( e, logger, 
+            LogUtils.handleException( e, logger,
                                  net.bioclipse.biojava.ui.Activator.PLUGIN_ID );
         }
 
@@ -92,7 +92,7 @@ public class SequenceEditor extends MultiPageEditorPart {
     public boolean isSaveAsAllowed() {
         return false;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public Object getAdapter(Class required) {
@@ -103,7 +103,7 @@ public class SequenceEditor extends MultiPageEditorPart {
                = outlinePage == null
                    ? new SequenceOutlinePage(getEditorInput(), this)
                    : outlinePage;
-       
+
        return super.getAdapter(required);
    }
 
@@ -123,11 +123,11 @@ public class SequenceEditor extends MultiPageEditorPart {
         aligner.setSequences(sequences);
         dirty = true;
         firePropertyChange( IEditorPart.PROP_DIRTY );
-        
+
     }
-    
+
     private void showError(String message) {
-        MessageDialog.openError( 
+        MessageDialog.openError(
                                       getSite().getShell(),
                                       "Error",
                                       message);

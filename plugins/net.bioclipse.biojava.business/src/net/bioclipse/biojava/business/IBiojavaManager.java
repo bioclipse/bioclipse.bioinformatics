@@ -194,10 +194,10 @@ public interface IBiojavaManager extends IBioclipseManager {
                         "given DNA sequence.",
         params = "IDNA dna" )
     public IProtein DNAtoProtein(IDNA dna);
-    
+
     @PublishedMethod(
       methodSummary = "Returns a list of protein sequences as transcribed and " +
-      		"translated from the given DNA sequences.",
+              "translated from the given DNA sequences.",
          params = "List<IDNA> dnas" )
     public List<IProtein> DNAtoProtein( List<IDNA> dnas );
 
@@ -296,7 +296,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     public List<IProtein> proteinsFromFile(IFile file)
                               throws FileNotFoundException;
 
-    @PublishedMethod( 
+    @PublishedMethod(
         methodSummary = "Loads sequences from file at path",
         params = "String path" )
     public List<ISequence> sequencesFromFile( String path );
@@ -315,8 +315,8 @@ public interface IBiojavaManager extends IBioclipseManager {
                  methodSummary = "Saves an array of sequences to a FASTA file.",
                  params = "String path" )
     public void sequencesToFASTAfile( List<ISequence> sequences, String path );
-    public void sequencesToFASTAfile( List<ISequence> sequences, IFile file, 
-                                      IProgressMonitor monitor ) 
+    public void sequencesToFASTAfile( List<ISequence> sequences, IFile file,
+                                      IProgressMonitor monitor )
                                       throws BioclipseException;
 
     @PublishedMethod(
@@ -326,7 +326,7 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     @PublishedMethod(
                      methodSummary = "Serialize a list of DNA sequences " +
-                     		"to a FASTA String.",
+                             "to a FASTA String.",
                      params = "List<IDNA> dnas" )
     public String dnaToFASTAString( List<IDNA> dnas );
 
@@ -337,7 +337,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     public String proteinsToFASTAString( List<IProtein> proteins );
 
     @PublishedMethod(methodSummary = "Create an empty list of Sequences")
-    public RecordableList<ISequence> createSequenceList() 
+    public RecordableList<ISequence> createSequenceList()
         throws BioclipseException, InvocationTargetException;
 
 

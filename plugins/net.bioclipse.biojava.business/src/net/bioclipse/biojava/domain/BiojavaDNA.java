@@ -4,11 +4,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * www.eclipse.org—epl-v10.html <http://www.eclipse.org/legal/epl-v10.html>
- * 
+ *
  * Contributors:
  *     Jonathan Alvarsson
  *     Ola Spjuth
- *     
+ *
  ******************************************************************************/
 package net.bioclipse.biojava.domain;
 
@@ -16,7 +16,7 @@ import org.biojava.bio.seq.Sequence;
 
 import net.bioclipse.core.domain.IDNA;
 
-public class BiojavaDNA extends BiojavaSequence 
+public class BiojavaDNA extends BiojavaSequence
                         implements IDNA {
 
     public BiojavaDNA(Sequence seq) {
@@ -28,7 +28,7 @@ public class BiojavaDNA extends BiojavaSequence
     }
 
     public String toString() {
-        return "DNA: '" + sequence.getName() + "': " 
+        return "DNA: '" + sequence.getName() + "': "
         + sequence.seqString();
     }
 }

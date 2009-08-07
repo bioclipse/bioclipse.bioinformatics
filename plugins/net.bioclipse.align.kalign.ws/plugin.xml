@@ -9,7 +9,7 @@
          service="net.bioclipse.align.kalign.ws.business.KalignManagerFactory">
       </scriptContribution>
    </extension>
-   
+
       <!--extension point="org.eclipse.core.expressions.definitions">
       <definition id="net.bioclipse.definitions.activeSequenceEditor">
          <with variable="activeEditorId">
@@ -17,12 +17,12 @@
          </with>
       </definition>
    </extension-->
-   
+
 
   <extension point="org.eclipse.ui.menus">
      <menuContribution
          locationURI="toolbar:net.bioclipse.biojava.ui.editor.toolbar?after=additions">
-         
+
           <command commandId="net.bioclipse.align.kalign.ws.Align"
                    tooltip="Align"
                    icon="icons/align.png">
@@ -31,11 +31,11 @@
                 definitionId="net.bioclipse.definitions.activeSequenceEditor">
               </reference>
             </visibleWhen>
-          </command> 
-         
+          </command>
+
      </menuContribution>
   </extension>
-  
+
     <extension point="org.eclipse.ui.commands">
     <command id="net.bioclipse.align.kalign.ws.Align"
              description="Align sequences using KAlign Web service at EBI"
@@ -48,7 +48,7 @@
             commandId="net.bioclipse.align.kalign.ws.Align">
     </handler>
   </extension>
-  
+
 
 
 </plugin>

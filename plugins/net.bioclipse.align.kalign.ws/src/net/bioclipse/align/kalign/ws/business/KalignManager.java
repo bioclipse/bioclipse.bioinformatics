@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Ola Spjuth - initial API and implementation
  ******************************************************************************/
@@ -44,12 +44,12 @@ import net.bioclipse.managers.business.IBioclipseManager;
 
 
 /**
- * A manager for invoking KALign at EBI using SOAP 
+ * A manager for invoking KALign at EBI using SOAP
  * with client stub call generated using Axis 1.4.
- * 
+ *
  * KAlign@EBI Web site: http://www.ebi.ac.uk/Tools/webservices/services/kalign
  * WSDL: http://www.ebi.ac.uk/Tools/webservices/wsdl/WSKalign.wsdl
- * 
+ *
  * @author ola
  *
  */
@@ -60,7 +60,7 @@ public class KalignManager implements IBioclipseManager {
     public String getManagerName() {
         return "kalignws";
     }
-    
+
 
     /**
      * Accepts a list of DNA and delegates to generic alignment method.
@@ -68,11 +68,11 @@ public class KalignManager implements IBioclipseManager {
      * @param dnaList List of DNA sequences to align
      * @param monitor a monitor for reporting progress
      * @return List of IDNA with aligned sequences
-     * @throws BioclipseException if aligning fails or result is not list 
+     * @throws BioclipseException if aligning fails or result is not list
      * of DNA
      */
-    public List<IDNA> alignDNA(List<IDNA> dnalist, 
-                               IProgressMonitor monitor) 
+    public List<IDNA> alignDNA(List<IDNA> dnalist,
+                               IProgressMonitor monitor)
                                throws BioclipseException{
 
         //Assert DNA is input
@@ -81,7 +81,7 @@ public class KalignManager implements IBioclipseManager {
                 throw new BioclipseException("Input must be list of DNA only");
             }
         }
-            
+
 
         List<IDNA> returnList=new RecordableList<IDNA>();
         List<? extends ISequence> alist = align(dnalist, "N", monitor);
@@ -94,7 +94,7 @@ public class KalignManager implements IBioclipseManager {
                     "WS are DNA.");
             }
         }
-        
+
         return returnList;
 
     }
@@ -105,13 +105,13 @@ public class KalignManager implements IBioclipseManager {
      * @param proteinList List of protein sequences to align
      * @param monitor a monitor for reporting progress
      * @return List of IProtein with aligned sequences
-     * @throws BioclipseException if aligning fails or result is not list 
+     * @throws BioclipseException if aligning fails or result is not list
      * of proteins
      */
-    public List<IProtein> alignProteins(List<IProtein> proteinList, 
-                                       IProgressMonitor monitor) 
+    public List<IProtein> alignProteins(List<IProtein> proteinList,
+                                       IProgressMonitor monitor)
                                        throws BioclipseException{
-        
+
         //Assert DNA is input
         for (Object obj : proteinList){
             if (!( obj instanceof IProtein )) {
@@ -119,7 +119,7 @@ public class KalignManager implements IBioclipseManager {
             }
         }
 
-        
+
         List<IProtein> returnList=new RecordableList<IProtein>();
         List<? extends ISequence> alist = align(proteinList, "P", monitor);
         for (ISequence seq : alist){
@@ -131,10 +131,10 @@ public class KalignManager implements IBioclipseManager {
                         "WS are proteins.");
             }
         }
-        
+
         return returnList;
     }
-    
+
     /**
      * A generic implementation of KALign WEb service at EBI.
      * @param sequenceList List of sequences to align
@@ -144,14 +144,14 @@ public class KalignManager implements IBioclipseManager {
      * @throws BioclipseException if aligning fails
      */
     private List<? extends ISequence> align(List<? extends ISequence>
-                                            sequenceList, 
-                                            String type, 
-                                            IProgressMonitor monitor) 
+                                            sequenceList,
+                                            String type,
+                                            IProgressMonitor monitor)
                                             throws BioclipseException{
 
         if (sequenceList==null || sequenceList.isEmpty())
             throw new BioclipseException("SequenceList must not be empty.");
-        
+
         if (!(type.equals( "P" ) || type.equals( "N" )))
             throw new BioclipseException("Type must be either 'P' " +
                     "(for protein)" +
@@ -160,7 +160,7 @@ public class KalignManager implements IBioclipseManager {
         logger.debug( "Starting Kalign WS" );
         monitor.beginTask( "Aligning sequences using KAlign Web service at EBI", 5 );
         monitor.worked( 1 );
-        
+
         monitor.subTask( "Preparing input" );
 
         WSKalignServiceLocator loc= new WSKalignServiceLocator();
@@ -192,17 +192,17 @@ public class KalignManager implements IBioclipseManager {
             }
             fastastring=biojava.dnaToFASTAString( dnas );
         }
-        
+
 //        String fastastring=biojava.sequencesToFASTAString( sequenceList );
         System.out.println("Sequences to align:\n" + fastastring);
         inSeq.setContent( fastastring );
-        
+
         //Set up out input
         Data[] content = new Data[]{inSeq};
 
         try {
             WSKalign kalign = loc.getWSKalign();
-            
+
             //Send out job to Kalign@EBI
             monitor.subTask( "Submitting job..." );
             logger.debug("Sending request to Kalign...");
@@ -228,7 +228,7 @@ public class KalignManager implements IBioclipseManager {
             byte[] payload = null;
             //We could get several files in theory, this is not handled yet
             for (WSFile file : result){
-                logger.debug("Kalign results: File type: " + file.getType() 
+                logger.debug("Kalign results: File type: " + file.getType()
                              + ", File extension: " + file.getExt());
 
                 monitor.worked( 1 );
@@ -240,12 +240,12 @@ public class KalignManager implements IBioclipseManager {
 
 
             monitor.subTask( "Parsing results..." );
-            
+
             //We remove the first line since it caused erorrs with BioJava's
             //ClustalW format parsing, and we know this is the format
             String resstr=new String(payload);
             resstr=resstr.substring( 42 );
-            
+
             //Set up a buffered reader for the contents
             ByteArrayInputStream ins=new ByteArrayInputStream(
                                                              resstr.getBytes());
@@ -253,13 +253,13 @@ public class KalignManager implements IBioclipseManager {
                                                     new InputStreamReader(ins));
 
             if (type.equals( "P" )){
-                List<? extends ISequence> res = parseKalignResult(contents, 
+                List<? extends ISequence> res = parseKalignResult(contents,
                                                     ProteinTools.getAlphabet());
                 monitor.done();
                 return res;
             }
             else {
-                List<? extends ISequence> res = parseKalignResult(contents, 
+                List<? extends ISequence> res = parseKalignResult(contents,
                                                              DNATools.getDNA());
                 monitor.done();
                 return res;
@@ -272,23 +272,23 @@ public class KalignManager implements IBioclipseManager {
     }
 
 
-   private List<? extends ISequence> parseKalignResult( BufferedReader contents, 
-                                                         Alphabet alphabet) 
+   private List<? extends ISequence> parseKalignResult( BufferedReader contents,
+                                                         Alphabet alphabet)
     throws IOException, SAXException, BioclipseException {
 
         List<ISequence> sequences=new RecordableList<ISequence>();
 
-        ClustalWAlignmentSAXParser parser = 
+        ClustalWAlignmentSAXParser parser =
                                            new ClustalWAlignmentSAXParser();
-        
-        SequenceCollectionContentHandler handler = 
+
+        SequenceCollectionContentHandler handler =
                      new SequenceCollectionContentHandler(sequences, alphabet);
 
         parser.setContentHandler(handler);
         parser.parse(new InputSource(contents));
 
         return sequences;
-        
+
     }
 }
 

@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Ola Spjuth - initial API and implementation
  ******************************************************************************/
@@ -22,7 +22,7 @@ import net.bioclipse.managers.business.IBioclipseManager;
 
 @PublishedClass(value = "Controls access to Bioinformatics Webservices.")
 /**
- * 
+ *
  * @author ola
  *
  */
@@ -49,7 +49,7 @@ public interface IBiowsManager extends IBioclipseManager {
     @Recorded
     @PublishedMethod(params="String seqid",
                      methodSummary="Download protein sequences in FASTA " +
-                     		"format " +
+                             "format " +
                         "from the Uniprot KnowwledgeBase " +
                         "at EBI. " +
                         "Entries can be retrieved by entry name " +
@@ -59,5 +59,5 @@ public interface IBiowsManager extends IBioclipseManager {
 
 
 
-    
+
 }

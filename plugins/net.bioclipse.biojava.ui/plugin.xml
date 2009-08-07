@@ -2,14 +2,14 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-	<!-- declare a content type to eliminate duplicated file extensions -->
+    <!-- declare a content type to eliminate duplicated file extensions -->
    <extension
          point="org.eclipse.core.runtime.contentTypes">
       <content-type
             id="net.bioclipse.biojava.ui.sequenceType"
             name="sequence"
             base-type="org.eclipse.core.runtime.text"
-			file-extensions="gbk,fasta,embl,seq">
+            file-extensions="gbk,fasta,embl,seq">
       </content-type>
    </extension>
 
@@ -34,24 +34,24 @@
                editorID="net.bioclipse.biojava.ui.editors.SequenceEditor">
          </shortname>
    </extension>
-   
+
       <extension
          point="net.bioclipse.ui.bioobjectDescriber">
-		<BioObject
-	        describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
-    	    id="net.bioclipse.cdk.sequenceditor.describer"
-    	    objectClass="net.bioclipse.core.domain.RecordableList">
-		</BioObject>         
-		<BioObject
-	        describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
-    	    id="net.bioclipse.cdk.sequenceditor.describer"
-    	    objectClass="net.bioclipse.core.domain.ISequence">
-		</BioObject>         
+        <BioObject
+            describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
+            id="net.bioclipse.cdk.sequenceditor.describer"
+            objectClass="net.bioclipse.core.domain.RecordableList">
+        </BioObject>
+        <BioObject
+            describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
+            id="net.bioclipse.cdk.sequenceditor.describer"
+            objectClass="net.bioclipse.core.domain.ISequence">
+        </BioObject>
    </extension>
 
    <!--extension
          point="org.eclipse.ui.navigator.navigatorContent">
-      <navigatorContent 
+      <navigatorContent
             contentProvider="net.bioclipse.biojava.ui.views.SequenceContentProvider"
             id="net.bioclipse.biojava.ui.views.SequenceContent"
             labelProvider="net.bioclipse.biojava.ui.views.SequenceLabelProvider"
@@ -61,21 +61,21 @@
             <instanceof value="org.eclipse.core.resources.IResource"/>
             <or>
             <test
-            	forcePluginActivation="true"
-            	property="org.eclipse.core.resources.extension"
-            	value="fasta"/>
+                forcePluginActivation="true"
+                property="org.eclipse.core.resources.extension"
+                value="fasta"/>
             <test
-            	forcePluginActivation="true"
-            	property="org.eclipse.core.resources.extension"
-            	value="embl"/>
+                forcePluginActivation="true"
+                property="org.eclipse.core.resources.extension"
+                value="embl"/>
             <test
-            	forcePluginActivation="true"
-            	property="org.eclipse.core.resources.extension"
-            	value="gbk"/>
+                forcePluginActivation="true"
+                property="org.eclipse.core.resources.extension"
+                value="gbk"/>
             <test
-            	forcePluginActivation="true"
-            	property="org.eclipse.core.resources.extension"
-            	value="seq"/>
+                forcePluginActivation="true"
+                property="org.eclipse.core.resources.extension"
+                value="seq"/>
             </or>
          </and>
          </triggerPoints>
@@ -116,10 +116,10 @@
    </extension>
 
   <extension point="org.eclipse.ui.menus">
-     
+
      <menuContribution
          locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         
+
         <toolbar id="net.bioclipse.biojava.ui.editor.toolbar">
           <command commandId="net.bioclipse.biojava.ui.actions.zoomout"
                    tooltip="Zoom out"
@@ -140,16 +140,16 @@
               </reference>
             </visibleWhen>
           </command>
-         
+
           <separator name="additions"
                      visible="false" />
-                     
+
             <visibleWhen>
               <reference
                 definitionId="net.bioclipse.definitions.activeSequenceEditor">
               </reference>
             </visibleWhen>
-                     
+
         </toolbar>
      </menuContribution>
   </extension>
