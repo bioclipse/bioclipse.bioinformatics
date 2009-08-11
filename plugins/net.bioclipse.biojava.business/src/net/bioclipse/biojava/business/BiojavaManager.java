@@ -41,7 +41,6 @@ import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.biojava.domain.BiojavaRNA;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.IMolecule;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 import net.bioclipse.core.domain.ISequence;
@@ -64,11 +63,8 @@ import org.biojavax.RichObjectFactory;
 import org.biojavax.bio.seq.RichSequence;
 import org.biojavax.bio.seq.RichSequenceIterator;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 /**
  * Manager for BioJava. Performs the actual BioJava calls.
  * @author ola
