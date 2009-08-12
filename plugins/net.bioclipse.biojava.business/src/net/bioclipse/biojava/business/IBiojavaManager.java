@@ -51,7 +51,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaDNA</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The <code>String</code> should contain only the
+     * sequence and no metadata.
      *
      * @param dnaString A DNA sequence to be converted.
      * @return A new <code>BiojavaDNA</code>.
@@ -64,7 +65,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaRNA</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The <code>String</code> should contain only the
+     * sequence and no metadata.
      *
      * @param rnaString An RNA sequence to be converted.
      * @return A new <code>BiojavaRNA</code>.
@@ -77,7 +79,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaProtein</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The <code>String</code> should contain only the
+     * sequence and no metadata.
      *
      * @param proteinString An amino acid sequence to be converted.
      * @return A new <code>BiojavaProtein</code>.
@@ -90,7 +93,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaDNA</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The <code>String</code> should contain only the
+     * sequence and no metadata.
      *
      * @param dnaString A DNA sequence to be converted.
      * @return A new <code>BiojavaDNA</code>.
@@ -103,7 +107,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaRNA</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The <code>String</code> should contain only the
+     * sequence and no metadata.
      *
      * @param rnaString An RNA sequence to be converted.
      * @return A new <code>BiojavaRNA</code>.
@@ -116,7 +121,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaProtein</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The <code>String</code> should contain only the
+     * sequence and no metadata.
      *
      * @param proteinString An amino acid sequence to be converted.
      * @return A new <code>BiojavaProtein</code>.
@@ -129,7 +135,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaDNA</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The string should be in a number of sequence
+     * data formats, and will in general be treated as if read from a file.
      *
      * @param dnaString A DNA sequence to be converted.
      * @return A new <code>BiojavaDNA</code>.
@@ -142,7 +149,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaRNA</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The string should be in a number of sequence
+     * data formats, and will in general be treated as if read from a file.
      *
      * @param rnaString An RNA sequence to be converted.
      * @return A new <code>BiojavaRNA</code>.
@@ -155,7 +163,8 @@ public interface IBiojavaManager extends IBioclipseManager {
 
     /**
      * Returns a new <code>BiojavaProtein</code> sequence from the given
-     * <code>String</code>.
+     * <code>String</code>. The string should be in a number of sequence
+     * data formats, and will in general be treated as if read from a file.
      *
      * @param proteinString An amino acid sequence to be converted.
      * @return A new <code>BiojavaProtein</code>.
