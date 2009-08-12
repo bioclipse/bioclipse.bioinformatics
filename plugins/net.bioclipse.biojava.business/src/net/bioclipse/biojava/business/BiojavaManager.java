@@ -355,68 +355,63 @@ public class BiojavaManager implements IBiojavaManager {
         throw new IllegalStateException("This method should not be called");
     }
 
-    public void sequencesToFASTAfile(List<ISequence> sequences, String path) {
+    public void sequencesToFASTAfile(List<? extends ISequence> sequences,
+                                     String path) {
         //TODO: Change to latest world order and remove this method
         throw new IllegalStateException("This method should not be called");
     }
 
-    public void sequencesToFASTAfile(final List<ISequence> sequences,
+    private SequenceDB addToSequenceDB(
+        final List<? extends ISequence> sequences
+    ) {
+
+        SequenceDB db = new HashSequenceDB();
+
+        try {
+            for (ISequence seq : sequences){
+                if ( seq instanceof IProtein ) {
+                    IProtein protein = (IProtein) seq;
+                    db.addSequence(ProteinTools.createProteinSequence(
+                            protein.getPlainSequence(),
+                            protein.getName()));
+                }
+                else if ( seq instanceof IDNA ) {
+                    IDNA dna = (IDNA) seq;
+                        db.addSequence(DNATools.createDNASequence(
+                                dna.getPlainSequence(),
+                                dna.getName()));
+                        logger.debug("Added DNA sequence: " + dna.getName()
+                                + " to write.");
+                }
+                else {
+                    throw new IllegalArgumentException(
+                        "Only IProtein and IDNA allowed in list of sequences"
+                    );
+                }
+                logger.debug("Added "+ seq.getClass().getName() +" sequence: "
+                             + seq.getName() + " to write.");
+            }
+        } catch ( IllegalIDException e ) {
+            throw new IllegalArgumentException(e);
+        } catch ( ChangeVetoException e ) {
+            throw new IllegalArgumentException(e);
+        } catch ( IllegalSymbolException e ) {
+            throw new IllegalArgumentException(e);
+        } catch ( BioException e ) {
+            throw new IllegalArgumentException(e);
+        }
+        return db;
+    }
+
+    public void sequencesToFASTAfile(final List<? extends ISequence> sequences,
                                      final IFile file,
                                      IProgressMonitor monitor)
                                      throws BioclipseException{
 
-        SequenceDB db = new HashSequenceDB();
-
-        //Delegate to proteins or DNA
-        for (ISequence seq : sequences){
-            if ( seq instanceof IProtein ) {
-                IProtein protein = (IProtein) seq;
-                try {
-                    db.addSequence(ProteinTools.createProteinSequence(
-                                                     protein.getPlainSequence(),
-                                                     protein.getName()));
-                    logger.debug("Added protein sequence: " + protein.getName()
-                                 + " to write.");
-                } catch ( IllegalIDException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( ChangeVetoException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( IllegalSymbolException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( BioException e ) {
-                    throw new IllegalArgumentException(e);
-                }
-
-            }
-            else if ( seq instanceof IDNA ) {
-                IDNA dna = (IDNA) seq;
-                try {
-                    db.addSequence(DNATools.createDNASequence(
-                                                         dna.getPlainSequence(),
-                                                         dna.getName()));
-                    logger.debug("Added DNA sequence: " + dna.getName()
-                                 + " to write.");
-                } catch ( IllegalIDException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( ChangeVetoException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( IllegalSymbolException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( BioException e ) {
-                    throw new IllegalArgumentException(e);
-                }
-
-            }
-            else{
-                throw new IllegalArgumentException("Only IProteins and " +
-                                           "IDNA allowed in list of sequences");
-            }
-        }
-
         try {
             //Write to byte[]
-            ByteArrayOutputStream bos=new ByteArrayOutputStream();
-            SeqIOTools.writeFasta(bos, db);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, addToSequenceDB(sequences));
 
             //Write byte[] as new content to file
             ByteArrayInputStream bis=new ByteArrayInputStream(bos.toByteArray());
@@ -427,63 +422,20 @@ public class BiojavaManager implements IBiojavaManager {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         } catch ( CoreException e ) {
-            throw new BioclipseException("Error saving file: " + e.getMessage());
+            throw new BioclipseException(
+                    "Error saving file: " + e.getMessage()
+            );
         }
-
-
     }
 
     public String sequencesToFASTAString(
-                                     final List<? extends ISequence> sequences){
-
-        SequenceDB db = new HashSequenceDB();
-
-        //Delegate to proteins or DNA
-        for (ISequence seq : sequences){
-            if ( seq instanceof IProtein ) {
-                IProtein protein = (IProtein) seq;
-                try {
-                    db.addSequence(ProteinTools.createProteinSequence(
-                                                     protein.getPlainSequence(),
-                                                     protein.getName()));
-                } catch ( IllegalIDException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( ChangeVetoException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( IllegalSymbolException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( BioException e ) {
-                    throw new IllegalArgumentException(e);
-                }
-
-            }
-            else if ( seq instanceof IDNA ) {
-                IDNA dna = (IDNA) seq;
-                try {
-                    db.addSequence(DNATools.createDNASequence(
-                                                         dna.getPlainSequence(),
-                                                         dna.getName()));
-                } catch ( IllegalIDException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( ChangeVetoException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( IllegalSymbolException e ) {
-                    throw new IllegalArgumentException(e);
-                } catch ( BioException e ) {
-                    throw new IllegalArgumentException(e);
-                }
-
-            }
-            else{
-                throw new IllegalArgumentException("Only IProteins and " +
-                                           "IDNA allowed in list of sequences");
-            }
-        }
+        final List<? extends ISequence> sequences
+    ) {
 
         try {
             //Write to byte[]
-            ByteArrayOutputStream bos=new ByteArrayOutputStream();
-            SeqIOTools.writeFasta(bos, db);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, addToSequenceDB(sequences));
 
             return bos.toString();
 
@@ -503,29 +455,9 @@ public class BiojavaManager implements IBiojavaManager {
 
     public String proteinsToFASTAString(final List<IProtein> proteins){
 
-        SequenceDB db = new HashSequenceDB();
-
-        //Delegate to proteins or DNA
-        for (IProtein protein : proteins){
-            try {
-                db.addSequence(ProteinTools.createProteinSequence(
-                                                     protein.getPlainSequence(),
-                                                     protein.getName()));
-            } catch ( IllegalIDException e ) {
-                throw new IllegalArgumentException(e);
-            } catch ( ChangeVetoException e ) {
-                throw new IllegalArgumentException(e);
-            } catch ( IllegalSymbolException e ) {
-                throw new IllegalArgumentException(e);
-            } catch ( BioException e ) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-
         try {
-            //Write to byte[]
-            ByteArrayOutputStream bos=new ByteArrayOutputStream();
-            SeqIOTools.writeFasta(bos, db);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, addToSequenceDB(proteins));
 
             return bos.toString();
 
@@ -538,29 +470,9 @@ public class BiojavaManager implements IBiojavaManager {
 
     public String dnaToFASTAString(final List<IDNA> dnas){
 
-        SequenceDB db = new HashSequenceDB();
-
-        //Delegate to proteins or DNA
-        for (IDNA dna : dnas){
-            try {
-                db.addSequence(DNATools.createDNASequence(
-                                                         dna.getPlainSequence(),
-                                                          dna.getName()));
-            } catch ( IllegalIDException e ) {
-                throw new IllegalArgumentException(e);
-            } catch ( ChangeVetoException e ) {
-                throw new IllegalArgumentException(e);
-            } catch ( IllegalSymbolException e ) {
-                throw new IllegalArgumentException(e);
-            } catch ( BioException e ) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-
         try {
-            //Write to byte[]
-            ByteArrayOutputStream bos=new ByteArrayOutputStream();
-            SeqIOTools.writeFasta(bos, db);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            SeqIOTools.writeFasta(bos, addToSequenceDB(dnas));
 
             return bos.toString();
 
@@ -571,27 +483,13 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-
-
     public void proteinsToFASTAfile(List<IProtein> proteins, IFile file) {
-        SequenceDB db = new HashSequenceDB();
-
-        for (IProtein protein : proteins) {
-            try {
-                db.addSequence(ProteinTools.createProteinSequence(protein.getPlainSequence(), protein.getName()));
-            } catch (IllegalIDException e) {
-                throw new IllegalArgumentException(e);
-            } catch (ChangeVetoException e) {
-                throw new IllegalArgumentException(e);
-            } catch (IllegalSymbolException e) {
-                throw new IllegalArgumentException(e);
-            } catch (BioException e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
 
         try {
-            SeqIOTools.writeFasta(new FileOutputStream(file.getFullPath().toFile()), db);
+            SeqIOTools.writeFasta(
+                new FileOutputStream(file.getFullPath().toFile()),
+                addToSequenceDB(proteins)
+            );
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException(e);
         } catch (IOException e) {

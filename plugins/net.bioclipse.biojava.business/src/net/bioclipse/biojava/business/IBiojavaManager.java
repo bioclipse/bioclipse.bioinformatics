@@ -314,8 +314,10 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(
                  methodSummary = "Saves an array of sequences to a FASTA file.",
                  params = "String path" )
-    public void sequencesToFASTAfile( List<ISequence> sequences, String path );
-    public void sequencesToFASTAfile( List<ISequence> sequences, IFile file,
+    public void sequencesToFASTAfile( List<? extends ISequence> sequences,
+                                      String path );
+    public void sequencesToFASTAfile( List<? extends ISequence> sequences,
+                                      IFile file,
                                       IProgressMonitor monitor )
                                       throws BioclipseException;
 
