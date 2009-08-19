@@ -204,10 +204,19 @@ public interface IBiojavaManager extends IBioclipseManager {
         params = "IDNA dna" )
     public IProtein DNAtoProtein(IDNA dna);
 
+    /**
+     * Returns a list of <code>IProtein</code> sequence equivalents of the given
+     * list of <code>IDNA</code> sequences. The conversion processes involved
+     * are <em>transcription</em> followed by <em>translation</em>. The standard
+     * genetic code is used.
+     *
+     * @param dna the sequence to be converted
+     * @return the result of the conversion
+     */
     @PublishedMethod(
-      methodSummary = "Returns a list of protein sequences as transcribed and "
-                      + "translated from the given DNA sequences.",
-         params = "List<IDNA> dnas" )
+      methodSummary = "Returns a list of protein sequences equivalents of the "
+                      + "given list of DNA sequences.",
+      params = "List<IDNA> dnas" )
     public List<IProtein> DNAtoProtein( List<IDNA> dnas );
 
 
