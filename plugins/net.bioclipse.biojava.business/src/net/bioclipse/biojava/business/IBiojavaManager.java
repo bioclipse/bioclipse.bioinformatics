@@ -86,8 +86,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @return A new <code>BiojavaProtein</code>.
      */
     @PublishedMethod(
-        methodSummary = "Returns a new BiojavaProtein sequence from the given " +
-                        "String.",
+        methodSummary = "Returns a new BiojavaProtein sequence from the given "
+                        + "String.",
         params = "String proteinString" )
     public IProtein proteinFromPlainSequence(String proteinString);
 
@@ -128,8 +128,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @return A new <code>BiojavaProtein</code>.
      */
     @PublishedMethod(
-        methodSummary = "Returns a new BiojavaProtein sequence from the given " +
-                        "String.",
+        methodSummary = "Returns a new BiojavaProtein sequence from the given "
+                        + "String.",
         params = "String proteinString, String name" )
     public IProtein proteinFromPlainSequence(String proteinString, String name);
 
@@ -170,8 +170,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @return A new <code>BiojavaProtein</code>.
      */
     @PublishedMethod(
-        methodSummary = "Returns a new BiojavaProtein sequence from the given " +
-                        "String.",
+        methodSummary = "Returns a new BiojavaProtein sequence from the given "
+                        + "String.",
         params = "String proteinString" )
     public List<IProtein> proteinsFromString(String proteinString);
 
@@ -184,8 +184,8 @@ public interface IBiojavaManager extends IBioclipseManager {
      * @return the result of the conversion
      */
     @PublishedMethod(
-        methodSummary = "Returns the RNA sequence equivalent of the given DNA " +
-                        "sequence.",
+        methodSummary = "Returns the RNA sequence equivalent of the given DNA "
+                        + "sequence.",
         params = "IDNA dna" )
     public IRNA DNAtoRNA(IDNA dna);
 
@@ -205,8 +205,8 @@ public interface IBiojavaManager extends IBioclipseManager {
     public IProtein DNAtoProtein(IDNA dna);
 
     @PublishedMethod(
-      methodSummary = "Returns a list of protein sequences as transcribed and " +
-              "translated from the given DNA sequences.",
+      methodSummary = "Returns a list of protein sequences as transcribed and "
+                      + "translated from the given DNA sequences.",
          params = "List<IDNA> dnas" )
     public List<IProtein> DNAtoProtein( List<IDNA> dnas );
 
