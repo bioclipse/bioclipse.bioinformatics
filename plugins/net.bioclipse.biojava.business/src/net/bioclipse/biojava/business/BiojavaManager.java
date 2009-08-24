@@ -225,18 +225,6 @@ public class BiojavaManager implements IBiojavaManager {
         }
     }
 
-    public IDNA proteinToDNA(IProtein protein) {
-        return null;
-    }
-
-    public IRNA proteinToRNA(IProtein protein) {
-        return null;
-    }
-
-    public IDNA RNAtoDNA(IRNA rna) {
-        return null;
-    }
-
     public IProtein RNAtoProtein(IRNA rna) {
         String plainSequence = rna.getPlainSequence();
         try {
@@ -495,5 +483,19 @@ public class BiojavaManager implements IBiojavaManager {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public List<IRNA> DNAtoRNA(List<IDNA> dnas) {
+        List<IRNA> rnas = new ArrayList<IRNA>();
+        for (final IDNA dna : dnas)
+            rnas.add(DNAtoRNA(dna));
+        return rnas;
+    }
+
+    public List<IProtein> RNAtoProtein(List<IRNA> rnas) {
+        List<IProtein> proteins = new ArrayList<IProtein>();
+        for (final IRNA rna : rnas)
+            proteins.add(RNAtoProtein(rna));
+        return proteins;
     }
 }
