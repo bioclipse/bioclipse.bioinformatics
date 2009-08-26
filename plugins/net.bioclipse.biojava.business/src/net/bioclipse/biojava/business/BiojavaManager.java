@@ -366,7 +366,8 @@ public class BiojavaManager implements IBiojavaManager {
                 else if ( seq instanceof IDNA ) {
                     IDNA dna = (IDNA) seq;
                         db.addSequence(DNATools.createDNASequence(
-                                dna.getPlainSequence(),
+                                // the .replaceAll works around bug #1569
+                                dna.getPlainSequence().replace('~', '-'),
                                 dna.getName()));
                         logger.debug("Added DNA sequence: " + dna.getName()
                                 + " to write.");
