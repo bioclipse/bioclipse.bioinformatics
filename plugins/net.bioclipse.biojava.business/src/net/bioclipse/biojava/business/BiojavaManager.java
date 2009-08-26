@@ -174,11 +174,15 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IProtein DNAtoProtein(IDNA dna) {
+        return DNAtoProtein(dna, "");
+    }
+
+    public IProtein DNAtoProtein(IDNA dna, String name) {
         String plainSequence = dna.getPlainSequence();
         try {
             return proteinFromPlainSequence(
                     DNATools.toProtein(
-                            DNATools.createDNASequence(plainSequence, "")
+                            DNATools.createDNASequence(plainSequence, name)
                     ).seqString()
                    );
         } catch (IllegalAlphabetException e) {
@@ -211,11 +215,15 @@ public class BiojavaManager implements IBiojavaManager {
 
 
     public IRNA DNAtoRNA(IDNA dna) {
+        return DNAtoRNA(dna, "");
+    }
+
+    public IRNA DNAtoRNA(IDNA dna, String name) {
         String plainSequence = dna.getPlainSequence();
         try {
             return RNAfromPlainSequence(
                     DNATools.toRNA(
-                            DNATools.createDNASequence(plainSequence, "")
+                            DNATools.createDNASequence(plainSequence, name)
                     ).seqString()
                    );
         } catch (IllegalAlphabetException e) {
@@ -226,11 +234,15 @@ public class BiojavaManager implements IBiojavaManager {
     }
 
     public IProtein RNAtoProtein(IRNA rna) {
+        return RNAtoProtein(rna, "");
+    }
+
+    public IProtein RNAtoProtein(IRNA rna, String name) {
         String plainSequence = rna.getPlainSequence();
         try {
             return proteinFromPlainSequence(
                     RNATools.translate(
-                            RNATools.createRNASequence(plainSequence, "")
+                            RNATools.createRNASequence(plainSequence, name)
                     ).seqString()
                    );
         } catch (IllegalAlphabetException e) {
