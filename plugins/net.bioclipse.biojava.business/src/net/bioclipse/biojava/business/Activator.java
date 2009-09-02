@@ -1,62 +1,55 @@
- /*******************************************************************************
- * Copyright (c) 2007-2008 The Bioclipse Project and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * www.eclipse.org—epl-v10.html <http://www.eclipse.org/legal/epl-v10.html>
- * 
- * Contributors:
- *     Jonathan Alvarsson
- *     
- ******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2009  Jonathan Alvarsson <jonalv@users.sf.net>
+*
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contact: http://www.bioclipse.net/
+******************************************************************************/
 package net.bioclipse.biojava.business;
 
-import net.bioclipse.core.util.LogUtils;
-import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.Plugin;
+import net.bioclipse.biojava.business.IBiojavaManager;
+import net.bioclipse.biojava.business.IJavaBiojavaManager;
+import net.bioclipse.biojava.business.IJavaScriptBiojavaManager;
+
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * The activator class controls the plug-in life cycle
- * @author jonalv
- *
+ * The Activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
-
-    // The plug-in ID
-    public static final String PLUGIN_ID = "net.bioclipse.biojava.business";
+public class Activator extends AbstractUIPlugin {
 
     // The shared instance
     private static Activator plugin;
-    
-    private static final Logger logger = Logger.getLogger(Activator.class);
-    
-    private ServiceTracker finderTracker;
-    /**
-     * The constructor
-     */
+
+    // Trackers for getting the managers
+    private ServiceTracker javaFinderTracker;
+    private ServiceTracker jsFinderTracker;
+
     public Activator() {
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-     */
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        
-        finderTracker = new ServiceTracker( context, 
-                                            IBiojavaManager.class.getName(), 
-                                            null );
-        finderTracker.open();
+        javaFinderTracker
+            = new ServiceTracker( context,
+                                  IJavaBiojavaManager.class.getName(),
+                                  null );
+
+        javaFinderTracker.open();
+        jsFinderTracker
+            = new ServiceTracker( context,
+                                  IJavaScriptBiojavaManager.class.getName(),
+                                  null );
+
+        jsFinderTracker.open();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-     */
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
@@ -71,16 +64,38 @@ public class Activator extends Plugin {
         return plugin;
     }
 
-    public IBiojavaManager getBioJavaManager() {
+    public IBiojavaManager getJavaBiojavaManager() {
         IBiojavaManager manager = null;
         try {
-            manager = (IBiojavaManager) finderTracker.waitForService(1000*10);
-        } catch (InterruptedException e) {
-            logger.warn("Exception occurred while attempting to get the BiojavaManager" + e);
-            LogUtils.debugTrace(logger, e);
+            manager = (IBiojavaManager)
+                      javaFinderTracker.waitForService(1000*10);
         }
-        if(manager == null) {
-            throw new IllegalStateException("Could not get the biojava manager");
+        catch (InterruptedException e) {
+            throw new IllegalStateException(
+                          "Could not get the Java BiojavaManager",
+                          e );
+        }
+        if (manager == null) {
+            throw new IllegalStateException(
+                          "Could not get the Java BiojavaManager");
+        }
+        return manager;
+    }
+
+    public IJavaScriptBiojavaManager getJavaScriptBiojavaManager() {
+        IJavaScriptBiojavaManager manager = null;
+        try {
+            manager = (IJavaScriptBiojavaManager)
+                      jsFinderTracker.waitForService(1000*10);
+        }
+        catch (InterruptedException e) {
+            throw new IllegalStateException(
+                          "Could not get the JavaScript BiojavaManager",
+                          e );
+        }
+        if (manager == null) {
+            throw new IllegalStateException(
+                          "Could not get the JavaScript BiojavaManager");
         }
         return manager;
     }

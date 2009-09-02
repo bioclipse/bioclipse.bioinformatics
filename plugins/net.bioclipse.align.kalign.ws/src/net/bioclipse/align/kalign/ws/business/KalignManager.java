@@ -175,7 +175,8 @@ public class KalignManager implements IBioclipseManager {
         inSeq.setType("sequence");
 
         //Use biojava to serialize list of sequences to FASTA
-        IBiojavaManager biojava=Activator.getDefault().getBioJavaManager();
+        IBiojavaManager biojava
+          = Activator.getDefault().getJavaBiojavaManager();
 
         String fastastring=null;
         if (type.equals( "P" )){

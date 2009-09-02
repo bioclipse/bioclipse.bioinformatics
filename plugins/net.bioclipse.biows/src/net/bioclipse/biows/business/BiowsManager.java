@@ -45,7 +45,7 @@ public class BiowsManager implements IBioclipseManager {
     public List<IDNA> queryEMBL(String seqid) throws BioclipseException{
 
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
-        .getDefault().getBioJavaManager();
+                                     .getDefault().getJavaBiojavaManager();
 
         String fasta=download( "embl", seqid );
 
@@ -56,7 +56,7 @@ public class BiowsManager implements IBioclipseManager {
     public List<IProtein> queryUniProtKB(String seqid) throws BioclipseException{
 
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
-        .getDefault().getBioJavaManager();
+                                     .getDefault().getJavaBiojavaManager();
 
         String fasta=download( "uniprotkb", seqid );
 
@@ -67,7 +67,7 @@ public class BiowsManager implements IBioclipseManager {
     public List<IDNA> queryRefseq(String seqid) throws BioclipseException{
 
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
-        .getDefault().getBioJavaManager();
+                                     .getDefault().getJavaBiojavaManager();
 
         String fasta=download( "refseq", seqid );
 

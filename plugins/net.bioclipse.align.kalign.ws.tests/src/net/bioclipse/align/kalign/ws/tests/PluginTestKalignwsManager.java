@@ -37,7 +37,7 @@ public class PluginTestKalignwsManager {
         
         IKalignManager kalign = Activator.getDefault().getKalignManager();
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
-                                         .getDefault().getBioJavaManager();
+                                     .getDefault().getJavaBiojavaManager();
         
         List<IDNA> dnalist=new ArrayList<IDNA>();
         dnalist.add(biojava.DNAfromPlainSequence( "ctcttcgg" ));
@@ -56,7 +56,7 @@ public class PluginTestKalignwsManager {
         
         IKalignManager kalign = Activator.getDefault().getKalignManager();
         IBiojavaManager biojava = net.bioclipse.biojava.business.Activator
-                                         .getDefault().getBioJavaManager();
+                                         .getDefault().getJavaBiojavaManager();
         
         List<IProtein> proteinlist=new ArrayList<IProtein>();
         proteinlist.add(biojava.proteinFromPlainSequence( "ASAMPLESEQ" ));

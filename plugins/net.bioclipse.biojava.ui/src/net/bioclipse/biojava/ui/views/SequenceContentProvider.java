@@ -78,7 +78,7 @@ public class SequenceContentProvider implements ITreeContentProvider,
         cachedModelMap = new HashMap<IFile, List<ISequence>>();
         ISequence_EXT = new ArrayList<String>();
         registerFileExtensions();
-        biojava = Activator.getDefault().getBioJavaManager();
+        biojava = Activator.getDefault().getJavaBiojavaManager();
     }
 
     private void registerFileExtensions() {

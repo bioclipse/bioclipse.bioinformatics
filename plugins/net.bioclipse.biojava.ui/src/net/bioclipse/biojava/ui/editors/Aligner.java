@@ -107,7 +107,7 @@ public class Aligner extends EditorPart {
     private Composite parent;
     private Composite c;
     private IBiojavaManager biojava
-        = Activator.getDefault().getBioJavaManager();
+        = Activator.getDefault().getJavaBiojavaManager();
     private char fastas[][];
 
     @Override

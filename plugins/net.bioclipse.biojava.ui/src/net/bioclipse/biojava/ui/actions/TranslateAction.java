@@ -61,7 +61,8 @@ public abstract class TranslateAction extends ActionDelegate{
      */
     @Override
     public void init(IAction action) {
-        biojava=Activator.getDefault().getBioJavaManager();
+        biojava
+          = Activator.getDefault().getJavaBiojavaManager();
     }
 
     /**
@@ -129,6 +130,4 @@ public abstract class TranslateAction extends ActionDelegate{
     public void setBiojava(IBiojavaManager biojava) {
         this.biojava = biojava;
     }
-
-
 }

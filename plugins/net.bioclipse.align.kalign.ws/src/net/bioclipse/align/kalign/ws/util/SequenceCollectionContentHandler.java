@@ -93,7 +93,8 @@ public class SequenceCollectionContentHandler extends DefaultHandler {
     }
 
     private void endCurrentSequence() {
-        IBiojavaManager biojava=Activator.getDefault().getBioJavaManager();
+        IBiojavaManager biojava
+          = Activator.getDefault().getJavaBiojavaManager();
         if (this.alphabet.equals(DNATools.getDNA())) {
             sequences.add( biojava.DNAfromPlainSequence( currentSeq,
                                                          currentSeqName ));

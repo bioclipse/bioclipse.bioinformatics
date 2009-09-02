@@ -45,6 +45,7 @@ import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.IRNA;
 import net.bioclipse.core.domain.ISequence;
 import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.managers.business.IBioclipseManager;
 
 import org.apache.log4j.Logger;
 import org.biojava.bio.BioException;
@@ -71,7 +72,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  *
  */
 @SuppressWarnings("deprecation")
-public class BiojavaManager implements IBiojavaManager {
+public class BiojavaManager implements IBioclipseManager {
 
     private static final Logger logger = Logger.getLogger(BiojavaManager.class);
 
@@ -256,11 +257,6 @@ public class BiojavaManager implements IBiojavaManager {
         return "biojava";
     }
 
-    public List<IDNA> DNAsFromFile( String path ) throws FileNotFoundException {
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
-    }
-
     public List<IDNA> DNAsFromFile(IFile file)
         throws FileNotFoundException {
 
@@ -268,11 +264,6 @@ public class BiojavaManager implements IBiojavaManager {
         for (final ISequence seq : sequencesFromFile(file))
             dnas.add(IDNA.class.cast(seq));
         return dnas;
-    }
-
-    public List<IRNA> RNAsFromFile( String path ) throws FileNotFoundException {
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
     }
 
     public List<IRNA> RNAsFromFile(IFile file)
@@ -284,13 +275,6 @@ public class BiojavaManager implements IBiojavaManager {
         return rnas;
     }
 
-    public List<IProtein> proteinsFromFile( String path )
-        throws FileNotFoundException {
-
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
-    }
-
     public List<IProtein> proteinsFromFile(IFile file)
         throws FileNotFoundException {
 
@@ -298,11 +282,6 @@ public class BiojavaManager implements IBiojavaManager {
         for (final ISequence seq : sequencesFromFile(file))
             proteins.add(IProtein.class.cast(seq));
         return proteins;
-    }
-
-    public List<ISequence> sequencesFromFile( String string ) {
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
     }
 
     public List<ISequence> sequencesFromFile( IFile file )
@@ -348,17 +327,6 @@ public class BiojavaManager implements IBiojavaManager {
         }
 
         return sequences;
-    }
-
-    public void proteinsToFASTAfile(List<IProtein> proteins, String path) {
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
-    }
-
-    public void sequencesToFASTAfile(List<? extends ISequence> sequences,
-                                     String path) {
-        //TODO: Change to latest world order and remove this method
-        throw new IllegalStateException("This method should not be called");
     }
 
     private SequenceDB addToSequenceDB(

@@ -68,7 +68,8 @@ public class SequenceEditor extends MultiPageEditorPart {
         }
         FileEditorInput fed = (FileEditorInput) getEditorInput();
         IFile file= fed.getFile();
-        IBiojavaManager biojava = Activator.getDefault().getBioJavaManager();
+        IBiojavaManager biojava
+          = Activator.getDefault().getJavaBiojavaManager();
 
         //Save sequences to FASTA format
         try {
