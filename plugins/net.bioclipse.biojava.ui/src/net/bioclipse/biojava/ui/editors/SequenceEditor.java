@@ -128,9 +128,10 @@ public class SequenceEditor extends MultiPageEditorPart {
 
     private void showError(String message) {
         MessageDialog.openError(
-                                      getSite().getShell(),
-                                      "Error",
-                                      message);
+            getSite().getShell(),
+            "Error",
+            message
+        );
     }
 
 }
