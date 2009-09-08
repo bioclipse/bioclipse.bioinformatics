@@ -27,7 +27,7 @@ import org.junit.Test;
  */
 public class BiojavaManagerTest {
 
-    private IBiojavaManager biojava = new BiojavaManager();
+    private BiojavaManager biojava = new BiojavaManager();
 
     @Test
     public void createDNA() {
