@@ -35,8 +35,10 @@ public class BiojavaManagerTest {
         IDNA seq = biojava.DNAfromPlainSequence(dnaString);
         assertEquals(BiojavaDNA.class, seq.getClass());
         assertEquals(dnaString.toLowerCase(), seq.getPlainSequence());
-        assertEquals("dna:'" + dnaString.toLowerCase() + "'",
-                     seq.toString());
+        assertEquals(
+            "DNA " + seq.getName() + ": '" + dnaString.toLowerCase() +"'",
+            seq.toString()
+        );
     }
 
     @Test
@@ -45,8 +47,10 @@ public class BiojavaManagerTest {
         IRNA seq = biojava.RNAfromPlainSequence(rnaString);
         assertEquals(BiojavaRNA.class, seq.getClass());
         assertEquals(rnaString.toLowerCase(), seq.getPlainSequence());
-        assertEquals("rna:'" + rnaString.toLowerCase() + "'",
-                     seq.toString());
+        assertEquals(
+            "RNA " + seq.getName() + ": '" + rnaString.toLowerCase() +"'",
+            seq.toString()
+        );
     }
 
     @Test
@@ -58,8 +62,11 @@ public class BiojavaManagerTest {
         IProtein seq = biojava.proteinFromPlainSequence(proteinString);
         assertEquals(BiojavaProtein.class, seq.getClass());
         assertEquals(proteinString, seq.getPlainSequence());
-        assertEquals("protein:'" + proteinString + "'",
-                     seq.toString());
+        assertEquals(
+            "Protein " + seq.getName() + ": '"
+                       + proteinString.toLowerCase() +"'",
+            seq.toString()
+        );
     }
 
     @Test
