@@ -384,7 +384,11 @@ public class BiojavaManager implements IBioclipseManager {
 
             //Write byte[] as new content to file
             ByteArrayInputStream bis=new ByteArrayInputStream(bos.toByteArray());
-            file.setContents( bis, false, false, monitor );
+            if (file.exists())
+                file.setContents( bis, false, false, monitor );
+            else{
+                file.create( bis, false, monitor );
+            }
 
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException(e);
