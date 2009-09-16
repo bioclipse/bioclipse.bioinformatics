@@ -33,8 +33,8 @@ public class SequenceEditor extends MultiPageEditorPart {
 
     private Logger logger = Logger.getLogger(SequenceEditor.class);
 
-    public static final String SEQUENCE_EDITOR_ID =
-                              "net.bioclipse.biojava.ui.editors.SequenceEditor";
+    public static final String SEQUENCE_EDITOR_ID
+      = "net.bioclipse.biojava.ui.editors.SequenceEditor";
 
     private Aligner aligner;
     private SequenceOutlinePage outlinePage;
@@ -124,7 +124,6 @@ public class SequenceEditor extends MultiPageEditorPart {
         aligner.setSequences(sequences);
         dirty = true;
         firePropertyChange( IEditorPart.PROP_DIRTY );
-
     }
 
     private void showError(String message) {
