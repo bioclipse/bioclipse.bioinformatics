@@ -134,4 +134,8 @@ public class SequenceEditor extends MultiPageEditorPart {
         );
     }
 
+    public void toggleWrapMode() {
+        aligner.toggleWrapMode();
+    }
+
 }

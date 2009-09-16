@@ -141,6 +141,16 @@
             </visibleWhen>
           </command>
 
+          <command commandId="net.bioclipse.biojava.ui.actions.wrapmode"
+                   tooltip="Toggle wrap"
+                   icon="icons/zoom_in.png">
+            <visibleWhen>
+              <reference
+                definitionId="net.bioclipse.definitions.activeSequenceEditor">
+              </reference>
+            </visibleWhen>
+          </command>
+
           <separator name="additions"
                      visible="false" />
 
@@ -163,6 +173,10 @@
              description="Zoom out"
              name="Zoom out">
     </command>
+    <command id="net.bioclipse.biojava.ui.actions.wrapmode"
+             description="Toggle wrap"
+             name="Toogle wrap">
+    </command>
   </extension>
 
   <extension point="org.eclipse.ui.handlers">
@@ -172,7 +186,8 @@
     <handler class="net.bioclipse.biojava.ui.handlers.ZoomOutHandler"
             commandId="net.bioclipse.biojava.ui.actions.zoomout">
     </handler>
+    <handler class="net.bioclipse.biojava.ui.handlers.WrapModeHandler"
+            commandId="net.bioclipse.biojava.ui.actions.wrapmode">
+    </handler>
   </extension>
-
-
 </plugin>

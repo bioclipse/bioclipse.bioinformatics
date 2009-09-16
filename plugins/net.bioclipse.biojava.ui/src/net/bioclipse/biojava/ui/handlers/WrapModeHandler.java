@@ -9,8 +9,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-
-public class ZoomInHandler extends AbstractHandler implements IHandler {
+public class WrapModeHandler extends AbstractHandler implements IHandler {
     public Object execute( ExecutionEvent event ) throws ExecutionException {
 
         IEditorPart editor = HandlerUtil.getActiveEditor( event );
@@ -18,8 +17,8 @@ public class ZoomInHandler extends AbstractHandler implements IHandler {
         if (!(editor instanceof SequenceEditor))
             return null;
 
-        ((SequenceEditor) editor).zoomIn();
-        
+        ((SequenceEditor) editor).toggleWrapMode();
+
         return null;
     }
 }

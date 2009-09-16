@@ -642,4 +642,7 @@ public class Aligner extends EditorPart {
     public Type getSequenceType() {
         return Type.PROTEIN;
     }
+
+    public void toggleWrapMode() {
+    }
 }
