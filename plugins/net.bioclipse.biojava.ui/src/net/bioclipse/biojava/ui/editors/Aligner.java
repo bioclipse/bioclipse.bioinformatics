@@ -115,6 +115,8 @@ public class Aligner extends EditorPart {
     private PaintListener sequenceCanvasPaintListener;
     private ScrolledComposite sc;
 
+    private boolean wrapMode = false;
+
     @Override
     public void doSave( IProgressMonitor monitor ) {
     }
@@ -313,33 +315,6 @@ public class Aligner extends EditorPart {
         data = new GridData(GridData.FILL_VERTICAL);
         nameCanvas.setLayoutData( data );
 
-        nameCanvasPaintListener = new PaintListener() {
-            public void paintControl(PaintEvent e) {
-                GC gc = e.gc;
-                gc.setBackground( buttonColor );
-                if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS) {
-                    gc.setFont( new Font(gc.getDevice(),
-                                         "Arial",
-                                         (int)(.7 * squareSize),
-                                         SWT.NONE) );
-                    gc.setForeground( nameColor );
-                    gc.setTextAntialias( SWT.ON );
-                }
-
-                int index = 0;
-                for ( String name : sequences.keySet() ) {
-                    if ( index == consensusRow )
-                        gc.setBackground( consensusColor );
-                    gc.fillRectangle(0, index * squareSize,
-                                     8 * squareSize, squareSize);
-                    if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS)
-                        gc.drawText( name, 5, index * squareSize );
-                    ++index;
-                }
-            }
-        };
-        nameCanvas.addPaintListener( nameCanvasPaintListener );
-
         sc = new ScrolledComposite( parent, SWT.H_SCROLL | SWT.V_SCROLL );
         GridData sc_data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING
                                         | GridData.FILL_BOTH);
@@ -353,123 +328,8 @@ public class Aligner extends EditorPart {
         setCanvasSizes();
         sc.setContent( c );
 
-        sequenceCanvasPaintListener = new PaintListener() {
-            public void paintControl(PaintEvent e) {
-                GC gc = e.gc;
-                if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
-                    gc.setTextAntialias( SWT.ON );
-                    gc.setFont( new Font(gc.getDevice(),
-                                         "Arial",
-                                         (int)(.7 * squareSize),
-                                         SWT.NONE) );
-                    gc.setForeground( textColor );
-                }
+        equipCanvasesForNonwrapMode();
 
-                int firstVisibleColumn
-                        = sc.getHorizontalBar().getSelection() / squareSize,
-                    lastVisibleColumn
-                        = firstVisibleColumn
-                          + sc.getBounds().width / squareSize
-                          + 2; // compensate for 2 possible round-downs
-
-                drawSequences(fastas,
-                              firstVisibleColumn, lastVisibleColumn,
-                              gc);
-                drawSelection( gc );
-                drawConsensusSequence(
-                    fastas[canvasHeightInSquares-1],
-                    firstVisibleColumn, lastVisibleColumn, gc);
-            }
-
-            private void drawSequences( final char[][] fasta,
-                                        int firstVisibleColumn,
-                                        int lastVisibleColumn, GC gc ) {
-
-                for ( int column = firstVisibleColumn;
-                      column < lastVisibleColumn; ++column ) {
-
-                    int xCoord = column * squareSize;
-
-                    for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
-
-                        char c = fasta[row].length > column
-                                 ? fasta[row][column] : ' ';
-                        String cc = c + "";
-
-                        gc.setBackground(
-                             "HKR".contains( cc ) ? basicAAColor
-                          :   "DE".contains( cc ) ? acidicAAColor
-                          : "TQSN".contains( cc ) ? polarAAColor
-                          :  "FYW".contains( cc ) ? nonpolarAAColor
-                          :   "GP".contains( cc ) ? smallAAColor
-                          :    'C' == c           ? cysteineColor
-                                                  : normalAAColor );
-
-                        int yCoord = row * squareSize;
-
-                        gc.fillRectangle(xCoord, yCoord,
-                                         squareSize, squareSize);
-
-                        if ( Character.isUpperCase( c )
-                             && squareSize
-                                  >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                            gc.drawText( "" + c, xCoord + 4, yCoord );
-                    }
-                }
-            }
-
-            private void drawConsensusSequence( final char[] sequence,
-                                                int firstVisibleColumn,
-                                                int lastVisibleColumn, GC gc ) {
-
-                int yCoord = (canvasHeightInSquares-1) * squareSize;
-
-                for ( int column = firstVisibleColumn;
-                      column < lastVisibleColumn; ++column ) {
-
-                    char c = sequence.length > column ? sequence[column] : ' ';
-                    int consensusDegree = Character.isDigit(c) ? c - '0' : 1;
-
-                    gc.setBackground(consensusColors[ consensusDegree-1 ]);
-
-                    int xCoord = column * squareSize;
-
-                    gc.fillRectangle(xCoord, yCoord, squareSize, squareSize);
-
-                    if ( Character.isUpperCase( c )
-                         && squareSize
-                              >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                        gc.drawText( "" + c, xCoord + 4, yCoord + 2 );
-                }
-            }
-
-            private void drawSelection( GC gc ) {
-
-                if (!selectionVisible)
-                    return;
-
-                int boundaries[] = boundaries(),
-                    xLeft   = boundaries[0],
-                    yTop    = boundaries[1],
-                    xRight  = boundaries[2],
-                    yBottom = boundaries[3];
-
-                gc.setForeground( selectionColor1 );
-                gc.drawRectangle( xLeft,
-                                  yTop,
-                                  xRight - xLeft - 1,
-                                  yBottom - yTop - 1 );
-
-                gc.setBackground( selectionColor2 );
-                gc.setAlpha( 64 ); // 25%
-                gc.fillRectangle( xLeft           + 1,
-                                  yTop            + 1,
-                                  xRight - xLeft  - 1,
-                                  yBottom - yTop  - 1 );
-                gc.setAlpha( 255 ); // opaque again
-            }
-        };
-        sequenceCanvas.addPaintListener( sequenceCanvasPaintListener);
 
         sequenceCanvas.addMouseListener( new MouseListener() {
 
@@ -655,6 +515,173 @@ public class Aligner extends EditorPart {
         nameCanvas.removePaintListener(nameCanvasPaintListener);
         sequenceCanvas.removePaintListener(sequenceCanvasPaintListener);
 
+        wrapMode = !wrapMode;
+
+        if (wrapMode) {
+            equipCanvasesForWrapMode();
+        }
+        else {
+            equipCanvasesForNonwrapMode();
+        }
+
+        nameCanvas.addPaintListener( nameCanvasPaintListener );
+        sequenceCanvas.addPaintListener( sequenceCanvasPaintListener);
+
+        parent.layout();
+        parent.redraw();
+    }
+
+    private void equipCanvasesForNonwrapMode() {
+        nameCanvasPaintListener = new PaintListener() {
+            public void paintControl(PaintEvent e) {
+                GC gc = e.gc;
+                gc.setBackground( buttonColor );
+                if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS) {
+                    gc.setFont( new Font(gc.getDevice(),
+                                         "Arial",
+                                         (int)(.7 * squareSize),
+                                         SWT.NONE) );
+                    gc.setForeground( nameColor );
+                    gc.setTextAntialias( SWT.ON );
+                }
+
+                int index = 0;
+                for ( String name : sequences.keySet() ) {
+                    if ( index == consensusRow )
+                        gc.setBackground( consensusColor );
+                    gc.fillRectangle(0, index * squareSize,
+                                     8 * squareSize, squareSize);
+                    if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS)
+                        gc.drawText( name, 5, index * squareSize );
+                    ++index;
+                }
+            }
+        };
+        nameCanvas.addPaintListener( nameCanvasPaintListener );
+
+        c.setSize( fastas[0].length * squareSize,
+                   canvasHeightInSquares * squareSize );
+
+        sequenceCanvasPaintListener = new PaintListener() {
+            public void paintControl(PaintEvent e) {
+                GC gc = e.gc;
+                if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                    gc.setTextAntialias( SWT.ON );
+                    gc.setFont( new Font(gc.getDevice(),
+                                         "Arial",
+                                         (int)(.7 * squareSize),
+                                         SWT.NONE) );
+                    gc.setForeground( textColor );
+                }
+
+                int firstVisibleColumn
+                        = sc.getHorizontalBar().getSelection() / squareSize,
+                    lastVisibleColumn
+                        = firstVisibleColumn
+                          + sc.getBounds().width / squareSize
+                          + 2; // compensate for 2 possible round-downs
+
+                drawSequences(fastas,
+                              firstVisibleColumn, lastVisibleColumn,
+                              gc);
+                drawSelection( gc );
+                drawConsensusSequence(
+                    fastas[canvasHeightInSquares-1],
+                    firstVisibleColumn, lastVisibleColumn, gc);
+            }
+
+            private void drawSequences( final char[][] fasta,
+                                        int firstVisibleColumn,
+                                        int lastVisibleColumn, GC gc ) {
+
+                for ( int column = firstVisibleColumn;
+                      column < lastVisibleColumn; ++column ) {
+
+                    int xCoord = column * squareSize;
+
+                    for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
+
+                        char c = fasta[row].length > column
+                                 ? fasta[row][column] : ' ';
+                        String cc = c + "";
+
+                        gc.setBackground(
+                             "HKR".contains( cc ) ? basicAAColor
+                          :   "DE".contains( cc ) ? acidicAAColor
+                          : "TQSN".contains( cc ) ? polarAAColor
+                          :  "FYW".contains( cc ) ? nonpolarAAColor
+                          :   "GP".contains( cc ) ? smallAAColor
+                          :    'C' == c           ? cysteineColor
+                                                  : normalAAColor );
+
+                        int yCoord = row * squareSize;
+
+                        gc.fillRectangle(xCoord, yCoord,
+                                         squareSize, squareSize);
+
+                        if ( Character.isUpperCase( c )
+                             && squareSize
+                                  >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
+                            gc.drawText( "" + c, xCoord + 4, yCoord );
+                    }
+                }
+            }
+
+            private void drawConsensusSequence( final char[] sequence,
+                                                int firstVisibleColumn,
+                                                int lastVisibleColumn, GC gc ) {
+
+                int yCoord = (canvasHeightInSquares-1) * squareSize;
+
+                for ( int column = firstVisibleColumn;
+                      column < lastVisibleColumn; ++column ) {
+
+                    char c = sequence.length > column ? sequence[column] : ' ';
+                    int consensusDegree = Character.isDigit(c) ? c - '0' : 1;
+
+                    gc.setBackground(consensusColors[ consensusDegree-1 ]);
+
+                    int xCoord = column * squareSize;
+
+                    gc.fillRectangle(xCoord, yCoord, squareSize, squareSize);
+
+                    if ( Character.isUpperCase( c )
+                         && squareSize
+                              >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
+                        gc.drawText( "" + c, xCoord + 4, yCoord );
+                }
+            }
+
+            private void drawSelection( GC gc ) {
+
+                if (!selectionVisible)
+                    return;
+
+                int boundaries[] = boundaries(),
+                    xLeft   = boundaries[0],
+                    yTop    = boundaries[1],
+                    xRight  = boundaries[2],
+                    yBottom = boundaries[3];
+
+                gc.setForeground( selectionColor1 );
+                gc.drawRectangle( xLeft,
+                                  yTop,
+                                  xRight - xLeft - 1,
+                                  yBottom - yTop - 1 );
+
+                gc.setBackground( selectionColor2 );
+                gc.setAlpha( 64 ); // 25%
+                gc.fillRectangle( xLeft           + 1,
+                                  yTop            + 1,
+                                  xRight - xLeft  - 1,
+                                  yBottom - yTop  - 1 );
+                gc.setAlpha( 255 ); // opaque again
+            }
+        };
+        sequenceCanvas.addPaintListener( sequenceCanvasPaintListener);
+    }
+
+    private void equipCanvasesForWrapMode() {
         final int columns = 30;
 
         nameCanvasPaintListener = new PaintListener() {
@@ -685,7 +712,6 @@ public class Aligner extends EditorPart {
                 }
             }
         };
-        nameCanvas.addPaintListener( nameCanvasPaintListener );
 
         c.setSize( columns * squareSize,
                    (canvasHeightInSquares + 2)
@@ -770,8 +796,5 @@ public class Aligner extends EditorPart {
                 }
             }
         };
-        sequenceCanvas.addPaintListener( sequenceCanvasPaintListener);
-        parent.layout();
-        parent.redraw();
     }
 }
