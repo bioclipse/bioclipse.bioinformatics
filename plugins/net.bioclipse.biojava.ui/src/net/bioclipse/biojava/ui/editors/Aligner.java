@@ -485,20 +485,6 @@ public class Aligner extends EditorPart {
             }
         }
         return seqs;
-
-        //Below is old impl by masak. TODO: Remove after review
-/*
-      List<String> seqvals = new ArrayList<String>( sequences.values() );
-
-      //Remove consensus sequence
-      if (seqvals.size() > 1)
-          seqvals.remove(seqvals.size() - 1);
-
-      List<ISequence> seqs = new ArrayList<ISequence>();
-      for ( String plainSequence : seqvals )
-          seqs.add(biojava.proteinFromPlainSequence(plainSequence, name));
-      return seqs;
-      */
     }
 
     enum Type {
