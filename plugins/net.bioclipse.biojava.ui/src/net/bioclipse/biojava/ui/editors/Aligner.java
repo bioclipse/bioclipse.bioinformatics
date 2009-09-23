@@ -329,122 +329,6 @@ public class Aligner extends EditorPart {
         sc.setContent( c );
 
         equipCanvasesForNonwrapMode();
-
-
-        sequenceCanvas.addMouseListener( new MouseListener() {
-
-            public void mouseDoubleClick( MouseEvent e ) {
-                // we're not interested in double clicks
-            }
-
-            public void mouseDown( MouseEvent e ) {
-                if (e.button != 1)
-                    return;
-
-                int boundaries[] = boundaries(),
-                    xLeft   = boundaries[0],
-                    yTop    = boundaries[1],
-                    xRight  = boundaries[2],
-                    yBottom = boundaries[3];
-
-                if ( selectionVisible
-                     && xLeft <= e.x && e.x <= xRight
-                     && yTop  <= e.y && e.y <= yBottom ) {
-
-                    currentlyDraggingSelection = true;
-                    dragStart.x = dragEnd.x = e.x;
-                    dragStart.y = dragEnd.y = e.y;
-                }
-                else {
-                    currentlySelecting = true;
-                    selectionVisible = false;
-                    selectionStart.x = selectionEnd.x = e.x;
-                    selectionStart.y = selectionEnd.y = e.y;
-                    sequenceCanvas.redraw();
-                }
-            }
-
-            public void mouseUp( MouseEvent e ) {
-
-                if (currentlyDraggingSelection) {
-                    // The expressions do three things:
-                    //
-                    // 1. Calculate the distance dragged (end minus start)
-                    // 2. Add half a square in that direction
-                    // 3. Round towards zero to the closest squareSize point
-                    //
-                    // The second step is required precisely because the third
-                    // step rounds towards zero.
-                    int xDelta
-                          = (dragEnd.x - dragStart.x                       // 1
-                             + squareSize/2 * (dragEnd.x<dragStart.x?-1:1) // 2
-                            ) / squareSize,                                // 3
-                        yDelta
-                          = (dragEnd.y - dragStart.y                       // 1
-                             + squareSize/2 * (dragEnd.y<dragStart.y?-1:1) // 2
-                            ) / squareSize;                                // 3
-
-                    selectionTopLeftInSquares.x       += xDelta;
-                    selectionBottomRightInSquares.x   += xDelta;
-
-                    selectionTopLeftInSquares.y       += yDelta;
-                    selectionBottomRightInSquares.y   += yDelta;
-
-                    sequenceCanvas.redraw();
-                }
-
-                dragEnd = new Point(dragStart.x, dragStart.y);
-                currentlySelecting = currentlyDraggingSelection = false;
-            }
-
-        });
-
-        sequenceCanvas.addMouseMoveListener( new MouseMoveListener() {
-
-            public void mouseMove( MouseEvent e ) {
-
-                // e.stateMask contains info on shift keys
-                if (currentlySelecting) {
-                  selectionEnd.x = e.x;
-                  selectionEnd.y = e.y;
-
-                  selectionVisible = true;
-
-                  int viewPortLeft  = -c.getLocation().x,
-                      viewPortRight = viewPortLeft + sc.getBounds().width,
-                      viewPortTop   = -c.getLocation().y,
-                      maximumLeft   = sc.getHorizontalBar().getMaximum();
-
-                  if ( e.x > viewPortRight ) {
-                      viewPortLeft += e.x - viewPortRight;
-                      if (viewPortRight >= maximumLeft )
-                          viewPortLeft = maximumLeft - sc.getBounds().width;
-                  }
-                  else if ( e.x < viewPortLeft ) {
-                      viewPortLeft -= viewPortLeft - e.x;
-                      if (viewPortLeft < 0)
-                          viewPortLeft = 0;
-                  }
-
-                  if ( viewPortLeft != -c.getLocation().x ) {
-                      sc.getHorizontalBar().setSelection( viewPortLeft );
-                      c.setLocation( -viewPortLeft, -viewPortTop );
-                  }
-
-                  sequenceCanvas.redraw();
-
-                  selectionBounds();
-                }
-
-                if (currentlyDraggingSelection) {
-                    dragEnd.x = e.x;
-                    dragEnd.y = e.y;
-
-                    sequenceCanvas.redraw();
-                }
-            }
-
-        });
     }
 
     @Override
@@ -665,6 +549,121 @@ public class Aligner extends EditorPart {
             }
         };
         sequenceCanvas.addPaintListener( sequenceCanvasPaintListener);
+
+        sequenceCanvas.addMouseListener( new MouseListener() {
+
+            public void mouseDoubleClick( MouseEvent e ) {
+                // we're not interested in double clicks
+            }
+
+            public void mouseDown( MouseEvent e ) {
+                if (e.button != 1)
+                    return;
+
+                int boundaries[] = boundaries(),
+                    xLeft   = boundaries[0],
+                    yTop    = boundaries[1],
+                    xRight  = boundaries[2],
+                    yBottom = boundaries[3];
+
+                if ( selectionVisible
+                     && xLeft <= e.x && e.x <= xRight
+                     && yTop  <= e.y && e.y <= yBottom ) {
+
+                    currentlyDraggingSelection = true;
+                    dragStart.x = dragEnd.x = e.x;
+                    dragStart.y = dragEnd.y = e.y;
+                }
+                else {
+                    currentlySelecting = true;
+                    selectionVisible = false;
+                    selectionStart.x = selectionEnd.x = e.x;
+                    selectionStart.y = selectionEnd.y = e.y;
+                    sequenceCanvas.redraw();
+                }
+            }
+
+            public void mouseUp( MouseEvent e ) {
+
+                if (currentlyDraggingSelection) {
+                    // The expressions do three things:
+                    //
+                    // 1. Calculate the distance dragged (end minus start)
+                    // 2. Add half a square in that direction
+                    // 3. Round towards zero to the closest squareSize point
+                    //
+                    // The second step is required precisely because the third
+                    // step rounds towards zero.
+                    int xDelta
+                          = (dragEnd.x - dragStart.x                       // 1
+                             + squareSize/2 * (dragEnd.x<dragStart.x?-1:1) // 2
+                            ) / squareSize,                                // 3
+                        yDelta
+                          = (dragEnd.y - dragStart.y                       // 1
+                             + squareSize/2 * (dragEnd.y<dragStart.y?-1:1) // 2
+                            ) / squareSize;                                // 3
+
+                    selectionTopLeftInSquares.x       += xDelta;
+                    selectionBottomRightInSquares.x   += xDelta;
+
+                    selectionTopLeftInSquares.y       += yDelta;
+                    selectionBottomRightInSquares.y   += yDelta;
+
+                    sequenceCanvas.redraw();
+                }
+
+                dragEnd = new Point(dragStart.x, dragStart.y);
+                currentlySelecting = currentlyDraggingSelection = false;
+            }
+
+        });
+
+        sequenceCanvas.addMouseMoveListener( new MouseMoveListener() {
+
+            public void mouseMove( MouseEvent e ) {
+
+                // e.stateMask contains info on shift keys
+                if (currentlySelecting) {
+                  selectionEnd.x = e.x;
+                  selectionEnd.y = e.y;
+
+                  selectionVisible = true;
+
+                  int viewPortLeft  = -c.getLocation().x,
+                      viewPortRight = viewPortLeft + sc.getBounds().width,
+                      viewPortTop   = -c.getLocation().y,
+                      maximumLeft   = sc.getHorizontalBar().getMaximum();
+
+                  if ( e.x > viewPortRight ) {
+                      viewPortLeft += e.x - viewPortRight;
+                      if (viewPortRight >= maximumLeft )
+                          viewPortLeft = maximumLeft - sc.getBounds().width;
+                  }
+                  else if ( e.x < viewPortLeft ) {
+                      viewPortLeft -= viewPortLeft - e.x;
+                      if (viewPortLeft < 0)
+                          viewPortLeft = 0;
+                  }
+
+                  if ( viewPortLeft != -c.getLocation().x ) {
+                      sc.getHorizontalBar().setSelection( viewPortLeft );
+                      c.setLocation( -viewPortLeft, -viewPortTop );
+                  }
+
+                  sequenceCanvas.redraw();
+
+                  selectionBounds();
+                }
+
+                if (currentlyDraggingSelection) {
+                    dragEnd.x = e.x;
+                    dragEnd.y = e.y;
+
+                    sequenceCanvas.redraw();
+                }
+            }
+
+        });
     }
 
     private void equipCanvasesForWrapMode() {
