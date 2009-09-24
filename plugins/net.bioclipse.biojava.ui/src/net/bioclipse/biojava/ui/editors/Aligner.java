@@ -337,10 +337,20 @@ public class Aligner extends EditorPart {
 
     private void setCanvasSizes() {
 
-        data.widthHint = squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS
-                         ? NAME_CANVAS_WIDTH_IN_SQUARES * squareSize : 0;
-        c.setSize( canvasWidthInSquares * squareSize,
-                   canvasHeightInSquares * squareSize );
+        if (wrapMode) {
+            data.widthHint = 0;
+            final int columns = 30;
+            c.setSize( columns * squareSize,
+                       (canvasHeightInSquares + 2)
+                       * (fastas[0].length / columns) * squareSize );
+        }
+        else {
+            data.widthHint
+              = squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS
+                ? NAME_CANVAS_WIDTH_IN_SQUARES * squareSize : 0;
+            c.setSize( canvasWidthInSquares * squareSize,
+                       canvasHeightInSquares * squareSize );
+        }
     }
 
     public void zoomIn() {
@@ -397,6 +407,7 @@ public class Aligner extends EditorPart {
         nameCanvas.addPaintListener( nameCanvasPaintListener );
         sequenceCanvas.addPaintListener( sequenceCanvasPaintListener);
 
+        setCanvasSizes();
         parent.layout();
         parent.redraw();
     }
@@ -429,9 +440,6 @@ public class Aligner extends EditorPart {
             }
         };
         nameCanvas.addPaintListener( nameCanvasPaintListener );
-
-        c.setSize( fastas[0].length * squareSize,
-                   canvasHeightInSquares * squareSize );
 
         sequenceCanvasPaintListener = new PaintListener() {
             public void paintControl(PaintEvent e) {
@@ -670,9 +678,22 @@ public class Aligner extends EditorPart {
     private void equipCanvasesForWrapMode() {
         final int columns = 30;
 
-        nameCanvasPaintListener = new PaintListener() {
+        sequenceCanvasPaintListener = new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
+
+                int offset = 0;
+                if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                    offset = NAME_CANVAS_WIDTH_IN_SQUARES * squareSize;
+
+                    gc.setTextAntialias( SWT.ON );
+                    gc.setFont( new Font(gc.getDevice(),
+                                         "Arial",
+                                         (int)(.7 * squareSize),
+                                         SWT.NONE) );
+                    gc.setForeground( textColor );
+                }
+
                 gc.setBackground( buttonColor );
                 if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS) {
                     gc.setFont( new Font(gc.getDevice(),
@@ -696,30 +717,16 @@ public class Aligner extends EditorPart {
                     }
                     ++index;
                 }
-            }
-        };
+                gc.setForeground( textColor );
 
-        c.setSize( columns * squareSize,
-                   (canvasHeightInSquares + 2)
-                   * (fastas[0].length / columns) * squareSize );
-
-        sequenceCanvasPaintListener = new PaintListener() {
-            public void paintControl(PaintEvent e) {
-                GC gc = e.gc;
-                if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
-                    gc.setTextAntialias( SWT.ON );
-                    gc.setFont( new Font(gc.getDevice(),
-                                         "Arial",
-                                         (int)(.7 * squareSize),
-                                         SWT.NONE) );
-                    gc.setForeground( textColor );
-                }
-
-                drawSequences(fastas, gc);
-                drawConsensusSequence(fastas[canvasHeightInSquares-1], gc);
+                drawSequences(fastas, offset, gc);
+                drawConsensusSequence(fastas[canvasHeightInSquares-1],
+                                      offset, gc);
             }
 
-            private void drawSequences( final char[][] fasta, GC gc ) {
+            private void drawSequences( final char[][] fasta,
+                                        int offset,
+                                        GC gc ) {
 
                 for ( int column = 0; column < fasta[0].length; ++column ) {
 
@@ -746,18 +753,20 @@ public class Aligner extends EditorPart {
                                  * (column / columns))
                               * squareSize;
 
-                        gc.fillRectangle(xCoord, yCoord,
+                        gc.fillRectangle(offset + xCoord, yCoord,
                                          squareSize, squareSize);
 
                         if ( Character.isUpperCase( c )
                              && squareSize
                                   >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                            gc.drawText( "" + c, xCoord + 4, yCoord );
+                            gc.drawText( "" + c, offset + xCoord + 4, yCoord );
                     }
                 }
             }
 
-            private void drawConsensusSequence( final char[] sequence, GC gc ) {
+            private void drawConsensusSequence( final char[] sequence,
+                                                int offset,
+                                                GC gc ) {
 
                 for ( int column = 0; column < sequence.length; ++column ) {
 
@@ -773,12 +782,13 @@ public class Aligner extends EditorPart {
                               * (column / columns))
                            * squareSize;
 
-                    gc.fillRectangle(xCoord, yCoord, squareSize, squareSize);
+                    gc.fillRectangle(offset + xCoord, yCoord,
+                                     squareSize, squareSize);
 
                     if ( Character.isUpperCase( c )
                          && squareSize
                               >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                        gc.drawText( "" + c, xCoord + 4, yCoord );
+                        gc.drawText( "" + c, offset + xCoord + 4, yCoord );
                 }
             }
         };
