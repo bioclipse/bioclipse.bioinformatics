@@ -404,16 +404,18 @@ public class Aligner extends EditorPart {
     private void equipCanvasesForNonwrapMode() {
         nameCanvasPaintListener = new PaintListener() {
             public void paintControl(PaintEvent e) {
+                if (squareSize < MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS)
+                    return;
+
                 GC gc = e.gc;
                 gc.setBackground( buttonColor );
-                if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS) {
-                    gc.setFont( new Font(gc.getDevice(),
-                                         "Arial",
-                                         (int)(.7 * squareSize),
-                                         SWT.NONE) );
-                    gc.setForeground( nameColor );
-                    gc.setTextAntialias( SWT.ON );
-                }
+
+                gc.setFont( new Font(gc.getDevice(),
+                                     "Arial",
+                                     (int)(.7 * squareSize),
+                                     SWT.NONE) );
+                gc.setForeground( nameColor );
+                gc.setTextAntialias( SWT.ON );
 
                 int index = 0;
                 for ( String name : sequences.keySet() ) {
@@ -421,8 +423,7 @@ public class Aligner extends EditorPart {
                         gc.setBackground( consensusColor );
                     gc.fillRectangle(0, index * squareSize,
                                      8 * squareSize, squareSize);
-                    if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS)
-                        gc.drawText( name, 5, index * squareSize );
+                    gc.drawText( name, 5, index * squareSize );
                     ++index;
                 }
             }
