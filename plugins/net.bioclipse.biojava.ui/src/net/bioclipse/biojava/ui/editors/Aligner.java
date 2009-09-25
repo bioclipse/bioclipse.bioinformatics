@@ -337,17 +337,17 @@ public class Aligner extends EditorPart {
 
     private void setCanvasSizes() {
 
+        int nameWidth = squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS
+                        ? NAME_CANVAS_WIDTH_IN_SQUARES * squareSize : 0;
         if (wrapMode) {
             data.widthHint = 0;
             final int columns = 30;
-            c.setSize( columns * squareSize,
+            c.setSize( columns * squareSize + nameWidth,
                        (canvasHeightInSquares + 2)
                        * (fastas[0].length / columns) * squareSize );
         }
         else {
-            data.widthHint
-              = squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS
-                ? NAME_CANVAS_WIDTH_IN_SQUARES * squareSize : 0;
+            data.widthHint = nameWidth;
             c.setSize( canvasWidthInSquares * squareSize,
                        canvasHeightInSquares * squareSize );
         }
@@ -434,7 +434,12 @@ public class Aligner extends EditorPart {
                         gc.setBackground( consensusColor );
                     gc.fillRectangle(0, index * squareSize,
                                      8 * squareSize, squareSize);
-                    gc.drawText( name, 5, index * squareSize );
+                    Point extent = gc.stringExtent(name);
+                    gc.drawString(
+                        name,
+                        5,
+                        index * squareSize + squareSize/2 - extent.y/2
+                    );
                     ++index;
                 }
             }
@@ -501,8 +506,13 @@ public class Aligner extends EditorPart {
 
                         if ( Character.isUpperCase( c )
                              && squareSize
-                                  >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                            gc.drawText( "" + c, xCoord + 4, yCoord );
+                                  >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                            String text = "" + c;
+                            Point extent = gc.stringExtent(text);
+                            gc.drawString( text,
+                                           xCoord + squareSize/2 - extent.x/2,
+                                           yCoord + squareSize/2 - extent.y/2 );
+                        }
                     }
                 }
             }
@@ -526,9 +536,14 @@ public class Aligner extends EditorPart {
                     gc.fillRectangle(xCoord, yCoord, squareSize, squareSize);
 
                     if ( Character.isUpperCase( c )
-                         && squareSize
-                              >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                        gc.drawText( "" + c, xCoord + 4, yCoord );
+                            && squareSize
+                                 >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                        String text = "" + c;
+                        Point extent = gc.stringExtent(text);
+                        gc.drawString( text,
+                                       xCoord + squareSize/2 - extent.x/2,
+                                       yCoord + squareSize/2 - extent.y/2 );
+                    }
                 }
             }
 
@@ -710,10 +725,15 @@ public class Aligner extends EditorPart {
                         gc.setBackground( consensusColor );
                     int groups = fastas[0].length / columns;
                     for (int group = 0; group < groups; group++) {
+                        Point extent = gc.stringExtent(name);
                         int y = (index + (sequences.size() + 2) * group)
                                 * squareSize;
                         gc.fillRectangle(0, y, 8 * squareSize, squareSize);
-                        gc.drawText( name, 5, y );
+                        gc.drawString(
+                            name,
+                            5,
+                            y  + squareSize/2 - extent.y/2
+                        );
                     }
                     ++index;
                 }
@@ -754,8 +774,15 @@ public class Aligner extends EditorPart {
 
                         if ( Character.isUpperCase( c )
                              && squareSize
-                                  >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                            gc.drawText( "" + c, offset + xCoord + 4, yCoord );
+                                >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                            String text = "" + c;
+                            Point extent = gc.stringExtent(text);
+                            gc.drawString(
+                                text,
+                                offset + xCoord + squareSize/2 - extent.x/2,
+                                yCoord + squareSize/2 - extent.y/2
+                            );
+                        }
                     }
                 }
             }
@@ -783,8 +810,15 @@ public class Aligner extends EditorPart {
 
                     if ( Character.isUpperCase( c )
                          && squareSize
-                              >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS )
-                        gc.drawText( "" + c, offset + xCoord + 4, yCoord );
+                            >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                        String text = "" + c;
+                        Point extent = gc.stringExtent(text);
+                        gc.drawString(
+                            text,
+                            offset + xCoord + squareSize/2 - extent.x/2,
+                            yCoord + squareSize/2 - extent.y/2
+                        );
+                    }
                 }
             }
         };
