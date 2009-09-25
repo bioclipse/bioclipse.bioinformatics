@@ -253,8 +253,8 @@ public class Aligner extends EditorPart {
     private void selectionBounds() {
         int xLeft   = Math.min( selectionStart.x, selectionEnd.x ),
             xRight  = Math.max( selectionStart.x, selectionEnd.x ),
-            yTop    = Math.min( selectionStart.y, selectionEnd.y ),
-            yBottom = Math.max( selectionStart.y, selectionEnd.y );
+            yTop    = Math.min( selectionStart.y, selectionEnd.y ) - squareSize,
+            yBottom = Math.max( selectionStart.y, selectionEnd.y ) - squareSize;
 
         // clip
         xLeft   = Math.max( xLeft, 0 );
@@ -293,9 +293,11 @@ public class Aligner extends EditorPart {
             dragYDistance = dragEnd.y - dragStart.y,
 
         xLeft   = selectionTopLeftInSquares.x     * squareSize + dragXDistance,
-        yTop    = selectionTopLeftInSquares.y     * squareSize + dragYDistance,
+        yTop    = (selectionTopLeftInSquares.y + 1)
+                                                  * squareSize + dragYDistance,
         xRight  = selectionBottomRightInSquares.x * squareSize + dragXDistance,
-        yBottom = selectionBottomRightInSquares.y * squareSize + dragYDistance;
+        yBottom = (selectionBottomRightInSquares.y + 1)
+                                                  * squareSize + dragYDistance;
 
         return new int[] { xLeft, yTop, xRight, yBottom };
     }
@@ -343,13 +345,14 @@ public class Aligner extends EditorPart {
             data.widthHint = 0;
             final int columns = 30;
             c.setSize( columns * squareSize + nameWidth,
-                       (canvasHeightInSquares + 2)
-                       * (fastas[0].length / columns) * squareSize );
+                       ( 1 + (canvasHeightInSquares + 2)
+                             * (fastas[0].length / columns) )
+                       * squareSize );
         }
         else {
             data.widthHint = nameWidth;
             c.setSize( canvasWidthInSquares * squareSize,
-                       canvasHeightInSquares * squareSize );
+                       (canvasHeightInSquares + 1) * squareSize );
         }
     }
 
@@ -432,13 +435,13 @@ public class Aligner extends EditorPart {
                 for ( String name : sequences.keySet() ) {
                     if ( index == consensusRow )
                         gc.setBackground( consensusColor );
-                    gc.fillRectangle(0, index * squareSize,
+                    gc.fillRectangle(0, (1 + index) * squareSize,
                                      8 * squareSize, squareSize);
                     Point extent = gc.stringExtent(name);
                     gc.drawString(
                         name,
                         5,
-                        index * squareSize + squareSize/2 - extent.y/2
+                        (int)((1.5 + index) * squareSize) - extent.y/2
                     );
                     ++index;
                 }
@@ -499,7 +502,7 @@ public class Aligner extends EditorPart {
                           :    'C' == c           ? cysteineColor
                                                   : normalAAColor );
 
-                        int yCoord = row * squareSize;
+                        int yCoord = (1 + row) * squareSize;
 
                         gc.fillRectangle(xCoord, yCoord,
                                          squareSize, squareSize);
@@ -521,7 +524,7 @@ public class Aligner extends EditorPart {
                                                 int firstVisibleColumn,
                                                 int lastVisibleColumn, GC gc ) {
 
-                int yCoord = (canvasHeightInSquares-1) * squareSize;
+                int yCoord = canvasHeightInSquares * squareSize;
 
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
@@ -726,7 +729,7 @@ public class Aligner extends EditorPart {
                     int groups = fastas[0].length / columns;
                     for (int group = 0; group < groups; group++) {
                         Point extent = gc.stringExtent(name);
-                        int y = (index + (sequences.size() + 2) * group)
+                        int y = (1 + index + (sequences.size() + 2) * group)
                                 * squareSize;
                         gc.fillRectangle(0, y, 8 * squareSize, squareSize);
                         gc.drawString(
@@ -764,7 +767,7 @@ public class Aligner extends EditorPart {
                                                   : normalAAColor );
 
                         int yCoord
-                            = (row
+                            = (1 + row
                                + (canvasHeightInSquares + 2)
                                  * (column / columns))
                               * squareSize;
@@ -800,9 +803,9 @@ public class Aligner extends EditorPart {
 
                     int xCoord = (column % columns) * squareSize;
                     int yCoord
-                        = ((canvasHeightInSquares - 1)
-                            + (canvasHeightInSquares + 2)
-                              * (column / columns))
+                        = (canvasHeightInSquares
+                           + (canvasHeightInSquares + 2)
+                             * (column / columns))
                            * squareSize;
 
                     gc.fillRectangle(offset + xCoord, yCoord,
