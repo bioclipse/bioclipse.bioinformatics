@@ -419,6 +419,7 @@ public class Aligner extends EditorPart {
                     return;
 
                 GC gc = e.gc;
+                gc.setTextAntialias( SWT.OFF );
                 gc.setBackground( buttonColor );
 
                 gc.setFont( new Font(gc.getDevice(),
@@ -426,7 +427,6 @@ public class Aligner extends EditorPart {
                                      (int)(.7 * squareSize),
                                      SWT.NONE) );
                 gc.setForeground( nameColor );
-                gc.setTextAntialias( SWT.ON );
 
                 int index = 0;
                 for ( String name : sequences.keySet() ) {
@@ -444,8 +444,9 @@ public class Aligner extends EditorPart {
         sequenceCanvasPaintListener = new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
+                gc.setTextAntialias( SWT.OFF );
+
                 if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
-                    gc.setTextAntialias( SWT.ON );
                     gc.setFont( new Font(gc.getDevice(),
                                          "Arial",
                                          (int)(.7 * squareSize),
@@ -681,28 +682,27 @@ public class Aligner extends EditorPart {
         sequenceCanvasPaintListener = new PaintListener() {
             public void paintControl(PaintEvent e) {
                 GC gc = e.gc;
+                gc.setTextAntialias( SWT.OFF );
 
                 int offset = 0;
                 if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
                     offset = NAME_CANVAS_WIDTH_IN_SQUARES * squareSize;
 
-                    gc.setTextAntialias( SWT.ON );
                     gc.setFont( new Font(gc.getDevice(),
                                          "Arial",
                                          (int)(.7 * squareSize),
                                          SWT.NONE) );
-                    gc.setForeground( textColor );
                 }
 
+                drawNames(columns, gc);
+                drawSequences(fastas, offset, gc);
+                drawConsensusSequence(fastas[canvasHeightInSquares-1],
+                                      offset, gc);
+            }
+
+            private void drawNames(final int columns, GC gc) {
                 gc.setBackground( buttonColor );
-                if (squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS) {
-                    gc.setFont( new Font(gc.getDevice(),
-                                         "Arial",
-                                         (int)(.7 * squareSize),
-                                         SWT.NONE) );
-                    gc.setForeground( nameColor );
-                    gc.setTextAntialias( SWT.ON );
-                }
+                gc.setForeground( nameColor );
 
                 int index = 0;
                 for ( String name : sequences.keySet() ) {
@@ -718,10 +718,6 @@ public class Aligner extends EditorPart {
                     ++index;
                 }
                 gc.setForeground( textColor );
-
-                drawSequences(fastas, offset, gc);
-                drawConsensusSequence(fastas[canvasHeightInSquares-1],
-                                      offset, gc);
             }
 
             private void drawSequences( final char[][] fasta,
