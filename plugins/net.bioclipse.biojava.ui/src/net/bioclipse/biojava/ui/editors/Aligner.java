@@ -53,7 +53,7 @@ public class Aligner extends EditorPart {
     private int squareSize = 20;
     private final static int MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS = 8,
                              NAME_CANVAS_WIDTH_IN_SQUARES = 8;
-    private int canvasWidthInSquares, canvasHeightInSquares;
+    private int canvasWidthInSquares, numberOfSequences;
 
     static final Display display = Display.getCurrent();
     static final ColorManager colorManager = new ColorManager();
@@ -71,7 +71,8 @@ public class Aligner extends EditorPart {
         buttonColor     = colorManager.getColor( new RGB(0x66, 0x66, 0x66) ),
         consensusColor  = colorManager.getColor( new RGB(0xAA, 0xAA, 0xAA) ),
         selectionColor1 = display.getSystemColor( SWT.COLOR_BLACK ),
-        selectionColor2 = display.getSystemColor( SWT.COLOR_BLACK );
+        selectionColor2 = display.getSystemColor( SWT.COLOR_BLACK ),
+        backgroundColor = display.getSystemColor( SWT.COLOR_WHITE );
 
     static public final Color[] consensusColors
         = generateColorList( new int[] {
@@ -175,7 +176,7 @@ public class Aligner extends EditorPart {
             );
         }
 
-        canvasHeightInSquares = sequences.size();
+        numberOfSequences = sequences.size();
         canvasWidthInSquares = maxLength( sequences.values() );
 
         fastas = new char[ sequences.size() ][];
@@ -260,7 +261,7 @@ public class Aligner extends EditorPart {
         xLeft   = Math.max( xLeft, 0 );
         xRight  = Math.min( xRight, canvasWidthInSquares * squareSize );
         yTop    = Math.max( yTop, 0 );
-        yBottom = Math.min( yBottom, (canvasHeightInSquares-1) * squareSize );
+        yBottom = Math.min( yBottom, (numberOfSequences-1) * squareSize );
 
         // round down
         xLeft  =                   xLeft / squareSize;
@@ -273,7 +274,7 @@ public class Aligner extends EditorPart {
         // make sure a selection always has positive area
         if ( xRight <= xLeft )
             xRight = xLeft + 1;
-        if ( yBottom <= yTop && yTop < canvasHeightInSquares-1 )
+        if ( yBottom <= yTop && yTop < numberOfSequences-1 )
             yBottom = yTop + 1;
 
         // special case: mark along the consensus row
@@ -345,14 +346,14 @@ public class Aligner extends EditorPart {
             data.widthHint = 0;
             final int columns = 30;
             c.setSize( columns * squareSize + nameWidth,
-                       ( 1 + (canvasHeightInSquares + 2)
+                       ( 1 + (numberOfSequences + 2)
                              * (fastas[0].length / columns) )
                        * squareSize );
         }
         else {
             data.widthHint = nameWidth;
             c.setSize( canvasWidthInSquares * squareSize,
-                       (canvasHeightInSquares + 1) * squareSize );
+                       (numberOfSequences + 1) * squareSize );
         }
     }
 
@@ -454,13 +455,7 @@ public class Aligner extends EditorPart {
                 GC gc = e.gc;
                 gc.setTextAntialias( SWT.OFF );
 
-                if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
-                    gc.setFont( new Font(gc.getDevice(),
-                                         "Arial",
-                                         (int)(.7 * squareSize),
-                                         SWT.NONE) );
-                    gc.setForeground( textColor );
-                }
+                gc.setForeground( textColor );
 
                 int firstVisibleColumn
                         = sc.getHorizontalBar().getSelection() / squareSize,
@@ -469,25 +464,77 @@ public class Aligner extends EditorPart {
                           + sc.getBounds().width / squareSize
                           + 2; // compensate for 2 possible round-downs
 
+                drawTickMarks(firstVisibleColumn, lastVisibleColumn, gc);
                 drawSequences(fastas,
                               firstVisibleColumn, lastVisibleColumn,
                               gc);
                 drawSelection( gc );
                 drawConsensusSequence(
-                    fastas[canvasHeightInSquares-1],
+                    fastas[numberOfSequences-1],
                     firstVisibleColumn, lastVisibleColumn, gc);
+            }
+
+            private void drawTickMarks(int firstVisibleColumn,
+                                       int lastVisibleColumn, GC gc) {
+
+                gc.setForeground( textColor );
+                gc.setBackground( backgroundColor );
+
+                for ( int column = firstVisibleColumn;
+                      column < lastVisibleColumn; ++column ) {
+
+                    if (column % 10 != 9) // It's an off-by one situation:
+                        continue;         // A zero-based 9 is a one-based 10
+
+                    int xCoord = column * squareSize + squareSize/2,
+                            y1 = (int)(squareSize * .7),
+                            y2 = (int)(squareSize * .9);
+
+                    gc.drawLine(xCoord, y1, xCoord, y2);
+                }
+
+                if ( squareSize
+                        >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS * 2 ) {
+
+                    gc.setFont( new Font(gc.getDevice(),
+                               "Arial",
+                               (int)(.35 * squareSize),
+                               SWT.NONE) );
+
+                    for ( int column = firstVisibleColumn;
+                          column < lastVisibleColumn; ++column ) {
+
+                        if (column % 10 != 9)  // Same off-by-one again
+                            continue;
+
+                        int xCoord = column * squareSize + squareSize/2;
+
+                        String text = "" + (column + 1);
+                        Point extent = gc.stringExtent(text);
+                        gc.drawString( text,
+                                       xCoord - extent.x/2,
+                                       (int)(squareSize * .6) - extent.y );
+                    }
+                }
             }
 
             private void drawSequences( final char[][] fasta,
                                         int firstVisibleColumn,
                                         int lastVisibleColumn, GC gc ) {
 
+                if ( squareSize >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
+                    gc.setFont( new Font(gc.getDevice(),
+                                         "Arial",
+                                         (int)(.7 * squareSize),
+                                         SWT.NONE) );
+                }
+
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
 
                     int xCoord = column * squareSize;
 
-                    for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
+                    for ( int row = 0; row < numberOfSequences-1; ++row ) {
 
                         char c = fasta[row].length > column
                                  ? fasta[row][column] : ' ';
@@ -524,7 +571,7 @@ public class Aligner extends EditorPart {
                                                 int firstVisibleColumn,
                                                 int lastVisibleColumn, GC gc ) {
 
-                int yCoord = canvasHeightInSquares * squareSize;
+                int yCoord = numberOfSequences * squareSize;
 
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
@@ -712,15 +759,21 @@ public class Aligner extends EditorPart {
                                          SWT.NONE) );
                 }
 
-                drawNames(columns, gc);
+                drawNames(gc);
+                drawTickMarks(offset, gc);
                 drawSequences(fastas, offset, gc);
-                drawConsensusSequence(fastas[canvasHeightInSquares-1],
+                drawConsensusSequence(fastas[numberOfSequences-1],
                                       offset, gc);
             }
 
-            private void drawNames(final int columns, GC gc) {
+            private void drawNames(GC gc) {
                 gc.setBackground( buttonColor );
                 gc.setForeground( nameColor );
+
+                gc.setFont( new Font(gc.getDevice(),
+                                     "Arial",
+                                     (int)(.7 * squareSize),
+                                     SWT.NONE) );
 
                 int index = 0;
                 for ( String name : sequences.keySet() ) {
@@ -740,18 +793,71 @@ public class Aligner extends EditorPart {
                     }
                     ++index;
                 }
+            }
+
+            private void drawTickMarks(int offset, GC gc) {
+
                 gc.setForeground( textColor );
+                gc.setBackground( backgroundColor );
+
+                for (int column = 9; column < fastas[0].length; column += 10) {
+
+                    int xCoord = offset
+                                 + (column % columns)
+                                   * squareSize
+                                 + squareSize/2,
+                        yCoord = (numberOfSequences + 2)
+                                 * (column / columns) * squareSize,
+                            y1 = yCoord + (int)(squareSize * .7),
+                            y2 = yCoord + (int)(squareSize * .9);
+
+                    gc.drawLine(xCoord, y1, xCoord, y2);
+                }
+
+                if ( squareSize
+                     >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS * 2 ) {
+
+                    gc.setFont( new Font(gc.getDevice(),
+                                "Arial",
+                                (int)(.35 * squareSize),
+                                SWT.NONE) );
+
+                    for ( int column = 9;
+                          column < fastas[0].length;
+                          column += 10 ) {
+
+                        int xCoord
+                                 = offset
+                                   + (column % columns) * squareSize
+                                   + squareSize/2,
+                          yCoord = (numberOfSequences + 2)
+                                   * (column / columns) * squareSize
+                                   + (int)(squareSize * .6);
+
+                        String text = "" + (column + 1);
+                        Point extent = gc.stringExtent(text);
+                        gc.drawString( text,
+                                       xCoord - extent.x/2,
+                                       yCoord - extent.y );
+                    }
+                }
             }
 
             private void drawSequences( final char[][] fasta,
                                         int offset,
                                         GC gc ) {
 
+                gc.setForeground( textColor );
+                gc.setFont( new Font(gc.getDevice(),
+                                     "Arial",
+                                     (int)(.7 * squareSize),
+                                     SWT.NONE) );
+
                 for ( int column = 0; column < fasta[0].length; ++column ) {
 
                     int xCoord = (column % columns) * squareSize;
 
-                    for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
+                    for ( int row = 0; row < numberOfSequences-1; ++row ) {
 
                         char c = fasta[row].length > column
                                  ? fasta[row][column] : ' ';
@@ -768,7 +874,7 @@ public class Aligner extends EditorPart {
 
                         int yCoord
                             = (1 + row
-                               + (canvasHeightInSquares + 2)
+                               + (numberOfSequences + 2)
                                  * (column / columns))
                               * squareSize;
 
@@ -803,8 +909,8 @@ public class Aligner extends EditorPart {
 
                     int xCoord = (column % columns) * squareSize;
                     int yCoord
-                        = (canvasHeightInSquares
-                           + (canvasHeightInSquares + 2)
+                        = (numberOfSequences
+                           + (numberOfSequences + 2)
                              * (column / columns))
                            * squareSize;
 
