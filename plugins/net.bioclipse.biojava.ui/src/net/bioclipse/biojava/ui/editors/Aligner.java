@@ -950,19 +950,20 @@ public class Aligner extends EditorPart {
                         : xRightInSquares;
 
                     int xLeft = offset
-                           + (     xLeftInSquares % columns) * squareSize,
+                           + (     xLeftInSquares % columns)
+                             * squareSize + dragXDistance,
                        xRight = offset
                            + (tempXRightInSquares % columns == 0
                               ? columns : tempXRightInSquares % columns)
-                                                             * squareSize,
+                             * squareSize + dragXDistance,
                          yTop = ((numberOfSequences + 2)
                                  * (xLeftInSquares/columns)
                                  +    selectionTopLeftInSquares.y + 1)
-                                                             * squareSize,
+                                * squareSize + dragYDistance,
                       yBottom = ((numberOfSequences + 2)
                                  * (xLeftInSquares/columns)
                                  + selectionBottomRightInSquares.y + 1)
-                                                             * squareSize;
+                                * squareSize + dragYDistance;
 
                     gc.setForeground( selectionColor1 );
                     gc.drawRectangle( xLeft,
