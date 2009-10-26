@@ -27,13 +27,29 @@
                    tooltip="Align"
                    icon="icons/align.png">
             <visibleWhen>
+            <or>
+            
+              <iterate
+                    ifEmpty="false"
+                    operator="and">
+                 <adapt
+                       type="org.eclipse.core.resources.IResource">
+                       <test
+                             property="org.eclipse.core.resources.contentTypeId"
+                             value="net.bioclipse.bioinformatics.sequenceType">
+                       </test>
+                 </adapt>
+              </iterate>
+            
               <reference
                 definitionId="net.bioclipse.definitions.activeSequenceEditor">
               </reference>
+            </or>
             </visibleWhen>
           </command>
 
      </menuContribution>
+     
   </extension>
 
     <extension point="org.eclipse.ui.commands">

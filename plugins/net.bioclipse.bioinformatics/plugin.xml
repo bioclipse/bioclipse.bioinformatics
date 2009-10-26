@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <!-- declare a content type to eliminate duplicated file extensions -->
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            id="net.bioclipse.bioinformatics.sequenceType"
+            name="sequence"
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="fasta">
+      </content-type>
+   </extension>
+
+</plugin>

@@ -2,16 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-    <!-- declare a content type to eliminate duplicated file extensions -->
-   <extension
-         point="org.eclipse.core.runtime.contentTypes">
-      <content-type
-            id="net.bioclipse.biojava.ui.sequenceType"
-            name="sequence"
-            base-type="org.eclipse.core.runtime.text"
-            file-extensions="gbk,fasta,embl,seq">
-      </content-type>
-   </extension>
 
    <extension
          point="org.eclipse.ui.editors">
@@ -22,7 +12,7 @@
             id="net.bioclipse.biojava.ui.editors.SequenceEditor"
             name="Sequence Editor">
             <contentTypeBinding
-                  contentTypeId="net.bioclipse.biojava.ui.sequenceType">
+                  contentTypeId="net.bioclipse.bioinformatics.sequenceType">
             </contentTypeBinding>
       </editor>
    </extension>

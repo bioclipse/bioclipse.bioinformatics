@@ -6,13 +6,14 @@ Bundle-Version: 2.1.1.v20091002
 Bundle-Activator: net.bioclipse.align.kalign.ws.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.bioclipse.webservices;bundle-version="2.0.0",
- net.bioclipse.core;bundle-version="2.0.0",
- slf4j.api;bundle-version="1.5.0",
- net.bioclipse.logger;bundle-version="2.0.0",
- net.bioclipse.biojava.business;bundle-version="0.1.0",
- net.bioclipse.biojava;bundle-version="1.3.1",
- net.bioclipse.biojava.ui;bundle-version="1.3.1"
+ net.bioclipse.webservices,
+ net.bioclipse.core,
+ slf4j.api,
+ net.bioclipse.logger,
+ net.bioclipse.biojava.business,
+ net.bioclipse.biojava,
+ net.bioclipse.biojava.ui,
+ org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .,
