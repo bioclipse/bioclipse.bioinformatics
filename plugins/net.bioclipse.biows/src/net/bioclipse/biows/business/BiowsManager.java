@@ -80,7 +80,8 @@ public class BiowsManager implements IBioclipseManager {
     public String download(String database, String seqid) 
                                                       throws BioclipseException{
 
-        IWebservicesManager ws = Activator.getDefault().getWebservicesManager();
+        IWebservicesManager ws = Activator.getDefault()
+                                .getJavaWebservicesManager();
         try {
             String dl=ws.downloadDbEntry( database, seqid, "fasta" );
             logger.debug("Biows (" + database+"," + seqid 
