@@ -460,7 +460,7 @@ public class BiojavaManager implements IBioclipseManager {
 
         try {
             SeqIOTools.writeFasta(
-                new FileOutputStream(file.getFullPath().toFile()),
+                new FileOutputStream(file.getRawLocation().toFile()),
                 addToSequenceDB(proteins)
             );
         } catch (FileNotFoundException e) {
