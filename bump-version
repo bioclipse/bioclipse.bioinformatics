@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Usage: ./bump-version 2.8.awesome
+
 NEW_VERSION="$1"
 find plugins -name MANIFEST.MF |
     xargs perl -i -lpe '
