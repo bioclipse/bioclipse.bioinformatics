@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * www.eclipse.org—epl-v10.html <http://www.eclipse.org/legal/epl-v10.html>
+ * <http://www.eclipse.org/legal/epl-v10.html>
  *
  * Contributors:
  *     Jonathan Alvarsson
@@ -214,7 +214,6 @@ public class BiojavaManager implements IBioclipseManager {
         return proteins;
     }
 
-
     public IRNA DNAtoRNA(IDNA dna) {
         return DNAtoRNA(dna, "");
     }
@@ -234,6 +233,13 @@ public class BiojavaManager implements IBioclipseManager {
         }
     }
 
+    public List<IRNA> DNAtoRNA(List<IDNA> dnas) {
+        List<IRNA> rnas = new ArrayList<IRNA>();
+        for (final IDNA dna : dnas)
+            rnas.add(DNAtoRNA(dna));
+        return rnas;
+    }
+
     public IProtein RNAtoProtein(IRNA rna) {
         return RNAtoProtein(rna, "");
     }
@@ -251,6 +257,33 @@ public class BiojavaManager implements IBioclipseManager {
         } catch (IllegalSymbolException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public List<IProtein> RNAtoProtein(List<IRNA> rnas) {
+        List<IProtein> proteins = new ArrayList<IProtein>();
+        for (final IRNA rna : rnas)
+            proteins.add(RNAtoProtein(rna));
+        return proteins;
+    }
+
+    public IRNA transcriptionOf(IDNA dna) {
+        return DNAtoRNA(dna);
+    }
+    public IRNA transcriptionOf(IDNA dna, String name) {
+        return DNAtoRNA(dna, name);
+    }
+    public List<IRNA> transcriptionOf(List<IDNA> dnas) {
+        return DNAtoRNA(dnas);
+    }
+
+    public IProtein translationOf(IRNA rna) {
+        return RNAtoProtein(rna);
+    }
+    public IProtein translationOf(IRNA rna, String name) {
+        return RNAtoProtein(rna, name);
+    }
+    public List<IProtein> translationOf(List<IRNA> rnas) {
+        return RNAtoProtein(rnas);
     }
 
     public String getManagerName() {
@@ -468,19 +501,5 @@ public class BiojavaManager implements IBioclipseManager {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    public List<IRNA> DNAtoRNA(List<IDNA> dnas) {
-        List<IRNA> rnas = new ArrayList<IRNA>();
-        for (final IDNA dna : dnas)
-            rnas.add(DNAtoRNA(dna));
-        return rnas;
-    }
-
-    public List<IProtein> RNAtoProtein(List<IRNA> rnas) {
-        List<IProtein> proteins = new ArrayList<IProtein>();
-        for (final IRNA rna : rnas)
-            proteins.add(RNAtoProtein(rna));
-        return proteins;
     }
 }

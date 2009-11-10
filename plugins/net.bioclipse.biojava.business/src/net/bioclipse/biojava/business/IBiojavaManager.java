@@ -307,6 +307,92 @@ public interface IBiojavaManager extends IBioclipseManager {
         params = "IRNA rna, String name)" )
     public IProtein RNAtoProtein(IRNA rna, String name);
 
+    /**
+     * Returns the <code>IRNA</code> sequence equivalent of the given
+     * <code>IDNA</code> sequence. The conversion process is called
+     * <em>transcription</em>.
+     *
+     * @param dna the sequence to be converted
+     * @return the result of the conversion
+     */
+    @PublishedMethod(
+        methodSummary = "Returns the RNA sequence equivalent of the given DNA "
+                        + "sequence.",
+        params = "IDNA dna" )
+    public IRNA transcriptionOf(IDNA dna);
+
+    /**
+     * Returns the <code>IRNA</code> sequence equivalent of the given
+     * <code>IDNA</code> sequence. The conversion process is called
+     * <em>transcription</em>.
+     *
+     * @param dna  the sequence to be converted
+     * @param name a description of the sequence
+     * @return     the result of the conversion
+     */
+    @PublishedMethod(
+        methodSummary = "Returns the RNA sequence equivalent of the given DNA "
+                        + "sequence.",
+        params = "IDNA dna, String name)" )
+    public IRNA transcriptionOf(IDNA dna, String name);
+
+    /**
+     * Returns the <code>IRNA</code> sequence equivalents of the given
+     * list of <code>IDNA</code> sequences. The conversion process is called
+     * <em>transcription</em>.
+     *
+     * @param dnas the list of sequences to be converted
+     * @return the result of the conversion
+     */
+    @PublishedMethod(
+        methodSummary = "Returns a list of RNA sequence equivalents of the "
+                        +"given list of DNA sequences.",
+        params = "List<IDNA> dnas" )
+    public List<IRNA> transcriptionOf( List<IDNA> dnas );
+
+    /**
+     * Returns the <code>IProtein</code> sequence equivalent of the given
+     * <code>IRNA</code> sequence. The conversion process is called
+     * <em>translation</em>. The standard genetic code is used.
+     *
+     * @param rna the sequence to be converted
+     * @return the result of the conversion
+     */
+    @PublishedMethod(
+        methodSummary = "Returns the protein sequence equivalent of the " +
+                        "given RNA sequence.",
+        params = "IRNA rna" )
+    public IProtein translationOf(IRNA rna);
+
+    /**
+     * Returns the <code>IProtein</code> sequence equivalent of the given
+     * <code>IRNA</code> sequence. The conversion process is called
+     * <em>translation</em>. The standard genetic code is used.
+     *
+     * @param rna the sequence to be converted
+     * @param name a description of the sequence
+     * @return     the result of the conversion
+     */
+    @PublishedMethod(
+        methodSummary = "Returns the protein sequence equivalent of the " +
+                        "given RNA sequence.",
+        params = "IRNA rna, String name)" )
+    public IProtein translationOf(IRNA rna, String name);
+
+    /**
+     * Returns the <code>IProtein</code> sequence equivalents of the given
+     * list of <code>IRNA</code> sequences. The conversion process is called
+     * <em>translation</em>. The standard genetic code is used.
+     *
+     * @param rnas the sequence to be converted
+     * @return the result of the conversion
+     */
+    @PublishedMethod(
+        methodSummary = "Returns the protein sequence equivalents of the " +
+                        "given list of RNA sequence.",
+        params = "List<IRNA> rnas" )
+    public List<IProtein> translationOf( List<IRNA> rnas );
+
     @PublishedMethod(
             methodSummary = "Returns an array of DNA sequences from the "
                             + "given file.",
