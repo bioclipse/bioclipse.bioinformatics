@@ -233,37 +233,6 @@ public interface IBiojavaManager extends IBioclipseManager {
       params = "List<IDNA> dnas" )
     public List<IProtein> DNAtoProtein( List<IDNA> dnas );
 
-    // The below method declarations have been commented out pending more
-    // insight into the mechanism for actually doing these conversions with
-    // Biojava.
-//    /**
-//     * Returns the <code>IDNA</code> sequence equivalent of the given
-//     * <code>IRNA</code> sequence. The conversion process is called
-//     * <em>reverse transcription</em>.
-//     *
-//     * @param rna the sequence to be converted
-//     * @return the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the DNA sequence equivalent of the given " +
-//                        "RNA sequence.",
-//        params = "IRNA rna" )
-//    public IDNA RNAtoDNA(IRNA rna);
-//
-//    /**
-//     * Returns a list of <code>IDNA</code> sequence equivalents of the given
-//     * list of <code>IRNA</code> sequences. The conversion process is called
-//     * <em>reverse transcription</em>.
-//     *
-//     * @param rnas the list of sequences to be converted
-//     * @return the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns a list of DNA sequence equivalents of the "
-//                        + "given list of RNA sequences.",
-//        params = "List<IRNA> rnas" )
-//    public List<IDNA> RNAtoDNA( List<IRNA> rnas );
-
     /**
      * Returns the <code>IProtein</code> sequence equivalent of the given
      * <code>IRNA</code> sequence. The conversion process is called
@@ -291,67 +260,6 @@ public interface IBiojavaManager extends IBioclipseManager {
                         "given list of RNA sequence.",
         params = "List<IRNA> rnas" )
     public List<IProtein> RNAtoProtein( List<IRNA> rnas );
-
-    // The below method declarations have been commented out pending more
-    // insight into the mechanism for actually doing these conversions with
-    // Biojava.
-//    /**
-//     * Returns the <code>IDNA</code> sequence equivalent of the given
-//     * <code>IProtein</code> sequence. The conversion processes involved are
-//     * <em>reverse translation</em> and <em>reverse transcription</em>. The
-//     * standard genetic code is used.
-//     *
-//     * Because the genetic code is redundant, no guarantee can be made about
-//     * round-tripping an <code>IDNA</code> sequence to <code>IProtein</code>
-//     * and back.
-//     *
-//     * @param protein the sequence to be converted
-//     * @return the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the DNA sequence equivalent of the given " +
-//                        "protein sequence.",
-//        params = "IProtein protein" )
-//    public IDNA proteinToDNA(IProtein protein);
-//
-//    /**
-//     * Returns the <code>IDNA</code> sequence equivalents of the given
-//     * list of <code>IProtein</code> sequences. The conversion processes
-//     * involved are <em>reverse translation</em> and <em>reverse
-//     * transcription</em>. The standard genetic code is used.
-//     *
-//     * Because the genetic code is redundant, no guarantee can be made about
-//     * round-tripping an <code>IDNA</code> sequence to <code>IProtein</code>
-//     * and back.
-//     *
-//     * @param proteins the sequences to be converted
-//     * @return the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the DNA sequence equivalent of the given " +
-//                        "protein sequence.",
-//        params = "List<IProtein> proteins" )
-//    public List<IDNA> proteinToDNA( List<IProtein> proteins );
-
-//    /**
-//     * Returns the <code>IRNA</code> sequence equivalent of the given
-//     * <code>IProtein</code> sequence. The conversion process is called
-//     * <em>reverse translation</em>. The standard genetic code is used.
-//     *
-//     * Because the genetic code is redundant, no guarantee can be made about
-//     * round-tripping an <code>IRNA</code> sequence to <code>IProtein</code>
-//     * and back.
-//     *
-//     * @param protein the sequence to be converted
-//     * @return the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the RNA sequence equivalent of the given "
-//                        + "protein sequence.",
-//        params = "IProtein protein" )
-//    public IRNA proteinToRNA(IProtein protein);
-//
-//    public List<IRNA> proteinToRNA( List<IProtein> proteins );
 
     /**
      * Returns the <code>IRNA</code> sequence equivalent of the given
@@ -384,24 +292,6 @@ public interface IBiojavaManager extends IBioclipseManager {
         params = "IDNA dna, String name)" )
     public IProtein DNAtoProtein(IDNA dna, String name);
 
-    // The below method declarations have been commented out pending more
-    // insight into the mechanism for actually doing these conversions with
-    // Biojava.
-//    /**
-//     * Returns the <code>IDNA</code> sequence equivalent of the given
-//     * <code>IRNA</code> sequence. The conversion process is called
-//     * <em>reverse transcription</em>.
-//     *
-//     * @param rna the sequence to be converted
-//     * @param name a description of the sequence
-//     * @return     the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the DNA sequence equivalent of the given " +
-//                        "RNA sequence.",
-//        params = "IRNA rna, String name)" )
-//    public IDNA RNAtoDNA(IRNA rna, String name));
-
     /**
      * Returns the <code>IProtein</code> sequence equivalent of the given
      * <code>IRNA</code> sequence. The conversion process is called
@@ -416,48 +306,6 @@ public interface IBiojavaManager extends IBioclipseManager {
                         "given RNA sequence.",
         params = "IRNA rna, String name)" )
     public IProtein RNAtoProtein(IRNA rna, String name);
-
-    // The below method declarations have been commented out pending more
-    // insight into the mechanism for actually doing these conversions with
-    // Biojava.
-//    /**
-//     * Returns the <code>IDNA</code> sequence equivalent of the given
-//     * <code>IProtein</code> sequence. The conversion processes involved are
-//     * <em>reverse translation</em> and <em>reverse transcription</em>. The
-//     * standard genetic code is used.
-//     *
-//     * Because the genetic code is redundant, no guarantee can be made about
-//     * round-tripping an <code>IDNA</code> sequence to <code>IProtein</code>
-//     * and back.
-//     *
-//     * @param protein the sequence to be converted
-//     * @param name a description of the sequence
-//     * @return     the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the DNA sequence equivalent of the given " +
-//                        "protein sequence.",
-//        params = "IProtein protein, String name)" )
-//    public IDNA proteinToDNA(IProtein protein, String name));
-
-//    /**
-//     * Returns the <code>IRNA</code> sequence equivalent of the given
-//     * <code>IProtein</code> sequence. The conversion process is called
-//     * <em>reverse translation</em>. The standard genetic code is used.
-//     *
-//     * Because the genetic code is redundant, no guarantee can be made about
-//     * round-tripping an <code>IRNA</code> sequence to <code>IProtein</code>
-//     * and back.
-//     *
-//     * @param protein the sequence to be converted
-//     * @param name a description of the sequence
-//     * @return     the result of the conversion
-//     */
-//    @PublishedMethod(
-//        methodSummary = "Returns the RNA sequence equivalent of the given "
-//                        + "protein sequence.",
-//        params = "IProtein protein, String name)" )
-//    public IRNA proteinToRNA(IProtein protein, String name));
 
     @PublishedMethod(
             methodSummary = "Returns an array of DNA sequences from the "
@@ -533,6 +381,4 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(methodSummary = "Create an empty list of Sequences")
     public RecordableList<ISequence> createSequenceList()
         throws BioclipseException, InvocationTargetException;
-
-
 }
