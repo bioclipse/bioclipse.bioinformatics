@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.bioclipse.bioinformatics_feature"
-      label="Bioinformatics_feature Feature"
+      label="Bioinformatics Feature"
       version="2.2.0.RC2"
       provider-name="The Bioclipse Team"
       plugin="net.bioclipse.bioinformatics">
