@@ -1,21 +1,19 @@
 package net.bioclipse.biojava.ui.views.outline;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import net.bioclipse.biojava.business.Activator;
+import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.biojava.ui.editors.Aligner;
 import net.bioclipse.biojava.ui.editors.SequenceEditor;
+import net.bioclipse.core.domain.ISequence;
 
-import org.biojava.bio.BioException;
-import org.biojava.bio.seq.Sequence;
-import org.biojava.bio.seq.SequenceIterator;
-import org.biojavax.bio.seq.RichSequence.IOTools;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -42,13 +40,16 @@ public class SequenceOutlinePage extends Page
 
     private int squareSize = 8;
     private final static int MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS = 8;
-    private int canvasWidthInSquares, canvasHeightInSquares;
+    private int canvasWidthInSquares, numberOfSequences;
 
     private Canvas sequenceCanvas;
     
     //          seqname, sequence
     private Map<String,  String> sequences;
-    private int consensusRow;
+    private char fastas[][];
+
+    private IBiojavaManager biojava
+      = Activator.getDefault().getJavaBiojavaManager();
 
     public SequenceOutlinePage(IEditorInput input, SequenceEditor editor) {
         super();
@@ -57,57 +58,47 @@ public class SequenceOutlinePage extends Page
     }
     
     public void setInput( IEditorInput input ) {
-        sequences = new LinkedHashMap<String, String>();
-
         // Turn the editor input into an IFile.
         IFile file = (IFile) input.getAdapter( IFile.class );
         if (file == null)
             return;
 
-        SequenceIterator iter;
+        List<ISequence> sequences;
         try {
-            // Create a BufferedInputStream for our IFile.
-            BufferedReader br
-                = new BufferedReader(new InputStreamReader(file.getContents()));
-
-            // Create an iterator from the BufferedInputStream.
-            // We have to generalize this from just proteins to anything.
-            // The 'null' indicates that we don't care about which
-            // namespace the sequence ends up getting.
-            iter = IOTools.readFastaProtein( br, null );
-        } catch ( CoreException ce ) {
-            // File not found. TODO: This should be logged.
-            ce.printStackTrace();
-            return;
+            sequences = biojava.sequencesFromFile(file);
+        } catch (FileNotFoundException e1) {
+            return; // No exception handling at all! We just give up! Gasp!
         }
+        this.setSequences(sequences);
+    }
 
-        try {
-            // Add the sequences one by one to the Map. Do minor cosmetics
-            // on the name by removing everything up to and including to
-            // the last '|', if any.
-            while ( iter.hasNext() ) {
-                Sequence s = iter.nextSequence();
-                String name = s.getName().replaceFirst( ".*\\|", "" );
-                sequences.put( name, s.seqString() );
-            }
-        }
-        catch ( BioException e ) {
-            // There was a parsing error. TODO: This should be logged.
-            e.printStackTrace();
+    public void setSequences(List<ISequence> seqs) {
+        sequences = new LinkedHashMap<String, String>();
+
+        // Add the sequences one by one to the Map. Do minor cosmetics
+        // on the name by removing everything up to and including to
+        // the last '|', if any.
+        for (ISequence seq : seqs) {
+            String name = seq.getName().replaceFirst( ".*\\|", "" );
+            sequences.put( name, seq.getPlainSequence() );
         }
 
         // We only show a consensus sequence if there is more than one
         // sequence already.
-        consensusRow  = sequences.size();
-        if (consensusRow > 1) {
-            sequences.put(
-                "Consensus",
-                consensusSequence( sequences.values() )
-            );
+        if (sequences.size() > 1) {
+            sequences.put("Consensus", consensusSequence(sequences.values()));
         }
 
-        canvasHeightInSquares = sequences.size();
+        numberOfSequences = sequences.size();
         canvasWidthInSquares = maxLength( sequences.values() );
+
+        fastas = new char[ sequences.size() ][];
+
+        {
+            int i = 0;
+            for ( String sequence : sequences.values() )
+                fastas[i++] = sequence.toCharArray();
+        }
     }
 
     private static String consensusSequence( final Collection<String>
@@ -150,8 +141,11 @@ public class SequenceOutlinePage extends Page
     public void createControl(Composite parent) {
         
         sequenceCanvas = new Canvas( parent, SWT.H_SCROLL );
-        sequenceCanvas.setSize( canvasWidthInSquares*squareSize,canvasHeightInSquares*squareSize );
-        ScrollBar sb =sequenceCanvas.getHorizontalBar(); 
+        sequenceCanvas.setSize(
+            canvasWidthInSquares * squareSize,
+            numberOfSequences    * squareSize
+        );
+        ScrollBar sb = sequenceCanvas.getHorizontalBar();
         sb.setMaximum( canvasWidthInSquares );
         sb.addSelectionListener( new SelectionListener(){
 
@@ -191,7 +185,7 @@ public class SequenceOutlinePage extends Page
 
                 drawSequences(fasta, firstVisibleColumn, lastVisibleColumn, gc);
                 drawConsensusSequence(
-                    fasta[canvasHeightInSquares-1],
+                    fasta[numberOfSequences-1],
                     firstVisibleColumn, lastVisibleColumn, gc);
             }
 
@@ -202,7 +196,7 @@ public class SequenceOutlinePage extends Page
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
 
-                    for ( int row = 0; row < canvasHeightInSquares-1; ++row ) {
+                    for ( int row = 0; row < numberOfSequences-1; ++row ) {
                         
                         char c = fasta[row].length > column
                                  ? fasta[row][column] : ' ';
@@ -235,7 +229,7 @@ public class SequenceOutlinePage extends Page
                                                 int firstVisibleColumn,
                                                 int lastVisibleColumn, GC gc ) {
 
-                int yCoord = (canvasHeightInSquares-1) * squareSize;
+                int yCoord = (numberOfSequences-1) * squareSize;
                 int xCoord = 0;
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
