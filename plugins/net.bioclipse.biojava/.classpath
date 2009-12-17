@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="jars/biojava-live.jar" sourcepath="/biojava"/>
-	<classpathentry exported="true" kind="lib" path="jars/bytecode.jar" sourcepath="net.bioclipse.biojavasrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="jars/bytecode.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
