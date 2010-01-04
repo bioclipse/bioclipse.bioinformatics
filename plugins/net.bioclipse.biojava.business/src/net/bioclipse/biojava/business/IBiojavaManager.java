@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.bioclipse.biojava.domain.IFeature;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.business.BioclipseException;
@@ -467,4 +468,8 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(methodSummary = "Create an empty list of Sequences")
     public RecordableList<ISequence> createSequenceList()
         throws BioclipseException, InvocationTargetException;
+
+    @PublishedMethod(methodSummary = "Return a list of features for a Sequence",
+                     params = "ISequence sequence")
+    public List<IFeature> features(ISequence sequence);
 }

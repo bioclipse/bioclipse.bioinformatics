@@ -33,12 +33,15 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import net.bioclipse.biojava.domain.BiojavaDNA;
+import net.bioclipse.biojava.domain.BiojavaFeature;
 import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.biojava.domain.BiojavaRNA;
+import net.bioclipse.biojava.domain.IFeature;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IDNA;
 import net.bioclipse.core.domain.IProtein;
@@ -50,8 +53,10 @@ import net.bioclipse.managers.business.IBioclipseManager;
 import org.apache.log4j.Logger;
 import org.biojava.bio.BioException;
 import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.seq.Feature;
 import org.biojava.bio.seq.ProteinTools;
 import org.biojava.bio.seq.RNATools;
+import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.seq.db.HashSequenceDB;
 import org.biojava.bio.seq.db.IllegalIDException;
 import org.biojava.bio.seq.db.SequenceDB;
@@ -501,5 +506,16 @@ public class BiojavaManager implements IBioclipseManager {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public List<IFeature> features(ISequence sequence) {
+        List<IFeature> features = new ArrayList<IFeature>();
+        for ( Iterator<?> i
+                = ((Sequence)sequence.getParsedResource()).features();
+              i.hasNext(); ) {
+            Feature f = (Feature) i.next();
+            features.add(new BiojavaFeature(f));
+        }
+        return features;
     }
 }
