@@ -775,7 +775,6 @@ public class Aligner extends EditorPart {
                 drawSequences(fastas, offset, gc);
                 drawConsensusSequence(fastas[numberOfSequences-1],
                                       offset, gc);
-                drawSelection(offset, gc);
             }
 
             private void drawNames(GC gc) {
@@ -948,57 +947,6 @@ public class Aligner extends EditorPart {
                         );
                     }
                 }
-            }
-
-            private void drawSelection( int offset, GC gc ) {
-
-                if (!selectionVisible)
-                    return;
-
-                int dragXDistance = dragEnd.x - dragStart.x,
-                    dragYDistance = dragEnd.y - dragStart.y;
-
-                int xLeftInSquares = selectionTopLeftInSquares.x,
-                   xRightInSquares = selectionBottomRightInSquares.x;
-
-                do {
-                    int tempXRightInSquares
-                      = xRightInSquares/columns > xLeftInSquares/columns
-                        ? (xLeftInSquares/columns + 1) * columns
-                        : xRightInSquares;
-
-                    int xLeft = offset
-                           + (     xLeftInSquares % columns)
-                             * squareSize + dragXDistance,
-                       xRight = offset
-                           + (tempXRightInSquares % columns == 0
-                              ? columns : tempXRightInSquares % columns)
-                             * squareSize + dragXDistance,
-                         yTop = ((numberOfSequences + 2)
-                                 * (xLeftInSquares/columns)
-                                 +    selectionTopLeftInSquares.y + 1)
-                                * squareSize + dragYDistance,
-                      yBottom = ((numberOfSequences + 2)
-                                 * (xLeftInSquares/columns)
-                                 + selectionBottomRightInSquares.y + 1)
-                                * squareSize + dragYDistance;
-
-                    gc.setForeground( selectionColor1 );
-                    gc.drawRectangle( xLeft,
-                                      yTop,
-                                      xRight - xLeft - 1,
-                                      yBottom - yTop - 1 );
-
-                    gc.setBackground( selectionColor2 );
-                    gc.setAlpha( 64 ); // 25%
-                    gc.fillRectangle( xLeft           + 1,
-                                      yTop            + 1,
-                                      xRight - xLeft  - 1,
-                                      yBottom - yTop  - 1 );
-                    gc.setAlpha( 255 ); // opaque again
-
-                    xLeftInSquares = (xLeftInSquares/columns + 1) * columns;
-                } while (xLeftInSquares/columns <= xRightInSquares/columns);
             }
         };
     }
