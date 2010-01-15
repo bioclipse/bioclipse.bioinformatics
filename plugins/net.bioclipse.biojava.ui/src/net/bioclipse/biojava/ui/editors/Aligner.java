@@ -66,6 +66,10 @@ public class Aligner extends EditorPart {
         basicAAColor    = colorManager.getColor( new RGB(0xD0, 0xFF, 0xFF) ),
         smallAAColor    = colorManager.getColor( new RGB(0xFF, 0xD0, 0xD0) ),
         cysteineColor   = colorManager.getColor( new RGB(0xFF, 0xFF, 0xD0) ),
+        adenineColor    = colorManager.getColor( new RGB(0xB0, 0xFF, 0xB0) ),
+        cytosineColor   = colorManager.getColor( new RGB(0xB0, 0xB0, 0xFF) ),
+        guanineColor    = colorManager.getColor( new RGB(0xFF, 0xFF, 0xD0) ),
+        thymineColor    = colorManager.getColor( new RGB(0xFF, 0xB0, 0xB0) ),
         textColor       = display.getSystemColor( SWT.COLOR_BLACK ),
         nameColor       = display.getSystemColor( SWT.COLOR_WHITE ),
         buttonColor     = colorManager.getColor( new RGB(0x66, 0x66, 0x66) ),
@@ -529,35 +533,39 @@ public class Aligner extends EditorPart {
                                          SWT.NONE) );
                 }
 
+                int n = numberOfSequences == 1 ? 1 : numberOfSequences - 1;
                 for ( int column = firstVisibleColumn;
                       column < lastVisibleColumn; ++column ) {
 
                     int xCoord = column * squareSize;
 
-                    for ( int row = 0; row < numberOfSequences-1; ++row ) {
+                    for ( int row = 0; row < n; ++row ) {
 
                         char c = fasta[row].length > column
                                  ? fasta[row][column] : ' ';
                         String cc = c + "";
 
                         gc.setBackground(
-                             "HKR".contains( cc ) ? basicAAColor
-                          :   "DE".contains( cc ) ? acidicAAColor
-                          : "TQSN".contains( cc ) ? polarAAColor
-                          :  "FYW".contains( cc ) ? nonpolarAAColor
-                          :   "GP".contains( cc ) ? smallAAColor
-                          :    'C' == c           ? cysteineColor
-                                                  : normalAAColor );
+                                "HKR".contains( cc ) ? basicAAColor
+                             :   "DE".contains( cc ) ? acidicAAColor
+                             : "TQSN".contains( cc ) ? polarAAColor
+                             :  "FYW".contains( cc ) ? nonpolarAAColor
+                             :   "GP".contains( cc ) ? smallAAColor
+                             :    'C' == c           ? cysteineColor
+                             :    'a' == c           ? adenineColor
+                             :    'c' == c           ? cytosineColor
+                             :    'g' == c           ? guanineColor
+                             :    't' == c           ? thymineColor
+                                                     : normalAAColor );
 
                         int yCoord = (1 + row) * squareSize;
 
                         gc.fillRectangle(xCoord, yCoord,
                                          squareSize, squareSize);
 
-                        if ( Character.isUpperCase( c )
-                             && squareSize
+                        if ( squareSize
                                   >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
-                            String text = "" + c;
+                            String text = cc.toUpperCase();
                             Point extent = gc.stringExtent(text);
                             gc.drawString( text,
                                            xCoord + squareSize/2 - extent.x/2,
@@ -570,6 +578,9 @@ public class Aligner extends EditorPart {
             private void drawConsensusSequence( final char[] sequence,
                                                 int firstVisibleColumn,
                                                 int lastVisibleColumn, GC gc ) {
+
+                if ( numberOfSequences < 2 )
+                    return;
 
                 int yCoord = numberOfSequences * squareSize;
 
@@ -854,11 +865,12 @@ public class Aligner extends EditorPart {
                                      (int)(.7 * squareSize),
                                      SWT.NONE) );
 
+                int n = numberOfSequences == 1 ? 1 : numberOfSequences - 1;
                 for ( int column = 0; column < fasta[0].length; ++column ) {
 
                     int xCoord = (column % columns) * squareSize;
 
-                    for ( int row = 0; row < numberOfSequences-1; ++row ) {
+                    for ( int row = 0; row < n; ++row ) {
 
                         char c = fasta[row].length > column
                                  ? fasta[row][column] : ' ';
@@ -871,6 +883,10 @@ public class Aligner extends EditorPart {
                           :  "FYW".contains( cc ) ? nonpolarAAColor
                           :   "GP".contains( cc ) ? smallAAColor
                           :    'C' == c           ? cysteineColor
+                          :    'a' == c           ? adenineColor
+                          :    'c' == c           ? cytosineColor
+                          :    'g' == c           ? guanineColor
+                          :    't' == c           ? thymineColor
                                                   : normalAAColor );
 
                         int yCoord
@@ -882,10 +898,9 @@ public class Aligner extends EditorPart {
                         gc.fillRectangle(offset + xCoord, yCoord,
                                          squareSize, squareSize);
 
-                        if ( Character.isUpperCase( c )
-                             && squareSize
+                        if ( squareSize
                                 >= MINIMUM_SQUARE_SIZE_FOR_TEXT_IN_PIXELS ) {
-                            String text = "" + c;
+                            String text = cc.toUpperCase();
                             Point extent = gc.stringExtent(text);
                             gc.drawString(
                                 text,
@@ -900,6 +915,9 @@ public class Aligner extends EditorPart {
             private void drawConsensusSequence( final char[] sequence,
                                                 int offset,
                                                 GC gc ) {
+
+                if ( numberOfSequences < 2 )
+                    return;
 
                 for ( int column = 0; column < sequence.length; ++column ) {
 
