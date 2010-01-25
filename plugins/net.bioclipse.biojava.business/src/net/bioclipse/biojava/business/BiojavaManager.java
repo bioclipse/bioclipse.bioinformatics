@@ -518,4 +518,9 @@ public class BiojavaManager implements IBioclipseManager {
         }
         return features;
     }
+    
+    public List<ISequence> sequencesFromString(String s) {
+        return sequencesFromInputStream(
+                   new ByteArrayInputStream( s.getBytes() ) );
+    }
 }
