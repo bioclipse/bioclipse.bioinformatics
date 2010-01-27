@@ -472,7 +472,7 @@ public interface IBiojavaManager extends IBioclipseManager {
     @PublishedMethod(methodSummary = "Return a list of features for a Sequence",
                      params = "ISequence sequence")
     public List<IFeature> features(ISequence sequence);
-    
+
     @PublishedMethod(methodSummary = "Creates sequences from a String",
                      params = "String s")
     public List<ISequence> sequencesFromString(String s);
