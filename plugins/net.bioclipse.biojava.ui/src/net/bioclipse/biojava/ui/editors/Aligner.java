@@ -146,18 +146,27 @@ public class Aligner extends EditorPart {
     public void setInput( IEditorInput input ) {
         super.setInput(input);
 
-        // Turn the editor input into an IFile.
-        IFile file = (IFile) input.getAdapter( IFile.class );
-        if (file == null)
+        ISequence sequence = (ISequence) input.getAdapter( ISequence.class );
+        if (sequence != null) {
+            List<ISequence> sequences = new ArrayList<ISequence>();
+            sequences.add(sequence);
+            this.setSequences(sequences);
             return;
-
-        List<ISequence> sequences;
-        try {
-            sequences = biojava.sequencesFromFile(file);
-        } catch (FileNotFoundException e1) {
-            return; // No exception handling at all! We just give up! Gasp!
         }
-        this.setSequences(sequences);
+
+        IFile file = (IFile) input.getAdapter( IFile.class );
+        if (file != null) {
+            List<ISequence> sequences;
+            try {
+                sequences = biojava.sequencesFromFile(file);
+            } catch (FileNotFoundException e1) {
+                return; // No exception handling at all! We just give up! Gasp!
+            }
+            this.setSequences(sequences);
+            return;
+        }
+
+        throw new RuntimeException("Could not open the sequence.");
     }
 
     public void setSequences(List<ISequence> seqs) {
