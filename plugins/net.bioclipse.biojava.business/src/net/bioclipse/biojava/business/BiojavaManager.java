@@ -1,4 +1,4 @@
-/*******************************************************************************
+/* *****************************************************************************
  * Copyright (c) 2007-2008 The Bioclipse Project and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,7 +10,7 @@
  *     Ola Spjuth
  *
  ******************************************************************************/
-/*******************************************************************************
+/* *****************************************************************************
  * Copyright (c) 2009 Jonathan Alvarsson <jonalv@users.sourceforge.net>
  *
  * All rights reserved. This program and the accompanying materials
