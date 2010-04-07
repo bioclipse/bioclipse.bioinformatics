@@ -56,7 +56,7 @@ public class SequenceEditor extends MultiPageEditorPart {
     }
 
     public boolean isDirty() {
-        return dirty;
+        return dirty || super.isDirty();
     }
 
     @Override
