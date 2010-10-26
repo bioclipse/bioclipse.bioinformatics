@@ -16,10 +16,10 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.IProtein;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IDNA;
+import net.bioclipse.core.api.domain.IProtein;
+import net.bioclipse.core.api.managers.IBioclipseManager;
 import net.bioclipse.webservices.Activator;
 import net.bioclipse.webservices.business.IWebservicesManager;
 

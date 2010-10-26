@@ -14,8 +14,8 @@ package net.bioclipse.biojava.ui.actions;
 import java.io.IOException;
 
 import net.bioclipse.biojava.domain.BiojavaDNA;
-import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.IDNA;
+import net.bioclipse.core.api.domain.ISequence;
 
 public class TranslateDNAToRNAAction extends TranslateAction{
 

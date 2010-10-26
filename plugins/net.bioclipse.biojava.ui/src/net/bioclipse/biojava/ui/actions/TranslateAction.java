@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.ISequence;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;

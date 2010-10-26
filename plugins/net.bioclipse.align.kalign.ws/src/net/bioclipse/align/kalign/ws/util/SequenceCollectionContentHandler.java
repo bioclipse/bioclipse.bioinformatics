@@ -14,7 +14,7 @@ import java.util.List;
 
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.ISequence;
 
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.seq.ProteinTools;

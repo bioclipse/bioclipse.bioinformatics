@@ -17,9 +17,9 @@ import java.util.List;
 import net.bioclipse.align.kalign.ws.Activator;
 import net.bioclipse.align.kalign.ws.business.IKalignManager;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IProtein;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IProtein;
+import net.bioclipse.core.api.domain.ISequence;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;

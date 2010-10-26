@@ -1,10 +1,10 @@
 package net.bioclipse.biojava.ui.describer;
 
 import net.bioclipse.biojava.ui.editors.SequenceEditor;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IBioObject;
-import net.bioclipse.core.domain.ISequence;
-import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IBioObject;
+import net.bioclipse.core.api.domain.ISequence;
+import net.bioclipse.core.api.domain.RecordableList;
 import net.bioclipse.ui.business.describer.IBioObjectDescriber;
 
 

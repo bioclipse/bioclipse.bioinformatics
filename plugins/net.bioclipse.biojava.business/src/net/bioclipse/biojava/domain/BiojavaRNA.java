@@ -14,7 +14,7 @@ package net.bioclipse.biojava.domain;
 
 import org.biojava.bio.seq.Sequence;
 
-import net.bioclipse.core.domain.IRNA;
+import net.bioclipse.core.api.domain.IRNA;
 
 public class BiojavaRNA extends BiojavaSequence 
                                 implements IRNA {

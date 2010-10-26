@@ -12,13 +12,13 @@ package net.bioclipse.biows.business;
 
 import java.util.List;
 
-import net.bioclipse.core.PublishedClass;
-import net.bioclipse.core.PublishedMethod;
-import net.bioclipse.core.Recorded;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.IProtein;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.Recorded;
+import net.bioclipse.core.api.domain.IDNA;
+import net.bioclipse.core.api.domain.IProtein;
+import net.bioclipse.core.api.managers.IBioclipseManager;
+import net.bioclipse.core.api.managers.PublishedClass;
+import net.bioclipse.core.api.managers.PublishedMethod;
 
 @PublishedClass(value = "Controls access to Bioinformatics Webservices.")
 /**

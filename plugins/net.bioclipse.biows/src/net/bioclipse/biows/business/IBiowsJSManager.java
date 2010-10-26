@@ -10,7 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.biows.business;
 
-import net.bioclipse.managers.business.IBioclipseJSManager;
+import net.bioclipse.core.api.managers.IBioclipseJSManager;
 
 /**
  * 

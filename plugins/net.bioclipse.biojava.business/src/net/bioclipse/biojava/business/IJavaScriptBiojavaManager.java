@@ -10,7 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.biojava.business;
 
-import net.bioclipse.managers.business.IBioclipseJSManager;
+import net.bioclipse.core.api.managers.IBioclipseJSManager;
 
 public interface IJavaScriptBiojavaManager
        extends IBiojavaManager, IBioclipseJSManager {

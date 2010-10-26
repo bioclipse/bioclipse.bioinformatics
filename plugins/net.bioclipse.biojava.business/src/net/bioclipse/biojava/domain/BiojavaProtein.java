@@ -12,7 +12,7 @@
  ******************************************************************************/
 package net.bioclipse.biojava.domain;
 
-import net.bioclipse.core.domain.IProtein;
+import net.bioclipse.core.api.domain.IProtein;
 
 import org.biojava.bio.seq.Sequence;
 

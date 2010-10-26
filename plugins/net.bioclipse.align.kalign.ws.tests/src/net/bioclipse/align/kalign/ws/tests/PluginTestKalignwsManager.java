@@ -18,9 +18,9 @@ import java.util.List;
 import net.bioclipse.align.kalign.ws.Activator;
 import net.bioclipse.align.kalign.ws.business.IKalignManager;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.IProtein;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IDNA;
+import net.bioclipse.core.api.domain.IProtein;
 
 import org.junit.Test;
 

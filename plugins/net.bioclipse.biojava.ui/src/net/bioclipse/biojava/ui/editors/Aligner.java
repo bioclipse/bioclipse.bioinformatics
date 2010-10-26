@@ -19,7 +19,7 @@ import java.util.Map;
 
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.ISequence;
 import net.bioclipse.ui.editors.ColorManager;
 
 import org.eclipse.core.resources.IFile;

@@ -15,9 +15,9 @@ import static org.junit.Assert.assertEquals;
 import net.bioclipse.biojava.domain.BiojavaDNA;
 import net.bioclipse.biojava.domain.BiojavaProtein;
 import net.bioclipse.biojava.domain.BiojavaRNA;
-import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.IProtein;
-import net.bioclipse.core.domain.IRNA;
+import net.bioclipse.core.api.domain.IDNA;
+import net.bioclipse.core.api.domain.IProtein;
+import net.bioclipse.core.api.domain.IRNA;
 
 import org.junit.Test;
 

@@ -11,7 +11,7 @@ import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.biojava.ui.editors.Aligner;
 import net.bioclipse.biojava.ui.editors.SequenceEditor;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.ISequence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;

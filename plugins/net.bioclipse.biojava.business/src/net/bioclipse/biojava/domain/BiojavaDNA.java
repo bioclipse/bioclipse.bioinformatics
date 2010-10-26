@@ -14,7 +14,7 @@ package net.bioclipse.biojava.domain;
 
 import org.biojava.bio.seq.Sequence;
 
-import net.bioclipse.core.domain.IDNA;
+import net.bioclipse.core.api.domain.IDNA;
 
 public class BiojavaDNA extends BiojavaSequence
                         implements IDNA {

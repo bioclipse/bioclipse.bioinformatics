@@ -15,9 +15,9 @@ package net.bioclipse.biojava.domain;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import net.bioclipse.core.Recorded;
-import net.bioclipse.core.domain.BioObject;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.Recorded;
+import net.bioclipse.core.api.domain.BioObject;
+import net.bioclipse.core.api.domain.ISequence;
 
 import org.biojava.bio.seq.Sequence;
 import org.biojavax.Namespace;

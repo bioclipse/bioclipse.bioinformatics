@@ -35,12 +35,12 @@ import uk.ac.ebi.www.WSKalign.WSKalignServiceLocator;
 import net.bioclipse.align.kalign.ws.util.SequenceCollectionContentHandler;
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.IDNA;
-import net.bioclipse.core.domain.IProtein;
-import net.bioclipse.core.domain.ISequence;
-import net.bioclipse.core.domain.RecordableList;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.IDNA;
+import net.bioclipse.core.api.domain.IProtein;
+import net.bioclipse.core.api.domain.ISequence;
+import net.bioclipse.core.api.domain.RecordableList;
+import net.bioclipse.core.api.managers.IBioclipseManager;
 
 
 /**

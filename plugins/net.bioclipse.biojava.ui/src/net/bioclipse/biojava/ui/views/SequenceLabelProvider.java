@@ -24,8 +24,8 @@ package net.bioclipse.biojava.ui.views;
 import java.util.List;
 
 import net.bioclipse.biojava.ui.Activator;
-import net.bioclipse.core.domain.ISequence;
-import net.bioclipse.core.domain.RecordableList;
+import net.bioclipse.core.api.domain.ISequence;
+import net.bioclipse.core.api.domain.RecordableList;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;

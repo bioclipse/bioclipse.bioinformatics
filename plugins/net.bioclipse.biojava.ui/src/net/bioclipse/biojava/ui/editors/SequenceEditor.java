@@ -14,8 +14,8 @@ import java.util.List;
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.biojava.ui.views.outline.SequenceOutlinePage;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.BioclipseException;
+import net.bioclipse.core.api.domain.ISequence;
 import net.bioclipse.core.util.LogUtils;
 
 import org.apache.log4j.Logger;

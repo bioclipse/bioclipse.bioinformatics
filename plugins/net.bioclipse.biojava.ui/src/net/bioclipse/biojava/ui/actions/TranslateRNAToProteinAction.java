@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.ISequence;
 
 
 /**

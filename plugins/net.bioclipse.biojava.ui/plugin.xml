@@ -30,12 +30,12 @@
         <BioObject
             describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
             id="net.bioclipse.cdk.sequenceditor.describer"
-            objectClass="net.bioclipse.core.domain.RecordableList">
+            objectClass="net.bioclipse.core.api.domain.RecordableList">
         </BioObject>
         <BioObject
             describer="net.bioclipse.biojava.ui.describer.SequenceEditorDescriber"
             id="net.bioclipse.cdk.sequenceditor.describer"
-            objectClass="net.bioclipse.core.domain.ISequence">
+            objectClass="net.bioclipse.core.api.domain.ISequence">
         </BioObject>
    </extension>
 

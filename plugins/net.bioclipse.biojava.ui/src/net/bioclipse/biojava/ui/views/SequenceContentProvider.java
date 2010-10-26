@@ -28,8 +28,8 @@ import java.util.Map;
 
 import net.bioclipse.biojava.business.Activator;
 import net.bioclipse.biojava.business.IBiojavaManager;
-import net.bioclipse.core.domain.IBioObject;
-import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.api.domain.IBioObject;
+import net.bioclipse.core.api.domain.ISequence;
 import net.bioclipse.core.util.LogUtils;
 
 import org.apache.log4j.Logger;
