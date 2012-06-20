@@ -22,7 +22,8 @@ Bundle-ClassPath: .,
  jars/saaj.jar,
  jars/wsdl4j.jar,
  jars/slf4j-log4j12-1.5.0.jar
-Import-Package: org.apache.commons.discovery,
+Import-Package: javax.mail.internet;version="1.4.0",
+ org.apache.commons.discovery,
  org.apache.commons.discovery.ant,
  org.apache.commons.discovery.jdk,
  org.apache.commons.discovery.log,
@@ -30,6 +31,7 @@ Import-Package: org.apache.commons.discovery,
  org.apache.commons.discovery.resource.classes,
  org.apache.commons.discovery.resource.names,
  org.apache.commons.discovery.tools,
+ org.apache.commons.logging;version="1.1.1",
  org.apache.log4j
 Export-Package: net.bioclipse.align.kalign.ws,
  net.bioclipse.align.kalign.ws.business
