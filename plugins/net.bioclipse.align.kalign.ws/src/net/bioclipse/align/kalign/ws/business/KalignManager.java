@@ -267,7 +267,8 @@ public class KalignManager implements IBioclipseManager {
             }
 
         } catch ( Exception e ) {
-            throw new BioclipseException("Error in KAlign WS: ", e);
+            throw new BioclipseException(
+                          "Error in KAlign WS: " + e.getMessage(), e );
         }
 
     }

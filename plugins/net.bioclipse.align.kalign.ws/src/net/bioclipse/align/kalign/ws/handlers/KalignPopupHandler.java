@@ -20,6 +20,7 @@ import net.bioclipse.biojava.business.IBiojavaManager;
 import net.bioclipse.core.business.BioclipseException;
 import net.bioclipse.core.domain.IProtein;
 import net.bioclipse.core.domain.ISequence;
+import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.ui.business.IUIManager;
 
 import org.apache.log4j.Logger;
@@ -107,7 +108,7 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
         try {
             alignedProteins = kalign.alignProteins(proteins);
         } catch (BioclipseException e) {
-            // TODO: Better error handling
+            LogUtils.handleException( e, logger, "net.bioclipse.align.kalign.ws" );
             return null;
         }
         List<ISequence> alignedSequences = new ArrayList<ISequence>();
