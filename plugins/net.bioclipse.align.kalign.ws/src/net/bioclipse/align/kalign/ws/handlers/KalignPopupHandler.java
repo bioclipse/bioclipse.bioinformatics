@@ -31,10 +31,15 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -54,12 +59,14 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
             return null;
 
         IStructuredSelection ssel = (IStructuredSelection) sel;
+        
+        final Shell shell = HandlerUtil.getActiveShell( event );
 
-        IBiojavaManager biojava=net.bioclipse.biojava.business.Activator.
+        final IBiojavaManager biojava=net.bioclipse.biojava.business.Activator.
         getDefault().getJavaBiojavaManager();
         
-        List<IProtein> proteins=new ArrayList<IProtein>();
-        List<String> names=new ArrayList<String>();
+        final List<IProtein> proteins=new ArrayList<IProtein>();
+        final List<String> names=new ArrayList<String>();
         IProject firstProject=null;
         for (Object obj : ssel.toList()){
             if ( obj instanceof IFile ) {
@@ -67,7 +74,10 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
                 if (firstProject==null)
                     firstProject=file.getProject();
                 try {
-                    proteins.addAll( biojava.proteinsFromFile( file ));
+                	
+                	List<IProtein> readProts = biojava.proteinsFromFile( file );
+                	
+                    proteins.addAll( readProts);
                     String fname=file.getName();
                     if (fname.lastIndexOf( "." )>0)
                         fname=fname.substring( 0,fname.lastIndexOf( "." ) );
@@ -76,12 +86,19 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
                     logger.error("Could not find file: " 
                                  + file.getLocation());
                 }
+                catch (Exception e) {
+                    MessageDialog.openError( 
+                            shell,
+                            "Kalign",
+                            "Error parsing proteins. Make sure you have valid files!");
+                    return null;
+				}
             }
         }
         
         if (firstProject==null){
             MessageDialog.openError( 
-                                    HandlerUtil.getActiveShell( event ),
+                                    shell,
                                     "Kalign",
                                     "No output project could be located.");
             return null;
@@ -89,67 +106,81 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
         
         if (proteins.size()<=0){
             MessageDialog.openError( 
-                                    HandlerUtil.getActiveShell( event ),
+                                    shell,
                                     "Kalign",
                                     "No proteins could be parsed");
             return null;
         }
         if (proteins.size()==0){
             MessageDialog.openError( 
-                                    HandlerUtil.getActiveShell( event ),
+                                    shell,
                                     "Kalign",
                                     "Only one protein could be parsed, " +
                                     "need a minimum of two proteins to align.");
             return null;
         }
-
-        IKalignManager kalign = Activator.getDefault().getKalignManager();
-        List<IProtein> alignedProteins;
-        try {
-            alignedProteins = kalign.alignProteins(proteins);
-        } catch (BioclipseException e) {
-            LogUtils.handleException( e, logger, "net.bioclipse.align.kalign.ws" );
-            return null;
-        }
-        List<ISequence> alignedSequences = new ArrayList<ISequence>();
-        for (ISequence seq : alignedProteins)
-            alignedSequences.add(IProtein.class.cast(seq));
-
-        //Generate a new filename
-        String newFileName="";
-        for (String name : names){
-            newFileName=newFileName.concat( name+"_");
-        }
-        newFileName=newFileName.substring( 0, newFileName.length()-1 );
-        newFileName=newFileName.concat( "_aligned.fasta" );
         
-        logger.debug( "New alignment file to save: " + newFileName );
-        
-        //Serialize to temp file and open in SeqEditor
-        IFile newfile=firstProject.getFile( newFileName );
-        if (newfile.exists()){
-            boolean ret = MessageDialog.
-                               openConfirm( HandlerUtil.getActiveShell( event ), 
-                               "Overwrite?", 
-                               "Resulting alignment file " 
-                               + newFileName + " exists. Overwrite?");
-            if (ret==false) return null;
-            
-        }
+        final IProject project = firstProject;
 
-        //Save aligned proteins to file
-        biojava.proteinsToFASTAfile( alignedProteins, newfile );
         
-        try {
-            firstProject.refreshLocal( 1, new NullProgressMonitor() );
-        } catch ( CoreException e ) {
-            //Not much we can do if refresh fails. Should not happen.
-        }
+        Job job = new Job("Kalign") {
+			
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				
+		        IKalignManager kalign = Activator.getDefault().getKalignManager();
+		        List<IProtein> alignedProteins;
+		        try {
+		            alignedProteins = kalign.alignProteins(proteins, monitor);
+		        } catch (BioclipseException e) {
+		            LogUtils.handleException( e, logger, "net.bioclipse.align.kalign.ws" );
+		            return null;
+		        }
+		        List<ISequence> alignedSequences = new ArrayList<ISequence>();
+		        for (ISequence seq : alignedProteins)
+		            alignedSequences.add(IProtein.class.cast(seq));
 
-        //Open saved file
-        IUIManager ui = 
-            net.bioclipse.ui.business.Activator.getDefault().getUIManager();
-        ui.open( newfile );
+		        //Generate a new filename
+		        String newFileName="";
+		        for (String name : names){
+		            newFileName=newFileName.concat( name+"_");
+		        }
+		        newFileName=newFileName.substring( 0, newFileName.length()-1 );
+		        newFileName=newFileName.concat( "_aligned.fasta" );
+		        
+		        logger.debug( "New alignment file to save: " + newFileName );
+		        
+		        //Serialize to temp file and open in SeqEditor
+		        IFile newfile=project.getFile( newFileName );
+		        if (newfile.exists()){
+		            boolean ret = MessageDialog.
+		                               openConfirm( shell, 
+		                               "Overwrite?", 
+		                               "Resulting alignment file " 
+		                               + newFileName + " exists. Overwrite?");
+		            if (ret==false) return null;
+		            
+		        }
+
+		        //Save aligned proteins to file
+		        biojava.proteinsToFASTAfile( alignedProteins, newfile );
+		        
+		        try {
+		        	project.refreshLocal( 1, new NullProgressMonitor() );
+		        } catch ( CoreException e ) {
+		            //Not much we can do if refresh fails. Should not happen.
+		        }
+
+		        //Open saved file
+		        IUIManager ui = 
+		            net.bioclipse.ui.business.Activator.getDefault().getUIManager();
+		        ui.open( newfile );
+				
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(true);
+		job.schedule();
         
         return null;
     }

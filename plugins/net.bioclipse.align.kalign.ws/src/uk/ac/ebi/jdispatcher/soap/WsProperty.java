@@ -1,85 +1,75 @@
 /**
- * Data.java
+ * WsProperty.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package uk.ac.ebi.www.WSKalign;
+package uk.ac.ebi.jdispatcher.soap;
 
 
 /**
- * Input data for tool, see
- * 						http://www.ebi.ac.uk/Tools/webservices/services/kalign#data
- * 						for details.
+ * A key/value pair association of information
  */
-public class Data  implements java.io.Serializable {
-    /* Input data
-     * 								type */
-    private java.lang.String type;
+public class WsProperty  implements java.io.Serializable {
+    private java.lang.String key;
 
-    /* Input
-     * 								data */
-    private java.lang.String content;
+    private java.lang.String value;
 
-    public Data() {
+    public WsProperty() {
     }
 
-    public Data(
-           java.lang.String type,
-           java.lang.String content) {
-           this.type = type;
-           this.content = content;
+    public WsProperty(
+           java.lang.String key,
+           java.lang.String value) {
+           this.key = key;
+           this.value = value;
     }
 
 
     /**
-     * Gets the type value for this Data.
+     * Gets the key value for this WsProperty.
      * 
-     * @return type   * Input data
-     * 								type
+     * @return key
      */
-    public java.lang.String getType() {
-        return type;
+    public java.lang.String getKey() {
+        return key;
     }
 
 
     /**
-     * Sets the type value for this Data.
+     * Sets the key value for this WsProperty.
      * 
-     * @param type   * Input data
-     * 								type
+     * @param key
      */
-    public void setType(java.lang.String type) {
-        this.type = type;
+    public void setKey(java.lang.String key) {
+        this.key = key;
     }
 
 
     /**
-     * Gets the content value for this Data.
+     * Gets the value value for this WsProperty.
      * 
-     * @return content   * Input
-     * 								data
+     * @return value
      */
-    public java.lang.String getContent() {
-        return content;
+    public java.lang.String getValue() {
+        return value;
     }
 
 
     /**
-     * Sets the content value for this Data.
+     * Sets the value value for this WsProperty.
      * 
-     * @param content   * Input
-     * 								data
+     * @param value
      */
-    public void setContent(java.lang.String content) {
-        this.content = content;
+    public void setValue(java.lang.String value) {
+        this.value = value;
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Data)) return false;
-        Data other = (Data) obj;
+        if (!(obj instanceof WsProperty)) return false;
+        WsProperty other = (WsProperty) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -88,12 +78,12 @@ public class Data  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this.type==null && other.getType()==null) || 
-             (this.type!=null &&
-              this.type.equals(other.getType()))) &&
-            ((this.content==null && other.getContent()==null) || 
-             (this.content!=null &&
-              this.content.equals(other.getContent())));
+            ((this.key==null && other.getKey()==null) || 
+             (this.key!=null &&
+              this.key.equals(other.getKey()))) &&
+            ((this.value==null && other.getValue()==null) || 
+             (this.value!=null &&
+              this.value.equals(other.getValue())));
         __equalsCalc = null;
         return _equals;
     }
@@ -105,11 +95,11 @@ public class Data  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (getType() != null) {
-            _hashCode += getType().hashCode();
+        if (getKey() != null) {
+            _hashCode += getKey().hashCode();
         }
-        if (getContent() != null) {
-            _hashCode += getContent().hashCode();
+        if (getValue() != null) {
+            _hashCode += getValue().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -117,19 +107,19 @@ public class Data  implements java.io.Serializable {
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Data.class, true);
+        new org.apache.axis.description.TypeDesc(WsProperty.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.ebi.ac.uk/WSKalign", "data"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://soap.jdispatcher.ebi.ac.uk", "wsProperty"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("type");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "type"));
+        elemField.setFieldName("key");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "key"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("content");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "content"));
+        elemField.setFieldName("value");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "value"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

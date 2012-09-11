@@ -12,6 +12,8 @@ package net.bioclipse.align.kalign.ws.business;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.Recorded;
@@ -43,6 +45,7 @@ public interface IKalignManager extends IBioclipseManager {
                      methodSummary="Align a list of DNA sequences using the " +
                              "KAlign Web service at EBI.")
     public List<IDNA> alignDNA(List<IDNA> dnaList) throws BioclipseException;
+    public List<IDNA> alignDNA(List<IDNA> dnaList, IProgressMonitor monitor) throws BioclipseException;
 
     
     /**
@@ -60,6 +63,7 @@ public interface IKalignManager extends IBioclipseManager {
                      methodSummary="Align a list of protein sequences using " +
                              "the KAlign Web service at EBI.")
     public List<IProtein> alignProteins(List<IProtein> proteinList) throws BioclipseException;
+    public List<IProtein> alignProteins(List<IProtein> proteinList, IProgressMonitor monitor) throws BioclipseException;
     
     
 }

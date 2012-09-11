@@ -1,59 +1,59 @@
 /**
- * WSKalignServiceLocator.java
+ * JDispatcherService_ServiceLocator.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package uk.ac.ebi.www.WSKalign;
+package uk.ac.ebi.jdispatcher.soap;
 
-public class WSKalignServiceLocator extends org.apache.axis.client.Service implements uk.ac.ebi.www.WSKalign.WSKalignService {
+public class JDispatcherService_ServiceLocator extends org.apache.axis.client.Service implements uk.ac.ebi.jdispatcher.soap.JDispatcherService_Service {
 
-    public WSKalignServiceLocator() {
+    public JDispatcherService_ServiceLocator() {
     }
 
 
-    public WSKalignServiceLocator(org.apache.axis.EngineConfiguration config) {
+    public JDispatcherService_ServiceLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
     }
 
-    public WSKalignServiceLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName) throws javax.xml.rpc.ServiceException {
+    public JDispatcherService_ServiceLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName) throws javax.xml.rpc.ServiceException {
         super(wsdlLoc, sName);
     }
 
-    // Use to get a proxy class for WSKalign
-    private java.lang.String WSKalign_address = "http://www.ebi.ac.uk/Tools/es/ws-servers/WSKalign";
+    // Use to get a proxy class for JDispatcherServiceHttpPort
+    private java.lang.String JDispatcherServiceHttpPort_address = "http://www.ebi.ac.uk/Tools/services/soap/kalign";
 
-    public java.lang.String getWSKalignAddress() {
-        return WSKalign_address;
+    public java.lang.String getJDispatcherServiceHttpPortAddress() {
+        return JDispatcherServiceHttpPort_address;
     }
 
     // The WSDD service name defaults to the port name.
-    private java.lang.String WSKalignWSDDServiceName = "WSKalign";
+    private java.lang.String JDispatcherServiceHttpPortWSDDServiceName = "JDispatcherServiceHttpPort";
 
-    public java.lang.String getWSKalignWSDDServiceName() {
-        return WSKalignWSDDServiceName;
+    public java.lang.String getJDispatcherServiceHttpPortWSDDServiceName() {
+        return JDispatcherServiceHttpPortWSDDServiceName;
     }
 
-    public void setWSKalignWSDDServiceName(java.lang.String name) {
-        WSKalignWSDDServiceName = name;
+    public void setJDispatcherServiceHttpPortWSDDServiceName(java.lang.String name) {
+        JDispatcherServiceHttpPortWSDDServiceName = name;
     }
 
-    public uk.ac.ebi.www.WSKalign.WSKalign getWSKalign() throws javax.xml.rpc.ServiceException {
+    public uk.ac.ebi.jdispatcher.soap.JDispatcherService_PortType getJDispatcherServiceHttpPort() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
-            endpoint = new java.net.URL(WSKalign_address);
+            endpoint = new java.net.URL(JDispatcherServiceHttpPort_address);
         }
         catch (java.net.MalformedURLException e) {
             throw new javax.xml.rpc.ServiceException(e);
         }
-        return getWSKalign(endpoint);
+        return getJDispatcherServiceHttpPort(endpoint);
     }
 
-    public uk.ac.ebi.www.WSKalign.WSKalign getWSKalign(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public uk.ac.ebi.jdispatcher.soap.JDispatcherService_PortType getJDispatcherServiceHttpPort(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            uk.ac.ebi.www.WSKalign.WSKalignSoapBindingStub _stub = new uk.ac.ebi.www.WSKalign.WSKalignSoapBindingStub(portAddress, this);
-            _stub.setPortName(getWSKalignWSDDServiceName());
+            uk.ac.ebi.jdispatcher.soap.JDispatcherServiceHttpBindingStub _stub = new uk.ac.ebi.jdispatcher.soap.JDispatcherServiceHttpBindingStub(portAddress, this);
+            _stub.setPortName(getJDispatcherServiceHttpPortWSDDServiceName());
             return _stub;
         }
         catch (org.apache.axis.AxisFault e) {
@@ -61,8 +61,8 @@ public class WSKalignServiceLocator extends org.apache.axis.client.Service imple
         }
     }
 
-    public void setWSKalignEndpointAddress(java.lang.String address) {
-        WSKalign_address = address;
+    public void setJDispatcherServiceHttpPortEndpointAddress(java.lang.String address) {
+        JDispatcherServiceHttpPort_address = address;
     }
 
     /**
@@ -72,9 +72,9 @@ public class WSKalignServiceLocator extends org.apache.axis.client.Service imple
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (uk.ac.ebi.www.WSKalign.WSKalign.class.isAssignableFrom(serviceEndpointInterface)) {
-                uk.ac.ebi.www.WSKalign.WSKalignSoapBindingStub _stub = new uk.ac.ebi.www.WSKalign.WSKalignSoapBindingStub(new java.net.URL(WSKalign_address), this);
-                _stub.setPortName(getWSKalignWSDDServiceName());
+            if (uk.ac.ebi.jdispatcher.soap.JDispatcherService_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
+                uk.ac.ebi.jdispatcher.soap.JDispatcherServiceHttpBindingStub _stub = new uk.ac.ebi.jdispatcher.soap.JDispatcherServiceHttpBindingStub(new java.net.URL(JDispatcherServiceHttpPort_address), this);
+                _stub.setPortName(getJDispatcherServiceHttpPortWSDDServiceName());
                 return _stub;
             }
         }
@@ -94,8 +94,8 @@ public class WSKalignServiceLocator extends org.apache.axis.client.Service imple
             return getPort(serviceEndpointInterface);
         }
         java.lang.String inputPortName = portName.getLocalPart();
-        if ("WSKalign".equals(inputPortName)) {
-            return getWSKalign();
+        if ("JDispatcherServiceHttpPort".equals(inputPortName)) {
+            return getJDispatcherServiceHttpPort();
         }
         else  {
             java.rmi.Remote _stub = getPort(serviceEndpointInterface);
@@ -105,7 +105,7 @@ public class WSKalignServiceLocator extends org.apache.axis.client.Service imple
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://www.ebi.ac.uk/WSKalign", "WSKalignService");
+        return new javax.xml.namespace.QName("http://soap.jdispatcher.ebi.ac.uk", "JDispatcherService");
     }
 
     private java.util.HashSet ports = null;
@@ -113,7 +113,7 @@ public class WSKalignServiceLocator extends org.apache.axis.client.Service imple
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://www.ebi.ac.uk/WSKalign", "WSKalign"));
+            ports.add(new javax.xml.namespace.QName("http://soap.jdispatcher.ebi.ac.uk", "JDispatcherServiceHttpPort"));
         }
         return ports.iterator();
     }
@@ -123,8 +123,8 @@ public class WSKalignServiceLocator extends org.apache.axis.client.Service imple
     */
     public void setEndpointAddress(java.lang.String portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
         
-if ("WSKalign".equals(portName)) {
-            setWSKalignEndpointAddress(address);
+if ("JDispatcherServiceHttpPort".equals(portName)) {
+            setJDispatcherServiceHttpPortEndpointAddress(address);
         }
         else 
 { // Unknown Port Name
