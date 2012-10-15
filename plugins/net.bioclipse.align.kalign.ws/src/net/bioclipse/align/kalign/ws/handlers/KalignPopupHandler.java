@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -134,7 +135,7 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
 		            alignedProteins = kalign.alignProteins(proteins, monitor);
 		        } catch (BioclipseException e) {
 		            LogUtils.handleException( e, logger, "net.bioclipse.align.kalign.ws" );
-		            return null;
+		            return Status.CANCEL_STATUS;
 		        }
 		        List<ISequence> alignedSequences = new ArrayList<ISequence>();
 		        for (ISequence seq : alignedProteins)
@@ -153,13 +154,35 @@ public class KalignPopupHandler extends AbstractHandler implements IHandler {
 		        //Serialize to temp file and open in SeqEditor
 		        IFile newfile=project.getFile( newFileName );
 		        if (newfile.exists()){
-		            boolean ret = MessageDialog.
-		                               openConfirm( shell, 
-		                               "Overwrite?", 
-		                               "Resulting alignment file " 
-		                               + newFileName + " exists. Overwrite?");
-		            if (ret==false) return null;
+		            final Boolean[] ret = new Boolean[1];
+		            final String name = newFileName;
+		            final Boolean[] valueSet = new Boolean[] {false};
 		            
+		            Display.getDefault().asyncExec( new Runnable() {
+                        public void run() {
+                            synchronized ( ret ) {
+                                ret[0] = MessageDialog.openConfirm( shell, 
+                                        "Overwrite?", 
+                                        "Resulting alignment file " 
+                                        + name + " exists. Overwrite?");
+                            }
+                            synchronized ( valueSet ) {
+                                valueSet[0] = true; 
+                                valueSet.notifyAll();
+                            }
+                        }
+		            } );
+
+		            while (!valueSet[0]) {
+		                synchronized ( valueSet ) {
+		                    try {
+                                valueSet.wait();
+                            } catch ( InterruptedException e ) {
+                                throw new RuntimeException("Interruped", e);
+                            }
+                        }
+		            }
+		            if (ret[0]==false) return Status.CANCEL_STATUS;
 		        }
 
 		        //Save aligned proteins to file
