@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Biojava
 Bundle-SymbolicName: net.bioclipse.biojava
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-ClassPath: .,
  jars/biojava-live.jar,
  jars/bytecode.jar
