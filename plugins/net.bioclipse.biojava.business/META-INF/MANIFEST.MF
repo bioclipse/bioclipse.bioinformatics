@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Biojava Business
 Bundle-SymbolicName: net.bioclipse.biojava.business;singleton:=true
-Bundle-Version: 2.6.0.vqualifier
+Bundle-Version: 2.6.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.bioclipse.biojava.business.Activator
 Import-Package: org.apache.log4j,

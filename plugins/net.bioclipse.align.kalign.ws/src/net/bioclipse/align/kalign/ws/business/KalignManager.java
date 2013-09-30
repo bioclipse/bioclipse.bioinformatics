@@ -189,7 +189,6 @@ public class KalignManager implements IBioclipseManager {
 			params.setStype( "dna" );
 		}
 
-		System.out.println("Sequences to align:\n" + fastastring);
 		params.setSequence( fastastring );
 
 
@@ -251,7 +250,7 @@ public class KalignManager implements IBioclipseManager {
 
 		//We remove the first line since it caused erorrs with BioJava's
 		//ClustalW format parsing, and we know this is the format
-		resstr=resstr.substring( 42 );
+		resstr = resstr.replaceFirst("CLUSTAL.*","");
 
 		//Set up a buffered reader for the contents
 		ByteArrayInputStream ins=new ByteArrayInputStream(
