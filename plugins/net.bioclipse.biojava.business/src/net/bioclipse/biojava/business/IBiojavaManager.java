@@ -34,7 +34,10 @@ import net.bioclipse.managers.business.IBioclipseManager;
 /**
  * @author jonalv, ola
  */
-@PublishedClass("Provides bioinformatics services through the BioJava project.")
+@PublishedClass(
+	value="Provides bioinformatics services through the BioJava project.",
+	doi={"10.1093/bioinformatics/btn397","10.1093/bioinformatics/bts494"}
+)
 public interface IBiojavaManager extends IBioclipseManager {
 
     /**
