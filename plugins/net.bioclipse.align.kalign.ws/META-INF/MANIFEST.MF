@@ -2,13 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: KAlign WebService
 Bundle-SymbolicName: net.bioclipse.align.kalign.ws;singleton:=true
-Bundle-Version: 2.6.1.qualifier
+Bundle-Version: 2.6.2.qualifier
 Bundle-Activator: net.bioclipse.align.kalign.ws.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.bioclipse.webservices,
  net.bioclipse.core,
- slf4j.api,
  net.bioclipse.biojava.business,
  net.bioclipse.biojava,
  net.bioclipse.biojava.ui,
@@ -32,6 +31,7 @@ Import-Package: javax.mail.internet;version="1.4.0",
  org.apache.commons.discovery.resource.names,
  org.apache.commons.discovery.tools,
  org.apache.commons.logging;version="1.1.1",
- org.apache.log4j
+ org.apache.log4j,
+ org.slf4j
 Export-Package: net.bioclipse.align.kalign.ws,
  net.bioclipse.align.kalign.ws.business

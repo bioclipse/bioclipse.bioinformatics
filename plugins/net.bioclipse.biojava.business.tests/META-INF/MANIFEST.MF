@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: net.bioclipse.biojava.business.tests;singleton:=true
-Bundle-Version: 2.6.1.qualifier
+Bundle-Version: 2.6.2.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- org.junit4,
  net.bioclipse.biojava.business,
  net.bioclipse.core,
  net.bioclipse.biojava,
- net.bioclipse.scripting
+ net.bioclipse.scripting,
+ org.junit;bundle-version="4.10.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Export-Package: net.bioclipse.biojava.business,
